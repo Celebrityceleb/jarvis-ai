@@ -1,0 +1,153 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #05070a;
+    color: #00e5ff;
+    font-family: Arial, sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.jarvis {
+    width: 100%;
+    max-width: 500px;
+    min-height: 100vh;
+
+    padding: 40px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* HEADER */
+
+.header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.header h1 {
+    font-size: 42px;
+    letter-spacing: 10px;
+}
+
+.header p {
+    margin-top: 10px;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #6d8790;
+}
+
+/* JARVIS CORE */
+
+.orb {
+    width: 180px;
+    height: 180px;
+
+    border: 2px solid #00e5ff;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow:
+        0 0 20px #00e5ff,
+        0 0 60px rgba(0, 229, 255, 0.3);
+
+    animation: pulse 2s infinite;
+}
+
+.orb-core {
+    width: 80px;
+    height: 80px;
+
+    border-radius: 50%;
+    background: #00e5ff;
+
+    box-shadow:
+        0 0 20px #00e5ff,
+        0 0 50px #00e5ff;
+}
+
+@keyframes pulse {
+
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+}
+
+/* STATUS */
+
+.status {
+    margin-top: 35px;
+
+    font-size: 12px;
+    letter-spacing: 3px;
+}
+
+/* CONVERSATION */
+
+.conversation {
+    width: 100%;
+
+    margin-top: 30px;
+    padding: 20px;
+
+    border: 1px solid #12343b;
+
+    background: rgba(0, 229, 255, 0.03);
+
+    text-align: center;
+}
+
+#response {
+    color: #d8faff;
+
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* TALK BUTTON */
+
+#talkButton {
+    margin-top: 30px;
+
+    padding: 15px 25px;
+
+    border: 1px solid #00e5ff;
+
+    background: transparent;
+
+    color: #00e5ff;
+
+    font-size: 13px;
+    letter-spacing: 2px;
+
+    border-radius: 5px;
+}
+
+#talkButton:active {
+    background: #00e5ff;
+    color: #05070a;
+}
