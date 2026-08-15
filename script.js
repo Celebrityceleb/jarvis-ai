@@ -7,8 +7,10 @@ const SpeechRecognition =
 
 if (!SpeechRecognition) {
 
+    status.textContent = "NOT SUPPORTED";
+
     response.textContent =
-        "Sorry, speech recognition is not supported in this browser.";
+        "Speech recognition is not supported by this browser.";
 
 } else {
 
@@ -23,7 +25,11 @@ if (!SpeechRecognition) {
         status.textContent = "LISTENING...";
         response.textContent = "I'm listening...";
 
-        recognition.start();
+        try {
+            recognition.start();
+        } catch (error) {
+            console.log("Recognition start error:", error);
+        }
     });
 
     recognition.onresult = (event) => {
@@ -35,6 +41,8 @@ if (!SpeechRecognition) {
 
         response.textContent =
             `You said: "${spokenText}"`;
+
+        console.log("Speech received:", spokenText);
     };
 
     recognition.onerror = (event) => {
@@ -42,15 +50,19 @@ if (!SpeechRecognition) {
         status.textContent = "ERROR";
 
         response.textContent =
-            "I couldn't hear you. Please try again.";
+            `Speech recognition error: ${event.error}`;
 
-        console.log(
-            "Speech recognition error:",
-            event.error
-        );
+        console.log("Speech recognition error:", event.error);
     };
 
     recognition.onend = () => {
+
         status.textContent = "SYSTEM READY";
+
+        if (response.textContent === "I'm listening...") {
+
+            response.textContent =
+                "Listening ended. No speech result was received.";
+        }
     };
-              }
+}
