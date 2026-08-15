@@ -2,67 +2,26 @@ const talkButton = document.getElementById("talkButton");
 const response = document.getElementById("response");
 const status = document.getElementById("status");
 
-const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
+function jarvisSpeak(text) {
+    const voice = new SpeechSynthesisUtterance(text);
 
-if (!SpeechRecognition) {
+    voice.lang = "en-US";
+    voice.rate = 0.95;
+    voice.pitch = 0.9;
+    voice.volume = 1;
 
-    status.textContent = "NOT SUPPORTED";
-
-    response.textContent =
-        "Speech recognition is not supported by this browser.";
-
-} else {
-
-    const recognition = new SpeechRecognition();
-
-    recognition.lang = "en-US";
-    recognition.continuous = false;
-    recognition.interimResults = false;
-
-    talkButton.addEventListener("click", () => {
-
-        status.textContent = "LISTENING...";
-        response.textContent = "I'm listening...";
-
-        try {
-            recognition.start();
-        } catch (error) {
-            console.log("Recognition start error:", error);
-        }
-    });
-
-    recognition.onresult = (event) => {
-
-        const spokenText =
-            event.results[0][0].transcript;
-
-        status.textContent = "MESSAGE RECEIVED";
-
-        response.textContent =
-            `You said: "${spokenText}"`;
-
-        console.log("Speech received:", spokenText);
-    };
-
-    recognition.onerror = (event) => {
-
-        status.textContent = "ERROR";
-
-        response.textContent =
-            `Speech recognition error: ${event.error}`;
-
-        console.log("Speech recognition error:", event.error);
-    };
-
-    recognition.onend = () => {
-
-        status.textContent = "SYSTEM READY";
-
-        if (response.textContent === "I'm listening...") {
-
-            response.textContent =
-                "Listening ended. No speech result was received.";
-        }
-    };
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(voice);
 }
+
+talkButton.addEventListener("click", () => {
+
+    status.textContent = "JARVIS ACTIVE";
+
+    const message =
+        "Hello. I am Jarvis. Your system is online.";
+
+    response.textContent = message;
+
+    jarvisSpeak(message);
+});
