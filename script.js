@@ -14,7 +14,7 @@ function jarvisSpeak(text) {
     voice.rate = 0.95;
     voice.pitch = 0.9;
     voice.volume = 1;
-
+window.speechSynthesis.resume();
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(voice);
 }
