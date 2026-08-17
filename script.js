@@ -21,5 +21,6 @@ window.speechSynthesis.resume();
 console.log("JARVIS SPEAKING:", text);
 talkButton.addEventListener("click", async () => {
     status.textContent = "JARVIS LISTENING...";
+    console.log("FIRST TAP RECEIVED");
     jarvisSpeak("Hello James. I am JARVIS.");
 });
