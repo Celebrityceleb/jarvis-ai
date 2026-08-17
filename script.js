@@ -20,4 +20,5 @@ function jarvisSpeak(text) {
 }
 talkButton.addEventListener("click", async () => {
     status.textContent = "JARVIS LISTENING...";
+    jarvisSpeak("Hello James. I am JARVIS.");
 });
