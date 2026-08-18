@@ -71,35 +71,12 @@ if (window.supabase) {
 // ==========================================
 // TALK BUTTON
 // ==========================================
-const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-
-const recognition = SpeechRecognition
-    ? new SpeechRecognition()
-    : null;
-
-if (recognition) {
-    recognition.lang = "en-US";
-    recognition.continuous = false;
-    recognition.interimResults = false;
-}
 talkButton.addEventListener("click", async () => {
 
     console.log("JARVIS BUTTON CLICKED");
 
     status.textContent = "JARVIS LISTENING...";
-if (recognition) {
-    recognition.start();
-}
-if (recognition) {
-    recognition.onresult = (event) => {
-        const spokenText = event.results[0][0].transcript;
 
-        console.log("YOU SAID:", spokenText);
-
-        response.textContent = `You said: ${spokenText}`;
-        status.textContent = "JARVIS ACTIVE";
-    };
 }
     // --------------------------------------
     // Immediate voice response
