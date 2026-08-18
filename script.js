@@ -36,7 +36,14 @@ function jarvisSpeak(text) {
 
     console.log("JARVIS SPEAKING:", text);
 }
-
+// Warm up the speech engine
+window.addEventListener("load", () => {
+    if ("speechSynthesis" in window) {
+        const warmup = new SpeechSynthesisUtterance("");
+        warmup.volume = 0;
+        window.speechSynthesis.speak(warmup);
+    }
+});
 
 // ==========================================
 // SUPABASE CONNECTION
