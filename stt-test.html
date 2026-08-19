@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>JARVIS STT Test</title>
+    <title>JARVIS Whisper Test</title>
 
     <style>
         body {
@@ -54,103 +54,258 @@
 
 <body>
 
-    <div class="box">
+<div class="box">
 
-        <h1>JARVIS</h1>
+    <h1>JARVIS</h1>
 
-        <div id="status">
-            READY
-        </div>
-
-        <div id="result">
-            Speak something...
-        </div>
-
-        <button id="startButton">
-            🎙️ START LISTENING
-        </button>
-
+    <div id="status">
+        LOADING WHISPER...
     </div>
 
-    <script>
+    <div id="result">
+        Whisper is loading...
+    </div>
 
-        const button =
-            document.getElementById("startButton");
+    <button id="startButton" disabled>
+        🎙️ START LISTENING
+    </button>
 
-        const status =
-            document.getElementById("status");
+</div>
 
-        const result =
-            document.getElementById("result");
+<script type="module">
 
-
-        // --------------------------------------
-        // CHECK MICROPHONE
-        // --------------------------------------
-
-        async function checkMicrophone() {
-
-            try {
-
-                const stream =
-                    await navigator.mediaDevices
-                        .getUserMedia({
-                            audio: true
-                        });
-
-                console.log(
-                    "MICROPHONE ACCESS GRANTED"
-                );
-
-                stream
-                    .getTracks()
-                    .forEach(track => track.stop());
-
-                return true;
-
-            } catch (error) {
-
-                console.error(
-                    "MICROPHONE ERROR:",
-                    error
-                );
-
-                status.textContent =
-                    "MICROPHONE ERROR";
-
-                return false;
-            }
-        }
+import {
+    pipeline
+} from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1";
 
 
-        // --------------------------------------
-        // START
-        // --------------------------------------
+const button =
+    document.getElementById("startButton");
 
-        button.addEventListener(
-            "click",
-            async () => {
+const status =
+    document.getElementById("status");
 
-                status.textContent =
-                    "CHECKING MICROPHONE...";
+const result =
+    document.getElementById("result");
 
-                const microphoneReady =
-                    await checkMicrophone();
 
-                if (!microphoneReady) {
-                    return;
-                }
+let transcriber = null;
 
-                status.textContent =
-                    "MICROPHONE READY";
 
-                result.textContent =
-                    "Microphone access works.";
+// ==========================================
+// LOAD WHISPER
+// ==========================================
 
+async function loadWhisper() {
+
+    try {
+
+        status.textContent =
+            "LOADING WHISPER...";
+
+        result.textContent =
+            "First load may take some time.";
+
+        transcriber = await pipeline(
+            "automatic-speech-recognition",
+            "onnx-community/whisper-tiny.en",
+            {
+                device: "webgpu"
             }
         );
 
-    </script>
+        status.textContent =
+            "WHISPER READY";
+
+        result.textContent =
+            "Speech recognition is ready.";
+
+        button.disabled = false;
+
+        console.log(
+            "WHISPER READY"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "WHISPER ERROR:",
+            error
+        );
+
+        status.textContent =
+            "WEBGPU FAILED";
+
+        result.textContent =
+            "Your browser/device could not start Whisper with WebGPU.";
+
+    }
+}
+
+
+// ==========================================
+// RECORD MICROPHONE
+// ==========================================
+
+async function recordAudio() {
+
+    const stream =
+        await navigator.mediaDevices
+            .getUserMedia({
+                audio: true
+            });
+
+
+    const recorder =
+        new MediaRecorder(stream);
+
+
+    const chunks = [];
+
+
+    recorder.ondataavailable =
+        event => {
+
+            chunks.push(
+                event.data
+            );
+
+        };
+
+
+    const recordingFinished =
+        new Promise(resolve => {
+
+            recorder.onstop =
+                () => {
+
+                    const blob =
+                        new Blob(
+                            chunks,
+                            {
+                                type:
+                                    "audio/webm"
+                            }
+                        );
+
+                    resolve(blob);
+
+                };
+
+        });
+
+
+    recorder.start();
+
+
+    status.textContent =
+        "LISTENING...";
+
+    result.textContent =
+        "Speak now.";
+
+
+    // Record for 5 seconds
+    await new Promise(resolve =>
+        setTimeout(
+            resolve,
+            5000
+        )
+    );
+
+
+    recorder.stop();
+
+
+    stream
+        .getTracks()
+        .forEach(track =>
+            track.stop()
+        );
+
+
+    return recordingFinished;
+}
+
+
+// ==========================================
+// BUTTON
+// ==========================================
+
+button.addEventListener(
+    "click",
+    async () => {
+
+        if (!transcriber) {
+            return;
+        }
+
+
+        button.disabled = true;
+
+
+        try {
+
+            const audio =
+                await recordAudio();
+
+
+            status.textContent =
+                "TRANSCRIBING...";
+
+            result.textContent =
+                "Whisper is processing your voice.";
+
+
+            const output =
+                await transcriber(
+                    URL.createObjectURL(audio)
+                );
+
+
+            console.log(
+                "WHISPER RESULT:",
+                output
+            );
+
+
+            result.textContent =
+                output.text;
+
+
+            status.textContent =
+                "WHISPER READY";
+
+
+        } catch (error) {
+
+            console.error(
+                "RECORDING ERROR:",
+                error
+            );
+
+            status.textContent =
+                "ERROR";
+
+            result.textContent =
+                error.message;
+
+        }
+
+
+        button.disabled = false;
+
+    }
+);
+
+
+// ==========================================
+// START WHISPER
+// ==========================================
+
+loadWhisper();
+
+</script>
 
 </body>
 </html>
