@@ -299,4 +299,3 @@ async function testMicrophone() {
             "MICROPHONE ERROR";
     }
 }
-testMicrophone();
