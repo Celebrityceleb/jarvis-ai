@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JARVIS STT Test</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #080b12;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .box {
+            width: 85%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            letter-spacing: 5px;
+        }
+
+        #status {
+            margin: 25px 0;
+            color: #8fa3bd;
+        }
+
+        #result {
+            min-height: 80px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #263244;
+            border-radius: 16px;
+        }
+
+        button {
+            padding: 16px 25px;
+            border: none;
+            border-radius: 30px;
+            background: #1b2230;
+            color: white;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+
+        <h1>JARVIS</h1>
+
+        <div id="status">
+            READY
+        </div>
+
+        <div id="result">
+            Speak something...
+        </div>
+
+        <button id="startButton">
+            🎙️ START LISTENING
+        </button>
+
+    </div>
+
+    <script>
+
+        const button =
+            document.getElementById("startButton");
+
+        const status =
+            document.getElementById("status");
+
+        const result =
+            document.getElementById("result");
+
+
+        // --------------------------------------
+        // CHECK MICROPHONE
+        // --------------------------------------
+
+        async function checkMicrophone() {
+
+            try {
+
+                const stream =
+                    await navigator.mediaDevices
+                        .getUserMedia({
+                            audio: true
+                        });
+
+                console.log(
+                    "MICROPHONE ACCESS GRANTED"
+                );
+
+                stream
+                    .getTracks()
+                    .forEach(track => track.stop());
+
+                return true;
+
+            } catch (error) {
+
+                console.error(
+                    "MICROPHONE ERROR:",
+                    error
+                );
+
+                status.textContent =
+                    "MICROPHONE ERROR";
+
+                return false;
+            }
+        }
+
+
+        // --------------------------------------
+        // START
+        // --------------------------------------
+
+        button.addEventListener(
+            "click",
+            async () => {
+
+                status.textContent =
+                    "CHECKING MICROPHONE...";
+
+                const microphoneReady =
+                    await checkMicrophone();
+
+                if (!microphoneReady) {
+                    return;
+                }
+
+                status.textContent =
+                    "MICROPHONE READY";
+
+                result.textContent =
+                    "Microphone access works.";
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
