@@ -265,3 +265,38 @@ if (talkButton) {
         "JARVIS ERROR: talkButton was not found."
     );
         }
+// ==========================================
+// MICROPHONE TEST
+// ==========================================
+
+async function testMicrophone() {
+
+    try {
+
+        const stream =
+            await navigator.mediaDevices.getUserMedia({
+                audio: true
+            });
+
+        console.log("MICROPHONE ACCESS GRANTED");
+
+        status.textContent =
+            "MICROPHONE READY";
+
+        // Stop the test stream immediately.
+        stream.getTracks().forEach(track => {
+            track.stop();
+        });
+
+    } catch (error) {
+
+        console.error(
+            "MICROPHONE ERROR:",
+            error
+        );
+
+        status.textContent =
+            "MICROPHONE ERROR";
+    }
+}
+testMicrophone();
