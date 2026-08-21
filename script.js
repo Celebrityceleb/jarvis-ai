@@ -2,6 +2,7 @@
 // JARVIS - MAIN SCRIPT
 // ==========================================
 
+
 // ==========================================
 // SUPABASE CONFIGURATION
 // ==========================================
@@ -12,13 +13,20 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
     "sb_publishable_Pf0mP9qTvCdWCUjZTt-xrA_G4gch1w8";
 
+
 // ==========================================
 // GET PAGE ELEMENTS
 // ==========================================
 
-const talkButton = document.getElementById("talkButton");
-const response = document.getElementById("response");
-const status = document.getElementById("status");
+const talkButton =
+    document.getElementById("talkButton");
+
+const response =
+    document.getElementById("response");
+
+const status =
+    document.getElementById("status");
+
 
 // ==========================================
 // JARVIS VOICE
@@ -27,50 +35,79 @@ const status = document.getElementById("status");
 function jarvisSpeak(text) {
 
     if (!("speechSynthesis" in window)) {
-        console.error("Speech synthesis is not supported.");
+
+        console.error(
+            "Speech synthesis is not supported."
+        );
+
         return;
     }
 
-    const speech = new SpeechSynthesisUtterance(text);
+
+    const speech =
+        new SpeechSynthesisUtterance(text);
+
 
     speech.lang = "en-US";
+
     speech.rate = 0.95;
+
     speech.pitch = 0.9;
+
     speech.volume = 1;
 
-    // Stop any previous speech
+
+    // Stop previous speech
+
     window.speechSynthesis.cancel();
 
+
     // Speak
+
     window.speechSynthesis.speak(speech);
 
-    console.log("JARVIS SPEAKING:", text);
+
+    console.log(
+        "JARVIS SPEAKING:",
+        text
+    );
 }
+
 
 // ==========================================
 // SPEECH ENGINE WARM-UP
 // ==========================================
 
-window.addEventListener("load", () => {
+window.addEventListener(
+    "load",
+    () => {
 
-    if ("speechSynthesis" in window) {
+        if ("speechSynthesis" in window) {
 
-        const warmup =
-            new SpeechSynthesisUtterance("");
+            const warmup =
+                new SpeechSynthesisUtterance("");
 
-        warmup.volume = 0;
+            warmup.volume = 0;
 
-        window.speechSynthesis.speak(warmup);
+            window.speechSynthesis.speak(
+                warmup
+            );
 
-        console.log("JARVIS SPEECH ENGINE READY");
+            console.log(
+                "JARVIS SPEECH ENGINE READY"
+            );
+        }
+
     }
-});
+);
+
 
 // ==========================================
 // SUPABASE CONNECTION
 // ==========================================
 
 let supabaseClient = null;
+
 
 if (window.supabase) {
 
@@ -80,14 +117,19 @@ if (window.supabase) {
             SUPABASE_ANON_KEY
         );
 
-    console.log("Supabase connected.");
+
+    console.log(
+        "Supabase connected."
+    );
 
 } else {
 
     console.warn(
         "Supabase library was not loaded. JARVIS will still be able to speak."
     );
+
 }
+
 
 // ==========================================
 // TALK BUTTON
@@ -95,127 +137,45 @@ if (window.supabase) {
 
 if (talkButton) {
 
-    talkButton.addEventListener("click", async () => {
-
-        console.log("JARVIS BUTTON CLICKED");
-
-        // --------------------------------------
-        // UPDATE STATUS
-        // --------------------------------------
-
-        status.textContent = "JARVIS LISTENING...";
-
-        // --------------------------------------
-        // IMMEDIATE LOCAL RESPONSE
-        // --------------------------------------
-
-        const localMessage =
-            "Hello James. I am JARVIS.";
-
-        response.textContent = localMessage;
-
-        jarvisSpeak(localMessage);
-
-        // --------------------------------------
-        // IF SUPABASE IS NOT AVAILABLE
-        // --------------------------------------
-
-        if (!supabaseClient) {
-
-            status.textContent = "JARVIS ACTIVE";
-
-            return;
-        }
-
-        // --------------------------------------
-        // TRY BACKEND CONNECTION
-        // --------------------------------------
-
-        try {
-
-            const {
-                data: { session },
-                error: sessionError
-            } = await supabaseClient.auth.getSession();
-
-            // ----------------------------------
-            // SESSION ERROR
-            // ----------------------------------
-
-            if (sessionError) {
-
-                console.error(
-                    "Session error:",
-                    sessionError
-                );
-
-                status.textContent = "JARVIS ACTIVE";
-
-                return;
-            }
-
-            // ----------------------------------
-            // NO LOGIN SESSION
-            // ----------------------------------
-
-            if (!session) {
-
-                console.log(
-                    "No authenticated session found."
-                );
-
-                status.textContent = "JARVIS ACTIVE";
-
-                return;
-            }
-
-            // ----------------------------------
-            // SEND REQUEST TO JARVIS CORE
-            // ----------------------------------
-
-            const backendResponse =
-                await fetch(
-                    `${SUPABASE_URL}/functions/v1/jarvis-core`,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json",
-
-                            "Authorization":
-                                `Bearer ${session.access_token}`
-                        },
-
-                        body: JSON.stringify({
-                            action: "chat",
-                            message: "Hello Jarvis"
-                        })
-                    }
-                );
-
-            // ----------------------------------
-            // READ BACKEND RESPONSE
-            // ----------------------------------
-
-            const data =
-                await backendResponse.json();
+    talkButton.addEventListener(
+        "click",
+        async () => {
 
             console.log(
-                "JARVIS BACKEND RESPONSE:",
-                data
+                "JARVIS BUTTON CLICKED"
             );
 
+
             // ----------------------------------
-            // BACKEND ERROR
+            // UPDATE STATUS
             // ----------------------------------
 
-            if (!backendResponse.ok) {
+            status.textContent =
+                "JARVIS LISTENING...";
 
-                console.error(
-                    "Backend error:",
-                    data
-                );
+
+            // ----------------------------------
+            // IMMEDIATE LOCAL RESPONSE
+            // ----------------------------------
+
+            const localMessage =
+                "Hello James. I am JARVIS.";
+
+
+            response.textContent =
+                localMessage;
+
+
+            jarvisSpeak(
+                localMessage
+            );
+
+
+            // ----------------------------------
+            // IF SUPABASE IS NOT AVAILABLE
+            // ----------------------------------
+
+            if (!supabaseClient) {
 
                 status.textContent =
                     "JARVIS ACTIVE";
@@ -223,48 +183,179 @@ if (talkButton) {
                 return;
             }
 
+
             // ----------------------------------
-            // SPEAK BACKEND RESPONSE
+            // TRY BACKEND CONNECTION
             // ----------------------------------
 
-            if (data.reply) {
+            try {
 
-                response.textContent =
-                    data.reply;
+                const {
+                    data: { session },
+                    error: sessionError
+                } =
+                    await supabaseClient
+                        .auth
+                        .getSession();
 
-                jarvisSpeak(data.reply);
+
+                // ------------------------------
+                // SESSION ERROR
+                // ------------------------------
+
+                if (sessionError) {
+
+                    console.error(
+                        "Session error:",
+                        sessionError
+                    );
+
+
+                    status.textContent =
+                        "JARVIS ACTIVE";
+
+
+                    return;
+                }
+
+
+                // ------------------------------
+                // NO LOGIN SESSION
+                // ------------------------------
+
+                if (!session) {
+
+                    console.log(
+                        "No authenticated session found."
+                    );
+
+
+                    status.textContent =
+                        "JARVIS ACTIVE";
+
+
+                    return;
+                }
+
+
+                // ------------------------------
+                // SEND REQUEST TO JARVIS CORE
+                // ------------------------------
+
+                const backendResponse =
+                    await fetch(
+                        `${SUPABASE_URL}/functions/v1/jarvis-core`,
+                        {
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    `Bearer ${session.access_token}`
+
+                            },
+
+                            body: JSON.stringify({
+
+                                action: "chat",
+
+                                message:
+                                    "Hello Jarvis"
+
+                            })
+                        }
+                    );
+
+
+                // ------------------------------
+                // READ BACKEND RESPONSE
+                // ------------------------------
+
+                const data =
+                    await backendResponse.json();
+
+
+                console.log(
+                    "JARVIS BACKEND RESPONSE:",
+                    data
+                );
+
+
+                // ------------------------------
+                // BACKEND ERROR
+                // ------------------------------
+
+                if (!backendResponse.ok) {
+
+                    console.error(
+                        "Backend error:",
+                        data
+                    );
+
+
+                    status.textContent =
+                        "JARVIS ACTIVE";
+
+
+                    return;
+                }
+
+
+                // ------------------------------
+                // SPEAK BACKEND RESPONSE
+                // ------------------------------
+
+                if (data.reply) {
+
+                    response.textContent =
+                        data.reply;
+
+
+                    jarvisSpeak(
+                        data.reply
+                    );
+
+                }
+
+
+                // ------------------------------
+                // ACTIVE
+                // ------------------------------
+
+                status.textContent =
+                    "JARVIS ACTIVE";
+
+
+            } catch (error) {
+
+                console.error(
+                    "JARVIS CONNECTION ERROR:",
+                    error
+                );
+
+
+                // Keep local voice working
+
+                status.textContent =
+                    "JARVIS ACTIVE";
+
             }
 
-            // ----------------------------------
-            // ACTIVE
-            // ----------------------------------
-
-            status.textContent =
-                "JARVIS ACTIVE";
-
-        } catch (error) {
-
-            console.error(
-                "JARVIS CONNECTION ERROR:",
-                error
-            );
-
-            // ----------------------------------
-            // KEEP LOCAL VOICE WORKING
-            // ----------------------------------
-
-            status.textContent =
-                "JARVIS ACTIVE";
         }
-
-    });
+    );
 
 } else {
 
     console.error(
         "JARVIS ERROR: talkButton was not found."
     );
-        }
+
+}
+
+
 // ==========================================
 // MICROPHONE TEST
 // ==========================================
@@ -274,19 +365,32 @@ async function testMicrophone() {
     try {
 
         const stream =
-            await navigator.mediaDevices.getUserMedia({
-                audio: true
-            });
+            await navigator
+                .mediaDevices
+                .getUserMedia({
+                    audio: true
+                });
 
-        console.log("MICROPHONE ACCESS GRANTED");
+
+        console.log(
+            "MICROPHONE ACCESS GRANTED"
+        );
+
 
         status.textContent =
             "MICROPHONE READY";
 
-        // Stop the test stream immediately.
-        stream.getTracks().forEach(track => {
-            track.stop();
-        });
+
+        // Stop test stream immediately
+
+        stream
+            .getTracks()
+            .forEach(
+                track => {
+                    track.stop();
+                }
+            );
+
 
     } catch (error) {
 
@@ -295,9 +399,12 @@ async function testMicrophone() {
             error
         );
 
+
         status.textContent =
             "MICROPHONE ERROR";
+
     }
+
 }
 
 
@@ -306,44 +413,379 @@ async function testMicrophone() {
 // ==========================================
 
 const navigationButtons =
-    document.querySelectorAll(".nav-button");
+    document.querySelectorAll(
+        ".nav-button"
+    );
+
 
 const screens =
-    document.querySelectorAll(".screen");
+    document.querySelectorAll(
+        ".screen"
+    );
 
 
-navigationButtons.forEach(button => {
+navigationButtons.forEach(
+    button => {
 
-    button.addEventListener("click", () => {
+        button.addEventListener(
+            "click",
+            () => {
 
-        const targetScreen =
-            button.getAttribute("data-screen");
+                const targetScreen =
+                    button.getAttribute(
+                        "data-screen"
+                    );
 
-        // Hide every screen
-        screens.forEach(screen => {
-            screen.classList.remove("active-screen");
-        });
 
-        // Show selected screen
-        const selectedScreen =
-            document.getElementById(targetScreen);
+                // Hide all screens
 
-        if (selectedScreen) {
-            selectedScreen.classList.add("active-screen");
-        }
+                screens.forEach(
+                    screen => {
 
-        // Update active navigation button
-        navigationButtons.forEach(navButton => {
-            navButton.classList.remove("active");
-        });
+                        screen.classList.remove(
+                            "active-screen"
+                        );
 
-        button.classList.add("active");
+                    }
+                );
 
-        console.log(
-            "JARVIS NAVIGATION:",
-            targetScreen
+
+                // Show selected screen
+
+                const selectedScreen =
+                    document.getElementById(
+                        targetScreen
+                    );
+
+
+                if (selectedScreen) {
+
+                    selectedScreen.classList.add(
+                        "active-screen"
+                    );
+
+                }
+
+
+                // Update active navigation button
+
+                navigationButtons.forEach(
+                    navButton => {
+
+                        navButton.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                console.log(
+                    "JARVIS NAVIGATION:",
+                    targetScreen
+                );
+
+            }
         );
 
-    });
+    }
+);
 
-});
+
+// ==========================================
+// JARVIS MEMORY SYSTEM
+// ==========================================
+
+const createMemoryButton =
+    document.getElementById(
+        "createMemoryButton"
+    );
+
+
+const memoryModal =
+    document.getElementById(
+        "memoryModal"
+    );
+
+
+const memoryInput =
+    document.getElementById(
+        "memoryInput"
+    );
+
+
+const cancelMemory =
+    document.getElementById(
+        "cancelMemory"
+    );
+
+
+const saveMemory =
+    document.getElementById(
+        "saveMemory"
+    );
+
+
+// ==========================================
+// OPEN MEMORY WINDOW
+// ==========================================
+
+if (createMemoryButton) {
+
+    createMemoryButton.addEventListener(
+        "click",
+        () => {
+
+            memoryModal.classList.add(
+                "show"
+            );
+
+
+            memoryInput.value = "";
+
+
+            memoryInput.focus();
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// CLOSE MEMORY WINDOW
+// ==========================================
+
+if (cancelMemory) {
+
+    cancelMemory.addEventListener(
+        "click",
+        () => {
+
+            memoryModal.classList.remove(
+                "show"
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// SAVE MEMORY
+// ==========================================
+
+if (saveMemory) {
+
+    saveMemory.addEventListener(
+        "click",
+        () => {
+
+            const memoryText =
+                memoryInput.value.trim();
+
+
+            if (!memoryText) {
+
+                alert(
+                    "Please enter something for JARVIS to remember."
+                );
+
+                return;
+            }
+
+
+            // Get existing memories
+
+            const memories =
+                JSON.parse(
+                    localStorage.getItem(
+                        "jarvisMemories"
+                    )
+                ) || [];
+
+
+            // Add new memory
+
+            memories.push({
+
+                text:
+                    memoryText,
+
+                date:
+                    new Date()
+                        .toLocaleDateString()
+
+            });
+
+
+            // Save memories
+
+            localStorage.setItem(
+                "jarvisMemories",
+                JSON.stringify(
+                    memories
+                )
+            );
+
+
+            // Close modal
+
+            memoryModal.classList.remove(
+                "show"
+            );
+
+
+            // Reload memories
+
+            loadMemories();
+
+
+            // Update JARVIS response
+
+            if (response) {
+
+                response.textContent =
+                    "Memory saved.";
+
+            }
+
+
+            if (status) {
+
+                status.textContent =
+                    "MEMORY SAVED";
+
+            }
+
+
+            // Speak confirmation
+
+            jarvisSpeak(
+                "Memory saved."
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// LOAD SAVED MEMORIES
+// ==========================================
+
+function loadMemories() {
+
+    const memories =
+        JSON.parse(
+            localStorage.getItem(
+                "jarvisMemories"
+            )
+        ) || [];
+
+
+    const memoryContent =
+        document.querySelector(
+            ".memory-content"
+        );
+
+
+    if (!memoryContent) {
+
+        return;
+    }
+
+
+    // Keep the create button
+
+    const createButton =
+        document.getElementById(
+            "createMemoryButton"
+        );
+
+
+    // Remove dynamically created memories
+
+    document
+        .querySelectorAll(
+            ".saved-memory"
+        )
+        .forEach(
+            memory => {
+                memory.remove();
+            }
+        );
+
+
+    memories.forEach(
+        memory => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "memory-card saved-memory";
+
+
+            card.innerHTML = `
+
+                <div class="memory-title">
+                    SAVED
+                </div>
+
+                <div class="memory-text">
+                    ${escapeMemoryText(
+                        memory.text
+                    )}
+                </div>
+
+            `;
+
+
+            memoryContent.insertBefore(
+                card,
+                createButton
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// PROTECT MEMORY TEXT
+// ==========================================
+
+function escapeMemoryText(text) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
+
+}
+
+
+// ==========================================
+// LOAD MEMORIES WHEN PAGE STARTS
+// ==========================================
+
+loadMemories();
