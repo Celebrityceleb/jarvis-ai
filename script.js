@@ -299,3 +299,51 @@ async function testMicrophone() {
             "MICROPHONE ERROR";
     }
 }
+
+
+// ==========================================
+// JARVIS SCREEN NAVIGATION
+// ==========================================
+
+const navigationButtons =
+    document.querySelectorAll(".nav-button");
+
+const screens =
+    document.querySelectorAll(".screen");
+
+
+navigationButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const targetScreen =
+            button.getAttribute("data-screen");
+
+        // Hide every screen
+        screens.forEach(screen => {
+            screen.classList.remove("active-screen");
+        });
+
+        // Show selected screen
+        const selectedScreen =
+            document.getElementById(targetScreen);
+
+        if (selectedScreen) {
+            selectedScreen.classList.add("active-screen");
+        }
+
+        // Update active navigation button
+        navigationButtons.forEach(navButton => {
+            navButton.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        console.log(
+            "JARVIS NAVIGATION:",
+            targetScreen
+        );
+
+    });
+
+});
