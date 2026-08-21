@@ -57,7 +57,7 @@ function jarvisSpeak(text) {
         return;
     }
 
-
+    
     window.speechSynthesis.cancel();
 
 
