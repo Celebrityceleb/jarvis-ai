@@ -1029,15 +1029,15 @@ function updateTime() {
 
 
     currentTime.textContent =
-        now.toLocaleTimeString(
-            "en-NG",
-            {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit"
-            }
-        );
-
+    now.toLocaleTimeString(
+        "en-NG",
+        {
+            hour: "numeric",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true
+        }
+    );
 
     currentDate.textContent =
         now.toLocaleDateString(
