@@ -1,153 +1,579 @@
+/* ==========================================
+   JARVIS — MAIN STYLESHEET
+   ========================================== */
+
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
 }
 
 body {
-    min-height: 100vh;
-    background: #05070a;
-    color: #00e5ff;
-    font-family: Arial, sans-serif;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: #080B12;
+    color: #FFFFFF;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
 }
 
-.jarvis {
-    width: 100%;
-    max-width: 500px;
-    min-height: 100vh;
 
-    padding: 40px 20px;
+/* ==========================================
+   MAIN JARVIS FRAME
+   ========================================== */
+
+.jarvis {
+    position: relative;
+    width: 100%;
+    max-width: 430px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: #080B12;
+    overflow: hidden;
+}
+
+
+/* ==========================================
+   SCREEN SYSTEM
+   ========================================== */
+
+.screen {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    padding: 30px 24px 105px;
+}
+
+.active-screen {
+    display: block;
+}
+
+
+/* ==========================================
+   HOME HEADER
+   ========================================== */
+
+.header {
+    text-align: center;
+    padding-top: 12px;
+}
+
+.header h1 {
+    font-size: 28px;
+    letter-spacing: 6px;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.header p {
+    margin-top: 6px;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: #8FA3BD;
+}
+
+
+/* ==========================================
+   OTHER PAGE HEADERS
+   ========================================== */
+
+.page-header {
+    text-align: center;
+    padding-top: 12px;
+    margin-bottom: 32px;
+}
+
+.page-header h1 {
+    font-size: 24px;
+    letter-spacing: 4px;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+
+/* ==========================================
+   JARVIS ORB
+   ========================================== */
+
+.orb {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    margin: 55px auto 35px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #15283D 0%,
+            #0D1626 45%,
+            #080B12 72%
+        );
+
+    border: 1px solid #8FD3FF;
+
+    box-shadow:
+        0 0 18px rgba(143, 211, 255, 0.25),
+        inset 0 0 25px rgba(143, 211, 255, 0.12);
+}
+
+
+/* Orb rings */
+
+.orb::before,
+.orb::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.orb::before {
+    inset: 12px;
+    border: 1px solid rgba(143, 211, 255, 0.35);
+}
+
+.orb::after {
+    inset: 27px;
+    border: 1px solid rgba(143, 211, 255, 0.18);
+}
+
+
+/* Orb core */
+
+.orb-core {
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #DDF4FF 0%,
+            #8FD3FF 30%,
+            #294E70 65%,
+            #0D1626 100%
+        );
+
+    box-shadow:
+        0 0 20px rgba(143, 211, 255, 0.65),
+        0 0 45px rgba(143, 211, 255, 0.2);
+}
+
+
+/* ==========================================
+   STATUS
+   ========================================== */
+
+.status {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.status span {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #8FD3FF;
+}
+
+
+/* ==========================================
+   CONVERSATION
+   ========================================== */
+
+.conversation {
+    width: 100%;
+    min-height: 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px;
+
+    margin-bottom: 25px;
+
+    background: #0D1626;
+
+    border: 1px solid #263244;
+    border-radius: 16px;
+}
+
+#response {
+    text-align: center;
+    color: #DCE9F5;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* ==========================================
+   TALK BUTTON
+   ========================================== */
+
+#talkButton {
+    display: block;
+
+    width: 100%;
+    height: 52px;
+
+    border: 1px solid #8FD3FF;
+    border-radius: 28px;
+
+    background: #0D1626;
+    color: #8FD3FF;
+
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#talkButton:hover {
+    background: #122238;
+    box-shadow: 0 0 15px rgba(143, 211, 255, 0.2);
+}
+
+#talkButton:active {
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   MEMORY
+   ========================================== */
+
+.memory-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.memory-card {
+    width: 100%;
+    min-height: 70px;
+
+    padding: 13px 16px;
+
+    background: #0D1626;
+
+    border: 1px solid #8FD3FF;
+    border-radius: 12px;
+}
+
+.memory-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #8FD3FF;
+    letter-spacing: 0.5px;
+}
+
+.memory-text {
+    margin-top: 7px;
+
+    font-size: 10px;
+    line-height: 1.4;
+
+    color: #8FA3BD;
+}
+
+
+/* Create memory */
+
+.create-memory {
+    width: 100%;
+    height: 45px;
+
+    margin-top: 3px;
+
+    border: 1px solid #8FD3FF;
+    border-radius: 12px;
+
+    background: #0D1626;
+    color: #8FD3FF;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+
+    cursor: pointer;
+}
+
+.create-memory:active {
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   TOOLS
+   ========================================== */
+
+.tools-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 10px;
+}
+
+.tool-card {
+    width: 100%;
+    height: 95px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    background: #0D1626;
+
+    border: 1px solid #8FD3FF;
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
-/* HEADER */
+.tool-card:active {
+    transform: scale(0.97);
+}
 
-.header {
+.tool-card:hover {
+    background: #122238;
+}
+
+.tool-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #8FD3FF;
+}
+
+.tool-description {
+    margin-top: 7px;
+
+    font-size: 10px;
+    color: #8FA3BD;
     text-align: center;
-    margin-bottom: 50px;
 }
 
-.header h1 {
-    font-size: 42px;
-    letter-spacing: 10px;
+
+/* ==========================================
+   SETTINGS
+   ========================================== */
+
+.settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.header p {
-    margin-top: 10px;
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: #6d8790;
-}
+.setting-card {
+    position: relative;
 
-/* JARVIS CORE */
-
-.orb {
-    width: 180px;
-    height: 180px;
-
-    border: 2px solid #00e5ff;
-    border-radius: 50%;
+    width: 100%;
+    min-height: 55px;
 
     display: flex;
-    justify-content: center;
     align-items: center;
 
-    box-shadow:
-        0 0 20px #00e5ff,
-        0 0 60px rgba(0, 229, 255, 0.3);
+    padding: 0 16px;
 
-    animation: pulse 2s infinite;
+    background: #0D1626;
+
+    border: 1px solid #8FD3FF;
+    border-radius: 12px;
+
+    color: #FFFFFF;
 }
 
-.orb-core {
-    width: 80px;
-    height: 80px;
-
-    border-radius: 50%;
-    background: #00e5ff;
-
-    box-shadow:
-        0 0 20px #00e5ff,
-        0 0 50px #00e5ff;
+.setting-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #8FD3FF;
 }
 
-@keyframes pulse {
-
-    0% {
-        transform: scale(1);
-        opacity: 0.7;
-    }
-
-    50% {
-        transform: scale(1.08);
-        opacity: 1;
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 0.7;
-    }
-}
-
-/* STATUS */
-
-.status {
-    margin-top: 35px;
+.setting-value {
+    margin-left: auto;
 
     font-size: 12px;
-    letter-spacing: 3px;
+    font-weight: 700;
+
+    color: #8FD3FF;
 }
 
-/* CONVERSATION */
 
-.conversation {
+/* Personality */
+
+.personality-card {
+    min-height: 65px;
+}
+
+.personality-card > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.setting-description {
+    margin-top: 5px;
+
+    font-size: 10px;
+    color: #8FA3BD;
+}
+
+
+/* Settings buttons */
+
+.clear-memory,
+.about-jarvis {
+    justify-content: flex-start;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.clear-memory:active,
+.about-jarvis:active {
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   BOTTOM NAVIGATION
+   ========================================== */
+
+.bottom-nav {
+    position: fixed;
+
+    left: 50%;
+    bottom: 0;
+
+    transform: translateX(-50%);
+
     width: 100%;
+    max-width: 430px;
 
-    margin-top: 30px;
-    padding: 20px;
+    height: 72px;
 
-    border: 1px solid #12343b;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 
-    background: rgba(0, 229, 255, 0.03);
+    padding: 0 10px;
 
-    text-align: center;
+    background: rgba(8, 11, 18, 0.96);
+
+    border-top: 1px solid #1C2A3A;
+
+    z-index: 100;
 }
 
-#response {
-    color: #d8faff;
 
-    font-size: 15px;
-    line-height: 1.6;
-}
+/* Navigation buttons */
 
-/* TALK BUTTON */
+.nav-button {
+    flex: 1;
 
-#talkButton {
-    margin-top: 30px;
+    height: 45px;
 
-    padding: 15px 25px;
-
-    border: 1px solid #00e5ff;
+    border: none;
+    outline: none;
 
     background: transparent;
 
-    color: #00e5ff;
+    color: #3C526A;
 
-    font-size: 13px;
-    letter-spacing: 2px;
+    font-family: inherit;
 
-    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
-#talkButton:active {
-    background: #00e5ff;
-    color: #05070a;
+
+/* Active page */
+
+.nav-button.active {
+    color: #FFFFFF;
 }
+
+
+/* Press effect */
+
+.nav-button:active {
+    transform: scale(0.94);
+}
+
+
+/* ==========================================
+   RESPONSIVE MOBILE ADJUSTMENTS
+   ========================================== */
+
+@media (max-width: 360px) {
+
+    .screen {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .orb {
+        width: 145px;
+        height: 145px;
+        margin-top: 45px;
+    }
+
+    .page-header {
+        margin-bottom: 25px;
+    }
+
+    .tool-card {
+        height: 88px;
+    }
+
+    .nav-button {
+        font-size: 9px;
+    }
+}
+
+
+/* ==========================================
+   ACCESSIBILITY
+   ========================================== */
+
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible {
+    outline: 1px solid #8FD3FF;
+    outline-offset: 2px;
+    }
