@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -12,11 +11,7 @@
 
     <title>JARVIS</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 
@@ -35,38 +30,27 @@
     >
 
         <div class="header">
-
             <h1>JARVIS</h1>
-
-            <p>
-                PERSONAL AI ASSISTANT
-            </p>
-
+            <p>PERSONAL AI ASSISTANT</p>
         </div>
 
 
         <div class="orb">
-
             <div class="orb-core"></div>
-
         </div>
 
 
         <div class="status">
-
             <span id="status">
                 SYSTEM READY
             </span>
-
         </div>
 
 
         <div class="conversation">
-
             <div id="response">
                 Hello. I am JARVIS.
             </div>
-
         </div>
 
 
@@ -88,18 +72,11 @@
     >
 
         <div class="page-header">
-
-            <h1>
-                MEMORY
-            </h1>
-
+            <h1>MEMORY</h1>
         </div>
 
 
         <div class="memory-content">
-
-
-            <!-- BUILT-IN MEMORY -->
 
             <div class="memory-card">
 
@@ -140,16 +117,12 @@
             </div>
 
 
-            <!-- SAVED MEMORIES WILL APPEAR HERE -->
-
-
             <button
                 id="createMemoryButton"
                 class="create-memory"
             >
                 + CREATE MEMORY
             </button>
-
 
         </div>
 
@@ -167,18 +140,17 @@
     >
 
         <div class="page-header">
-
-            <h1>
-                TOOLS
-            </h1>
-
+            <h1>TOOLS</h1>
         </div>
 
 
         <div class="tools-grid">
 
 
-            <button class="tool-card">
+            <button
+                class="tool-card"
+                data-tool="search"
+            >
 
                 <span class="tool-title">
                     SEARCH
@@ -191,7 +163,10 @@
             </button>
 
 
-            <button class="tool-card">
+            <button
+                class="tool-card"
+                data-tool="web"
+            >
 
                 <span class="tool-title">
                     WEB
@@ -204,7 +179,10 @@
             </button>
 
 
-            <button class="tool-card">
+            <button
+                class="tool-card"
+                data-tool="time"
+            >
 
                 <span class="tool-title">
                     TIME
@@ -217,7 +195,10 @@
             </button>
 
 
-            <button class="tool-card">
+            <button
+                class="tool-card"
+                data-tool="remind"
+            >
 
                 <span class="tool-title">
                     REMIND
@@ -230,7 +211,10 @@
             </button>
 
 
-            <button class="tool-card">
+            <button
+                class="tool-card"
+                data-tool="notes"
+            >
 
                 <span class="tool-title">
                     NOTES
@@ -243,7 +227,10 @@
             </button>
 
 
-            <button class="tool-card">
+            <button
+                class="tool-card"
+                data-tool="system"
+            >
 
                 <span class="tool-title">
                     SYSTEM
@@ -255,8 +242,59 @@
 
             </button>
 
+        </div>
+
+
+        <!-- TIME TOOL PANEL -->
+
+        <div
+            id="timeTool"
+            class="tool-panel"
+        >
+
+            <div class="tool-panel-header">
+
+                <h2>TIME</h2>
+
+                <button
+                    id="closeTimeTool"
+                    class="close-tool"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="time-display">
+
+                <div
+                    id="currentTime"
+                    class="current-time"
+                >
+                    --:--:--
+                </div>
+
+
+                <div
+                    id="currentDate"
+                    class="current-date"
+                >
+                    Loading date...
+                </div>
+
+            </div>
+
+
+            <button
+                id="speakTimeButton"
+                class="speak-tool-button"
+            >
+                🔊 ASK JARVIS
+            </button>
 
         </div>
+
 
     </section>
 
@@ -272,11 +310,7 @@
     >
 
         <div class="page-header">
-
-            <h1>
-                SETTINGS
-            </h1>
-
+            <h1>SETTINGS</h1>
         </div>
 
 
@@ -340,7 +374,6 @@
                 ABOUT JARVIS
             </button>
 
-
         </div>
 
     </section>
@@ -388,7 +421,6 @@
 
     </nav>
 
-
 </main>
 
 
@@ -404,7 +436,6 @@
 
     <div class="memory-modal-box">
 
-
         <h2 id="memoryModalTitle">
             NEW MEMORY
         </h2>
@@ -419,23 +450,16 @@
 
         <div class="memory-modal-buttons">
 
-
-            <button
-                id="cancelMemory"
-            >
+            <button id="cancelMemory">
                 CANCEL
             </button>
 
 
-            <button
-                id="saveMemory"
-            >
+            <button id="saveMemory">
                 SAVE MEMORY
             </button>
 
-
         </div>
-
 
     </div>
 
@@ -452,13 +476,8 @@
 ></script>
 
 
-<!-- ==================================
-     JARVIS SCRIPT
-=================================== -->
-
 <script src="script.js"></script>
-
 
 </body>
 
-            </html>
+                    </html>
