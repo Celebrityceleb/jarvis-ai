@@ -151,11 +151,6 @@ if (talkButton) {
                 "JARVIS ACTIVE";
 
 
-            /*
-             * Backend communication remains
-             * available when authentication exists.
-             */
-
             if (!supabaseClient) {
                 return;
             }
@@ -363,9 +358,9 @@ const clearMemoriesButton =
 let editingMemoryIndex = null;
 
 
-// ------------------------------------------
+// ==========================================
 // GET MEMORIES
-// ------------------------------------------
+// ==========================================
 
 function getMemories() {
 
@@ -378,9 +373,9 @@ function getMemories() {
 }
 
 
-// ------------------------------------------
+// ==========================================
 // SAVE MEMORIES
-// ------------------------------------------
+// ==========================================
 
 function saveMemoryArray(memories) {
 
@@ -392,9 +387,9 @@ function saveMemoryArray(memories) {
 }
 
 
-// ------------------------------------------
+// ==========================================
 // CREATE MEMORY
-// ------------------------------------------
+// ==========================================
 
 if (createMemoryButton) {
 
@@ -424,9 +419,9 @@ if (createMemoryButton) {
 }
 
 
-// ------------------------------------------
-// CANCEL
-// ------------------------------------------
+// ==========================================
+// CANCEL MEMORY
+// ==========================================
 
 if (cancelMemory) {
 
@@ -446,9 +441,9 @@ if (cancelMemory) {
 }
 
 
-// ------------------------------------------
-// SAVE / UPDATE
-// ------------------------------------------
+// ==========================================
+// SAVE / UPDATE MEMORY
+// ==========================================
 
 if (saveMemory) {
 
@@ -474,6 +469,7 @@ if (saveMemory) {
                 getMemories();
 
 
+            // EDIT EXISTING MEMORY
             if (
                 editingMemoryIndex !== null
             ) {
@@ -523,6 +519,7 @@ if (saveMemory) {
             }
 
 
+            // CREATE NEW MEMORY
             memories.push({
 
                 text: text,
@@ -565,9 +562,9 @@ if (saveMemory) {
 }
 
 
-// ------------------------------------------
+// ==========================================
 // LOAD MEMORIES
-// ------------------------------------------
+// ==========================================
 
 function loadMemories() {
 
@@ -668,13 +665,14 @@ function loadMemories() {
 }
 
 
-// ------------------------------------------
-// EDIT / DELETE
-// ------------------------------------------
+// ==========================================
+// EDIT / DELETE MEMORY
+// ==========================================
 
 function attachMemoryActions() {
 
 
+    // EDIT
     document
         .querySelectorAll(
             ".memory-edit"
@@ -731,6 +729,7 @@ function attachMemoryActions() {
         );
 
 
+    // DELETE
     document
         .querySelectorAll(
             ".memory-delete"
@@ -801,9 +800,9 @@ function attachMemoryActions() {
 }
 
 
-// ------------------------------------------
+// ==========================================
 // CLEAR ALL MEMORIES
-// ------------------------------------------
+// ==========================================
 
 if (clearMemoriesButton) {
 
@@ -862,9 +861,9 @@ if (clearMemoriesButton) {
 }
 
 
-// ------------------------------------------
-// ESCAPE TEXT
-// ------------------------------------------
+// ==========================================
+// ESCAPE MEMORY TEXT
+// ==========================================
 
 function escapeMemoryText(text) {
 
@@ -923,9 +922,9 @@ const toolCards =
     );
 
 
-// ------------------------------------------
+// ==========================================
 // TOOL CARD CLICK
-// ------------------------------------------
+// ==========================================
 
 toolCards.forEach(
     card => {
@@ -940,6 +939,7 @@ toolCards.forEach(
                     );
 
 
+                // TIME TOOL
                 if (tool === "time") {
 
                     openTimeTool();
@@ -948,11 +948,7 @@ toolCards.forEach(
                 }
 
 
-                /*
-                 * Other tools will be implemented
-                 * later.
-                 */
-
+                // OTHER TOOLS
                 response.textContent =
                     `${tool.toUpperCase()} tool is coming online.`;
 
@@ -972,9 +968,9 @@ toolCards.forEach(
 );
 
 
-// ------------------------------------------
-// OPEN TIME
-// ------------------------------------------
+// ==========================================
+// OPEN TIME TOOL
+// ==========================================
 
 function openTimeTool() {
 
@@ -993,9 +989,9 @@ function openTimeTool() {
 }
 
 
-// ------------------------------------------
-// CLOSE TIME
-// ------------------------------------------
+// ==========================================
+// CLOSE TIME TOOL
+// ==========================================
 
 if (closeTimeTool) {
 
@@ -1013,9 +1009,9 @@ if (closeTimeTool) {
 }
 
 
-// ------------------------------------------
-// UPDATE TIME
-// ------------------------------------------
+// ==========================================
+// UPDATE DISPLAY TIME
+// ==========================================
 
 function updateTime() {
 
@@ -1029,15 +1025,16 @@ function updateTime() {
 
 
     currentTime.textContent =
-    now.toLocaleTimeString(
-        "en-NG",
-        {
-            hour: "numeric",
-            minute: "2-digit",
-            second: "2-digit",
-            hour12: true
-        }
-    );
+        now.toLocaleTimeString(
+            "en-NG",
+            {
+                hour: "numeric",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true
+            }
+        );
+
 
     currentDate.textContent =
         now.toLocaleDateString(
@@ -1053,9 +1050,9 @@ function updateTime() {
 }
 
 
-// ------------------------------------------
+// ==========================================
 // SPEAK TIME
-// ------------------------------------------
+// ==========================================
 
 if (speakTimeButton) {
 
@@ -1067,45 +1064,47 @@ if (speakTimeButton) {
                 new Date();
 
 
-            const time =
-    now.toLocaleTimeString(
-        "en-NG",
-        {
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true
-        }
-    );
+            // ----------------------------------
+            // MANUAL 12-HOUR CONVERSION
+            // ----------------------------------
+
+            let hour =
+                now.getHours();
+
+
+            const minute =
+                now.getMinutes();
+
+
+            const period =
+                hour >= 12
+                    ? "PM"
+                    : "AM";
+
+
+            // Convert 24-hour hour to 12-hour hour
+            hour =
+                hour % 12;
+
+
+            // Midnight and noon handling
+            if (hour === 0) {
+
+                hour = 12;
+
+            }
+
+
+            const minuteText =
+                minute
+                    .toString()
+                    .padStart(
+                        2,
+                        "0"
+                    );
 
 
             const date =
                 now.toLocaleDateString(
                     "en-NG",
-                    {
-                        weekday: "long",
-                        month: "long",
-                        day: "numeric"
-                    }
-                );
-
-
-            const message =
-                `The current time is ${time}. Today is ${date}.`;
-
-
-            response.textContent =
-                message;
-
-
-            status.textContent =
-                "JARVIS ACTIVE";
-
-
-            jarvisSpeak(
-                message
-            );
-
-        }
-    );
-
-}
+    
