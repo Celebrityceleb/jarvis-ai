@@ -13,32 +13,242 @@
 
     <main class="jarvis">
 
-        <div class="header">
-            <h1>JARVIS</h1>
-            <p>PERSONAL AI ASSISTANT</p>
-        </div>
+        <!-- ==================================
+             HOME SCREEN
+        =================================== -->
 
-        <div class="orb">
-            <div class="orb-core"></div>
-        </div>
+        <section id="homeScreen" class="screen active-screen">
 
-        <div class="status">
-            <span id="status">SYSTEM READY</span>
-        </div>
-
-        <div class="conversation">
-            <div id="response">
-                Hello. I am JARVIS.
+            <div class="header">
+                <h1>JARVIS</h1>
+                <p>PERSONAL AI ASSISTANT</p>
             </div>
-        </div>
 
-        <button id="talkButton">
-            🎙️ TALK TO JARVIS
-        </button>
+            <div class="orb">
+                <div class="orb-core"></div>
+            </div>
+
+            <div class="status">
+                <span id="status">SYSTEM READY</span>
+            </div>
+
+            <div class="conversation">
+                <div id="response">
+                    Hello. I am JARVIS.
+                </div>
+            </div>
+
+            <button id="talkButton">
+                🎙️ TALK TO JARVIS
+            </button>
+
+        </section>
+
+
+        <!-- ==================================
+             MEMORY SCREEN
+        =================================== -->
+
+        <section id="memoryScreen" class="screen">
+
+            <div class="page-header">
+                <h1>MEMORY</h1>
+            </div>
+
+            <div class="memory-content">
+
+                <div class="memory-card">
+                    <div class="memory-title">TODAY</div>
+                    <div class="memory-text">
+                        JARVIS was brought back online.
+                    </div>
+                </div>
+
+                <div class="memory-card">
+                    <div class="memory-title">PROJECT</div>
+                    <div class="memory-text">
+                        Building the JARVIS AI system.
+                    </div>
+                </div>
+
+                <div class="memory-card">
+                    <div class="memory-title">SYSTEM</div>
+                    <div class="memory-text">
+                        Microphone and voice response are operational.
+                    </div>
+                </div>
+
+                <button class="create-memory">
+                    + CREATE MEMORY
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================
+             TOOLS SCREEN
+        =================================== -->
+
+        <section id="toolsScreen" class="screen">
+
+            <div class="page-header">
+                <h1>TOOLS</h1>
+            </div>
+
+            <div class="tools-grid">
+
+                <button class="tool-card">
+                    <span class="tool-title">SEARCH</span>
+                    <span class="tool-description">
+                        Find anything
+                    </span>
+                </button>
+
+                <button class="tool-card">
+                    <span class="tool-title">WEB</span>
+                    <span class="tool-description">
+                        Browse the web
+                    </span>
+                </button>
+
+                <button class="tool-card">
+                    <span class="tool-title">TIME</span>
+                    <span class="tool-description">
+                        Check the time
+                    </span>
+                </button>
+
+                <button class="tool-card">
+                    <span class="tool-title">REMIND</span>
+                    <span class="tool-description">
+                        Set reminders
+                    </span>
+                </button>
+
+                <button class="tool-card">
+                    <span class="tool-title">NOTES</span>
+                    <span class="tool-description">
+                        Save a note
+                    </span>
+                </button>
+
+                <button class="tool-card">
+                    <span class="tool-title">SYSTEM</span>
+                    <span class="tool-description">
+                        System controls
+                    </span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================
+             SETTINGS SCREEN
+        =================================== -->
+
+        <section id="settingsScreen" class="screen">
+
+            <div class="page-header">
+                <h1>SETTINGS</h1>
+            </div>
+
+            <div class="settings-content">
+
+                <div class="setting-card">
+                    <span class="setting-title">
+                        VOICE RESPONSE
+                    </span>
+
+                    <span class="setting-value">
+                        ON
+                    </span>
+                </div>
+
+
+                <div class="setting-card">
+                    <span class="setting-title">
+                        WAKE WORD
+                    </span>
+
+                    <span class="setting-value">
+                        ON
+                    </span>
+                </div>
+
+
+                <div class="setting-card personality-card">
+
+                    <div>
+                        <span class="setting-title">
+                            JARVIS PERSONALITY
+                        </span>
+
+                        <span class="setting-description">
+                            Calm • Intelligent
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <button class="setting-card clear-memory">
+                    CLEAR MEMORIES
+                </button>
+
+
+                <button class="setting-card about-jarvis">
+                    ABOUT JARVIS
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================
+             BOTTOM NAVIGATION
+        =================================== -->
+
+        <nav class="bottom-nav">
+
+            <button
+                class="nav-button active"
+                data-screen="homeScreen">
+                HOME
+            </button>
+
+            <button
+                class="nav-button"
+                data-screen="memoryScreen">
+                MEMORY
+            </button>
+
+            <button
+                class="nav-button"
+                data-screen="toolsScreen">
+                TOOLS
+            </button>
+
+            <button
+                class="nav-button"
+                data-screen="settingsScreen">
+                SETTINGS
+            </button>
+
+        </nav>
 
     </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- JARVIS SCRIPT -->
     <script src="script.js"></script>
 
 </body>
-</html>
+    </html>
