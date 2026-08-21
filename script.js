@@ -1068,13 +1068,14 @@ if (speakTimeButton) {
 
 
             const time =
-                now.toLocaleTimeString(
-                    "en-NG",
-                    {
-                        hour: "numeric",
-                        minute: "2-digit"
-                    }
-                );
+    now.toLocaleTimeString(
+        "en-NG",
+        {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+        }
+    );
 
 
             const date =
