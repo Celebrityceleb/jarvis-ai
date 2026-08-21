@@ -25,7 +25,7 @@ body {
 
 
 /* ==========================================
-   MAIN JARVIS FRAME
+   MAIN FRAME
    ========================================== */
 
 .jarvis {
@@ -44,7 +44,7 @@ body {
 
 
 /* ==========================================
-   SCREEN SYSTEM
+   SCREENS
    ========================================== */
 
 .screen {
@@ -68,7 +68,6 @@ body {
 
 .header {
     text-align: center;
-
     padding-top: 12px;
 }
 
@@ -96,7 +95,7 @@ body {
 
 
 /* ==========================================
-   OTHER PAGE HEADERS
+   PAGE HEADERS
    ========================================== */
 
 .page-header {
@@ -120,7 +119,7 @@ body {
 
 
 /* ==========================================
-   JARVIS ORB
+   ORB
    ========================================== */
 
 .orb {
@@ -167,8 +166,6 @@ body {
     position: absolute;
 
     border-radius: 50%;
-
-    pointer-events: none;
 }
 
 
@@ -245,7 +242,6 @@ body {
 
 .status {
     text-align: center;
-
     margin-bottom: 20px;
 }
 
@@ -305,7 +301,6 @@ body {
     display: block;
 
     width: 100%;
-
     height: 52px;
 
     border: 1px solid #8FD3FF;
@@ -323,24 +318,6 @@ body {
     letter-spacing: 1px;
 
     cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-
-#talkButton:hover {
-    background: #122238;
-
-    box-shadow:
-        0 0 15px rgba(
-            143,
-            211,
-            255,
-            0.2
-        );
 }
 
 
@@ -383,8 +360,6 @@ body {
     font-weight: 700;
 
     color: #8FD3FF;
-
-    letter-spacing: 0.5px;
 }
 
 
@@ -398,6 +373,78 @@ body {
     color: #8FA3BD;
 }
 
+
+/* ==========================================
+   SAVED MEMORY DATE
+   ========================================== */
+
+.memory-date {
+    margin-top: 8px;
+
+    font-size: 9px;
+
+    color: #4E657D;
+}
+
+
+/* ==========================================
+   MEMORY ACTIONS
+   ========================================== */
+
+.memory-actions {
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 12px;
+}
+
+
+.memory-actions button {
+    flex: 1;
+
+    height: 32px;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+}
+
+
+.memory-edit {
+    border: 1px solid #8FD3FF;
+
+    background: #122238;
+
+    color: #8FD3FF;
+}
+
+
+.memory-delete {
+    border: 1px solid #4E657D;
+
+    background: #080B12;
+
+    color: #8FA3BD;
+}
+
+
+.memory-actions button:active {
+    transform: scale(0.97);
+}
+
+
+/* ==========================================
+   CREATE MEMORY
+   ========================================== */
 
 .create-memory {
     width: 100%;
@@ -417,8 +464,6 @@ body {
     font-size: 13px;
 
     font-weight: 700;
-
-    letter-spacing: 0.5px;
 
     cursor: pointer;
 }
@@ -466,20 +511,11 @@ body {
     border-radius: 12px;
 
     cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
 }
 
 
 .tool-card:active {
     transform: scale(0.97);
-}
-
-
-.tool-card:hover {
-    background: #122238;
 }
 
 
@@ -649,8 +685,6 @@ body {
 
     border: none;
 
-    outline: none;
-
     background: transparent;
 
     color: #3C526A;
@@ -664,10 +698,6 @@ body {
     letter-spacing: 1px;
 
     cursor: pointer;
-
-    transition:
-        color 0.2s ease,
-        transform 0.2s ease;
 }
 
 
@@ -676,13 +706,8 @@ body {
 }
 
 
-.nav-button:active {
-    transform: scale(0.94);
-}
-
-
 /* ==========================================
-   CREATE MEMORY MODAL
+   MEMORY MODAL
    ========================================== */
 
 .memory-modal {
@@ -828,7 +853,7 @@ body {
 
 
 /* ==========================================
-   RESPONSIVE MOBILE
+   MOBILE
    ========================================== */
 
 @media (max-width: 360px) {
@@ -844,13 +869,6 @@ body {
         width: 145px;
 
         height: 145px;
-
-        margin-top: 45px;
-    }
-
-
-    .page-header {
-        margin-bottom: 25px;
     }
 
 
@@ -867,7 +885,7 @@ body {
 
 
 /* ==========================================
-   ACCESSIBILITY
+   TOUCH
    ========================================== */
 
 button {
@@ -879,4 +897,4 @@ button:focus-visible {
     outline: 1px solid #8FD3FF;
 
     outline-offset: 2px;
-           }
+   }
