@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -11,7 +12,11 @@
 
     <title>JARVIS</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
 
 
@@ -20,41 +25,57 @@
 <main class="jarvis">
 
 
-    <!-- ==================================
+    <!-- ======================================
          HOME
-    =================================== -->
+    ======================================= -->
 
     <section
         id="homeScreen"
         class="screen active-screen"
     >
 
-        <div class="header">
+        <header class="header">
+
             <h1>JARVIS</h1>
+
             <p>PERSONAL AI ASSISTANT</p>
-        </div>
+
+        </header>
 
 
         <div class="orb">
+
+            <div class="orb-ring ring-one"></div>
+
+            <div class="orb-ring ring-two"></div>
+
             <div class="orb-core"></div>
+
         </div>
 
 
         <div class="status">
+
             <span id="status">
                 SYSTEM READY
             </span>
+
         </div>
 
 
         <div class="conversation">
+
             <div id="response">
                 Hello. I am JARVIS.
             </div>
+
         </div>
 
 
-        <button id="talkButton">
+        <button
+            id="talkButton"
+            class="primary-button"
+        >
             🎙️ TALK TO JARVIS
         </button>
 
@@ -62,23 +83,27 @@
 
 
 
-    <!-- ==================================
+    <!-- ======================================
          MEMORY
-    =================================== -->
+    ======================================= -->
 
     <section
         id="memoryScreen"
         class="screen"
     >
 
-        <div class="page-header">
+        <header class="page-header">
+
             <h1>MEMORY</h1>
-        </div>
+
+            <p>WHAT JARVIS REMEMBERS</p>
+
+        </header>
 
 
         <div class="memory-content">
 
-            <div class="memory-card">
+            <div class="memory-card default-memory">
 
                 <div class="memory-title">
                     TODAY
@@ -91,7 +116,7 @@
             </div>
 
 
-            <div class="memory-card">
+            <div class="memory-card default-memory">
 
                 <div class="memory-title">
                     PROJECT
@@ -99,19 +124,6 @@
 
                 <div class="memory-text">
                     Building the JARVIS AI system.
-                </div>
-
-            </div>
-
-
-            <div class="memory-card">
-
-                <div class="memory-title">
-                    SYSTEM
-                </div>
-
-                <div class="memory-text">
-                    Microphone and voice response are operational.
                 </div>
 
             </div>
@@ -130,18 +142,22 @@
 
 
 
-    <!-- ==================================
+    <!-- ======================================
          TOOLS
-    =================================== -->
+    ======================================= -->
 
     <section
         id="toolsScreen"
         class="screen"
     >
 
-        <div class="page-header">
+        <header class="page-header">
+
             <h1>TOOLS</h1>
-        </div>
+
+            <p>JARVIS SYSTEM TOOLS</p>
+
+        </header>
 
 
         <div class="tools-grid">
@@ -151,6 +167,10 @@
                 class="tool-card"
                 data-tool="search"
             >
+
+                <span class="tool-icon">
+                    🔎
+                </span>
 
                 <span class="tool-title">
                     SEARCH
@@ -163,10 +183,15 @@
             </button>
 
 
+
             <button
                 class="tool-card"
                 data-tool="web"
             >
+
+                <span class="tool-icon">
+                    🌐
+                </span>
 
                 <span class="tool-title">
                     WEB
@@ -179,10 +204,15 @@
             </button>
 
 
+
             <button
                 class="tool-card"
                 data-tool="time"
             >
+
+                <span class="tool-icon">
+                    🕐
+                </span>
 
                 <span class="tool-title">
                     TIME
@@ -195,10 +225,15 @@
             </button>
 
 
+
             <button
                 class="tool-card"
                 data-tool="remind"
             >
+
+                <span class="tool-icon">
+                    ⏰
+                </span>
 
                 <span class="tool-title">
                     REMIND
@@ -211,10 +246,15 @@
             </button>
 
 
+
             <button
                 class="tool-card"
                 data-tool="notes"
             >
+
+                <span class="tool-icon">
+                    📝
+                </span>
 
                 <span class="tool-title">
                     NOTES
@@ -227,10 +267,15 @@
             </button>
 
 
+
             <button
                 class="tool-card"
                 data-tool="system"
             >
+
+                <span class="tool-icon">
+                    ⚙️
+                </span>
 
                 <span class="tool-title">
                     SYSTEM
@@ -242,76 +287,29 @@
 
             </button>
 
-        </div>
-
-
-        <!-- TIME TOOL PANEL -->
-
-        <div
-            id="timeTool"
-            class="tool-panel"
-        >
-
-            <div class="tool-panel-header">
-
-                <h2>TIME</h2>
-
-                <button
-                    id="closeTimeTool"
-                    class="close-tool"
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-            <div class="time-display">
-
-                <div
-                    id="currentTime"
-                    class="current-time"
-                >
-                    --:--:--
-                </div>
-
-
-                <div
-                    id="currentDate"
-                    class="current-date"
-                >
-                    Loading date...
-                </div>
-
-            </div>
-
-
-            <button
-                id="speakTimeButton"
-                class="speak-tool-button"
-            >
-                🔊 ASK JARVIS
-            </button>
 
         </div>
-
 
     </section>
 
 
 
-    <!-- ==================================
+    <!-- ======================================
          SETTINGS
-    =================================== -->
+    ======================================= -->
 
     <section
         id="settingsScreen"
         class="screen"
     >
 
-        <div class="page-header">
+        <header class="page-header">
+
             <h1>SETTINGS</h1>
-        </div>
+
+            <p>JARVIS CONFIGURATION</p>
+
+        </header>
 
 
         <div class="settings-content">
@@ -319,22 +317,39 @@
 
             <div class="setting-card">
 
-                <span class="setting-title">
-                    VOICE RESPONSE
-                </span>
+                <div>
+
+                    <span class="setting-title">
+                        VOICE RESPONSE
+                    </span>
+
+                    <span class="setting-description">
+                        JARVIS speaks responses
+                    </span>
+
+                </div>
 
                 <span class="setting-value">
                     ON
                 </span>
 
             </div>
+
 
 
             <div class="setting-card">
 
-                <span class="setting-title">
-                    WAKE WORD
-                </span>
+                <div>
+
+                    <span class="setting-title">
+                        WAKE WORD
+                    </span>
+
+                    <span class="setting-description">
+                        Voice activation
+                    </span>
+
+                </div>
 
                 <span class="setting-value">
                     ON
@@ -343,7 +358,8 @@
             </div>
 
 
-            <div class="setting-card personality-card">
+
+            <div class="setting-card">
 
                 <div>
 
@@ -352,7 +368,7 @@
                     </span>
 
                     <span class="setting-description">
-                        Calm • Intelligent
+                        Calm • Intelligent • Confident
                     </span>
 
                 </div>
@@ -360,19 +376,23 @@
             </div>
 
 
+
             <button
                 id="clearMemoriesButton"
-                class="setting-card clear-memory"
+                class="setting-card danger-button"
             >
                 CLEAR MEMORIES
             </button>
 
 
+
             <button
-                class="setting-card about-jarvis"
+                id="aboutJarvisButton"
+                class="setting-card"
             >
                 ABOUT JARVIS
             </button>
+
 
         </div>
 
@@ -380,9 +400,112 @@
 
 
 
-    <!-- ==================================
+    <!-- ======================================
+         TIME TOOL
+    ======================================= -->
+
+    <div
+        id="timeTool"
+        class="tool-overlay"
+    >
+
+        <div class="tool-window">
+
+            <button
+                id="closeTimeTool"
+                class="close-button"
+            >
+                ×
+            </button>
+
+
+            <div class="tool-window-label">
+                JARVIS TIME
+            </div>
+
+
+            <div
+                id="currentTime"
+                class="big-time"
+            >
+                12:00 PM
+            </div>
+
+
+            <div
+                id="currentDate"
+                class="big-date"
+            >
+                Loading date...
+            </div>
+
+
+            <button
+                id="speakTimeButton"
+                class="primary-button"
+            >
+                🔊 ASK JARVIS
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================
+         MEMORY MODAL
+    ======================================= -->
+
+    <div
+        id="memoryModal"
+        class="modal"
+    >
+
+        <div class="modal-box">
+
+            <div
+                id="memoryModalTitle"
+                class="modal-title"
+            >
+                NEW MEMORY
+            </div>
+
+
+            <textarea
+                id="memoryInput"
+                placeholder="What should JARVIS remember?"
+            ></textarea>
+
+
+            <div class="modal-actions">
+
+                <button
+                    id="cancelMemory"
+                    class="secondary-button"
+                >
+                    CANCEL
+                </button>
+
+
+                <button
+                    id="saveMemory"
+                    class="primary-button"
+                >
+                    SAVE MEMORY
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================
          BOTTOM NAVIGATION
-    =================================== -->
+    ======================================= -->
 
     <nav class="bottom-nav">
 
@@ -391,93 +514,62 @@
             class="nav-button active"
             data-screen="homeScreen"
         >
+            <span>⌂</span>
             HOME
         </button>
+
 
 
         <button
             class="nav-button"
             data-screen="memoryScreen"
         >
+            <span>◈</span>
             MEMORY
         </button>
+
 
 
         <button
             class="nav-button"
             data-screen="toolsScreen"
         >
+            <span>◇</span>
             TOOLS
         </button>
+
 
 
         <button
             class="nav-button"
             data-screen="settingsScreen"
         >
+            <span>⚙</span>
             SETTINGS
         </button>
 
 
     </nav>
 
+
 </main>
 
 
 
-<!-- ==================================
-     MEMORY MODAL
-=================================== -->
-
-<div
-    id="memoryModal"
-    class="memory-modal"
->
-
-    <div class="memory-modal-box">
-
-        <h2 id="memoryModalTitle">
-            NEW MEMORY
-        </h2>
-
-
-        <textarea
-            id="memoryInput"
-            placeholder="What should JARVIS remember?"
-            maxlength="500"
-        ></textarea>
-
-
-        <div class="memory-modal-buttons">
-
-            <button id="cancelMemory">
-                CANCEL
-            </button>
-
-
-            <button id="saveMemory">
-                SAVE MEMORY
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-<!-- ==================================
+<!-- ======================================
      SUPABASE
-=================================== -->
+======================================= -->
 
-<script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
+<!-- ======================================
+     JARVIS SCRIPT
+======================================= -->
 
 <script src="script.js"></script>
 
+
 </body>
 
-                    </html>
+                </html>
