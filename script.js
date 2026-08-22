@@ -1183,3 +1183,125 @@ if (clearMemoriesButton) {
 // ==========================================
 // END PART 2
 // ==========================================
+
+// ==========================================
+// JARVIS — RECOVERY SCRIPT
+// PART 3 / 3
+// ==========================================
+
+
+// ==========================================
+// INITIALIZATION
+// ==========================================
+
+window.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        console.log(
+            "JARVIS: DOM ready."
+        );
+
+        loadMemories();
+
+        updateTime();
+
+        setInterval(
+            updateTime,
+            1000
+        );
+
+    }
+);
+
+
+// ==========================================
+// CLOSE MEMORY MODAL WHEN BACKDROP IS TAPPED
+// ==========================================
+
+if (memoryModal) {
+
+    memoryModal.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                memoryModal
+            ) {
+
+                closeMemoryModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// INITIAL MEMORY LOAD
+// ==========================================
+
+loadMemories();
+
+
+// ==========================================
+// JARVIS READY STATE
+// ==========================================
+
+setStatus(
+    "JARVIS ONLINE"
+);
+
+setResponse(
+    "System ready. Tap TALK TO JARVIS."
+);
+
+
+// ==========================================
+// SAFETY CHECK
+// ==========================================
+
+console.log(
+    "=========================================="
+);
+
+console.log(
+    "JARVIS RECOVERY SCRIPT LOADED."
+);
+
+console.log(
+    "Talk button:",
+    talkButton
+);
+
+console.log(
+    "Navigation buttons:",
+    navigationButtons.length
+);
+
+console.log(
+    "Screens:",
+    screens.length
+);
+
+console.log(
+    "Tool cards:",
+    toolCards.length
+);
+
+console.log(
+    "Memory button:",
+    createMemoryButton
+);
+
+console.log(
+    "=========================================="
+);
+
+
+// ==========================================
+// END PART 3
+// ==========================================
