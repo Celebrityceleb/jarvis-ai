@@ -1,5 +1,6 @@
 // ==========================================
-// JARVIS — MAIN SCRIPT
+// JARVIS — STABLE MAIN SCRIPT
+// CHECKPOINT 1
 // ==========================================
 
 
@@ -13,20 +14,36 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
     "sb_publishable_Pf0mP9qTvCdWCUjZTt-xrA_G4gch1w8";
 
-
 let supabaseClient = null;
 
 
-if (window.supabase) {
+try {
 
-    supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY
+    if (window.supabase) {
+
+        supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+        console.log(
+            "JARVIS: Supabase connected."
         );
 
-    console.log(
-        "JARVIS: Supabase connected."
+    } else {
+
+        console.warn(
+            "JARVIS: Supabase library not available."
+        );
+
+    }
+
+} catch (error) {
+
+    console.error(
+        "JARVIS: Supabase initialization error:",
+        error
     );
 
 }
@@ -37,19 +54,35 @@ if (window.supabase) {
 // ==========================================
 
 const talkButton =
-    document.getElementById(
-        "talkButton"
-    );
+    document.getElementById("talkButton");
 
 const response =
-    document.getElementById(
-        "response"
-    );
+    document.getElementById("response");
 
 const status =
-    document.getElementById(
-        "status"
-    );
+    document.getElementById("status");
+
+
+// ==========================================
+// SAFE RESPONSE UPDATE
+// ==========================================
+
+function setResponse(text) {
+
+    if (response) {
+        response.textContent = text;
+    }
+
+}
+
+
+function setStatus(text) {
+
+    if (status) {
+        status.textContent = text;
+    }
+
+}
 
 
 // ==========================================
@@ -58,12 +91,15 @@ const status =
 
 function jarvisSpeak(text) {
 
-    if (
-        !("speechSynthesis" in window)
-    ) {
+    if (!text) {
+        return;
+    }
 
-        console.error(
-            "Speech synthesis is not supported."
+
+    if (!("speechSynthesis" in window)) {
+
+        console.warn(
+            "JARVIS: Speech synthesis unavailable."
         );
 
         return;
@@ -71,37 +107,42 @@ function jarvisSpeak(text) {
     }
 
 
-    window.speechSynthesis.cancel();
+    try {
+
+        window.speechSynthesis.cancel();
 
 
-    const speech =
-        new SpeechSynthesisUtterance(
-            text
+        const speech =
+            new SpeechSynthesisUtterance(
+                text
+            );
+
+
+        speech.lang =
+            "en-US";
+
+        speech.rate =
+            0.95;
+
+        speech.pitch =
+            0.9;
+
+        speech.volume =
+            1;
+
+
+        window.speechSynthesis.speak(
+            speech
         );
 
+    } catch (error) {
 
-    speech.lang =
-        "en-US";
+        console.error(
+            "JARVIS VOICE ERROR:",
+            error
+        );
 
-    speech.rate =
-        0.95;
-
-    speech.pitch =
-        0.9;
-
-    speech.volume =
-        1;
-
-
-    window.speechSynthesis.speak(
-        speech
-    );
-
-
-    console.log(
-        "JARVIS SPEAKING:",
-        text
-    );
+    }
 
 }
 
@@ -111,11 +152,11 @@ function jarvisSpeak(text) {
 // ==========================================
 
 window.addEventListener(
-    "load",
+    "DOMContentLoaded",
     () => {
 
         console.log(
-            "JARVIS SYSTEM ONLINE"
+            "JARVIS: DOM ready."
         );
 
 
@@ -143,7 +184,6 @@ const navigationButtons =
         ".nav-button"
     );
 
-
 const screens =
     document.querySelectorAll(
         ".screen"
@@ -155,22 +195,31 @@ navigationButtons.forEach(
 
         button.addEventListener(
             "click",
-            event => {
+            function(event) {
 
                 event.preventDefault();
 
 
-                const targetScreen =
-                    button.getAttribute(
+                const target =
+                    this.getAttribute(
                         "data-screen"
                     );
 
 
                 console.log(
-                    "Navigation:",
-                    targetScreen
+                    "JARVIS NAVIGATION:",
+                    target
                 );
 
+
+                if (!target) {
+                    return;
+                }
+
+
+                // ------------------------------
+                // HIDE ALL SCREENS
+                // ------------------------------
 
                 screens.forEach(
                     screen => {
@@ -183,17 +232,21 @@ navigationButtons.forEach(
                 );
 
 
+                // ------------------------------
+                // SHOW TARGET SCREEN
+                // ------------------------------
+
                 const selectedScreen =
                     document.getElementById(
-                        targetScreen
+                        target
                     );
 
 
                 if (!selectedScreen) {
 
                     console.error(
-                        "Screen not found:",
-                        targetScreen
+                        "JARVIS: Screen not found:",
+                        target
                     );
 
                     return;
@@ -206,6 +259,10 @@ navigationButtons.forEach(
                 );
 
 
+                // ------------------------------
+                // UPDATE NAVIGATION
+                // ------------------------------
+
                 navigationButtons.forEach(
                     nav => {
 
@@ -217,31 +274,20 @@ navigationButtons.forEach(
                 );
 
 
-                button.classList.add(
+                this.classList.add(
                     "active"
                 );
 
 
-                // Close time panel when
-                // leaving the tools page.
+                // ------------------------------
+                // UPDATE TIME WHEN TOOLS OPENS
+                // ------------------------------
 
                 if (
-                    targetScreen !==
-                    "toolsScreen"
+                    target === "toolsScreen"
                 ) {
 
-                    const timePanel =
-                        document.getElementById(
-                            "timePanel"
-                        );
-
-                    if (timePanel) {
-
-                        timePanel.classList.remove(
-                            "show"
-                        );
-
-                    }
+                    updateTime();
 
                 }
 
@@ -263,7 +309,7 @@ if (talkButton) {
         async () => {
 
             console.log(
-                "JARVIS BUTTON CLICKED"
+                "JARVIS: Talk button pressed."
             );
 
 
@@ -271,33 +317,36 @@ if (talkButton) {
             // IMMEDIATE RESPONSE
             // ----------------------------------
 
-            status.textContent =
-                "JARVIS LISTENING...";
+            setStatus(
+                "JARVIS ACTIVE"
+            );
 
 
             const greeting =
                 "Hello James. I am JARVIS.";
 
 
-            response.textContent =
-                greeting;
+            setResponse(
+                greeting
+            );
 
 
             // Speak immediately.
+            // Backend is deliberately NOT waited for.
             jarvisSpeak(
                 greeting
             );
 
 
-            status.textContent =
-                "JARVIS ACTIVE";
-
-
             // ----------------------------------
-            // BACKEND IS SECONDARY
+            // BACKEND WORK HAPPENS AFTERWARD
             // ----------------------------------
 
             if (!supabaseClient) {
+
+                console.log(
+                    "JARVIS: Backend unavailable. Using local response."
+                );
 
                 return;
 
@@ -306,31 +355,29 @@ if (talkButton) {
 
             try {
 
-                const {
-                    data: {
-                        session
-                    }
-                } =
+                const sessionResult =
                     await supabaseClient
                         .auth
                         .getSession();
 
 
+                const session =
+                    sessionResult &&
+                    sessionResult.data
+                        ? sessionResult.data.session
+                        : null;
+
+
                 if (!session) {
 
                     console.log(
-                        "No Supabase session."
+                        "JARVIS: No login session. Local response remains active."
                     );
 
                     return;
 
                 }
 
-
-                /*
-                 * Backend happens AFTER the
-                 * immediate local response.
-                 */
 
                 const backendResponse =
                     await fetch(
@@ -359,14 +406,15 @@ if (talkButton) {
 
                                 })
 
-                        }
+                            }
                     );
 
 
                 if (!backendResponse.ok) {
 
-                    console.error(
-                        "Backend request failed."
+                    console.warn(
+                        "JARVIS backend returned:",
+                        backendResponse.status
                     );
 
                     return;
@@ -378,22 +426,14 @@ if (talkButton) {
                     await backendResponse.json();
 
 
-                console.log(
-                    "Backend response:",
-                    data
-                );
+                if (
+                    data &&
+                    data.reply
+                ) {
 
-
-                /*
-                 * Only replace the local greeting
-                 * if the backend actually gives
-                 * us a reply.
-                 */
-
-                if (data.reply) {
-
-                    response.textContent =
-                        data.reply;
+                    setResponse(
+                        data.reply
+                    );
 
 
                     jarvisSpeak(
@@ -402,18 +442,16 @@ if (talkButton) {
 
                 }
 
-
             } catch (error) {
 
-                /*
-                 * Backend failure must NEVER
-                 * break local JARVIS.
-                 */
-
                 console.error(
-                    "Backend error:",
+                    "JARVIS BACKEND ERROR:",
                     error
                 );
+
+                // IMPORTANT:
+                // Do not replace the working
+                // immediate response with an error.
 
             }
 
@@ -432,36 +470,30 @@ const createMemoryButton =
         "createMemoryButton"
     );
 
-
 const memoryModal =
     document.getElementById(
         "memoryModal"
     );
-
 
 const memoryModalTitle =
     document.getElementById(
         "memoryModalTitle"
     );
 
-
 const memoryInput =
     document.getElementById(
         "memoryInput"
     );
-
 
 const cancelMemory =
     document.getElementById(
         "cancelMemory"
     );
 
-
 const saveMemory =
     document.getElementById(
         "saveMemory"
     );
-
 
 const clearMemoriesButton =
     document.getElementById(
@@ -480,16 +512,31 @@ function getMemories() {
 
     try {
 
-        return JSON.parse(
+        const stored =
             localStorage.getItem(
                 "jarvisMemories"
-            )
-        ) || [];
+            );
+
+
+        if (!stored) {
+            return [];
+        }
+
+
+        const memories =
+            JSON.parse(
+                stored
+            );
+
+
+        return Array.isArray(memories)
+            ? memories
+            : [];
 
     } catch (error) {
 
         console.error(
-            "Memory read error:",
+            "JARVIS MEMORY READ ERROR:",
             error
         );
 
@@ -508,18 +555,33 @@ function saveMemoryArray(
     memories
 ) {
 
-    localStorage.setItem(
-        "jarvisMemories",
-        JSON.stringify(
-            memories
-        )
-    );
+    try {
+
+        localStorage.setItem(
+            "jarvisMemories",
+            JSON.stringify(
+                memories
+            )
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "JARVIS MEMORY SAVE ERROR:",
+            error
+        );
+
+        return false;
+
+    }
 
 }
 
 
 // ==========================================
-// CREATE MEMORY BUTTON
+// OPEN NEW MEMORY
 // ==========================================
 
 if (createMemoryButton) {
@@ -532,24 +594,49 @@ if (createMemoryButton) {
                 null;
 
 
-            memoryModalTitle.textContent =
-                "NEW MEMORY";
+            if (memoryModalTitle) {
+
+                memoryModalTitle.textContent =
+                    "NEW MEMORY";
+
+            }
 
 
-            saveMemory.textContent =
-                "SAVE MEMORY";
+            if (saveMemory) {
+
+                saveMemory.textContent =
+                    "SAVE MEMORY";
+
+            }
 
 
-            memoryInput.value =
-                "";
+            if (memoryInput) {
+
+                memoryInput.value =
+                    "";
+
+            }
 
 
-            memoryModal.classList.add(
-                "show"
-            );
+            if (memoryModal) {
+
+                memoryModal.classList.add(
+                    "show"
+                );
+
+            }
 
 
-            memoryInput.focus();
+            if (memoryInput) {
+
+                setTimeout(
+                    () => {
+                        memoryInput.focus();
+                    },
+                    50
+                );
+
+            }
 
         }
     );
@@ -567,13 +654,7 @@ if (cancelMemory) {
         "click",
         () => {
 
-            memoryModal.classList.remove(
-                "show"
-            );
-
-
-            editingMemoryIndex =
-                null;
+            closeMemoryModal();
 
         }
     );
@@ -582,7 +663,28 @@ if (cancelMemory) {
 
 
 // ==========================================
-// SAVE / EDIT MEMORY
+// CLOSE MEMORY MODAL
+// ==========================================
+
+function closeMemoryModal() {
+
+    if (memoryModal) {
+
+        memoryModal.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    editingMemoryIndex =
+        null;
+
+}
+
+
+// ==========================================
+// SAVE MEMORY
 // ==========================================
 
 if (saveMemory) {
@@ -590,6 +692,11 @@ if (saveMemory) {
     saveMemory.addEventListener(
         "click",
         () => {
+
+            if (!memoryInput) {
+                return;
+            }
+
 
             const text =
                 memoryInput.value.trim();
@@ -615,7 +722,8 @@ if (saveMemory) {
             // ----------------------------------
 
             if (
-                editingMemoryIndex !== null
+                editingMemoryIndex !== null &&
+                memories[editingMemoryIndex]
             ) {
 
                 memories[
@@ -638,24 +746,20 @@ if (saveMemory) {
                 );
 
 
-                memoryModal.classList.remove(
-                    "show"
-                );
-
-
-                editingMemoryIndex =
-                    null;
+                closeMemoryModal();
 
 
                 loadMemories();
 
 
-                response.textContent =
-                    "Memory updated.";
+                setResponse(
+                    "Memory updated."
+                );
 
 
-                status.textContent =
-                    "JARVIS ACTIVE";
+                setStatus(
+                    "JARVIS ACTIVE"
+                );
 
 
                 jarvisSpeak(
@@ -691,20 +795,20 @@ if (saveMemory) {
             );
 
 
-            memoryModal.classList.remove(
-                "show"
-            );
+            closeMemoryModal();
 
 
             loadMemories();
 
 
-            response.textContent =
-                "Memory saved.";
+            setResponse(
+                "Memory saved."
+            );
 
 
-            status.textContent =
-                "JARVIS ACTIVE";
+            setStatus(
+                "JARVIS ACTIVE"
+            );
 
 
             jarvisSpeak(
@@ -740,22 +844,14 @@ function loadMemories() {
         );
 
 
-    /*
-     * Remove ONLY memories created by
-     * JavaScript.
-     *
-     * The original three cards remain.
-     */
-
+    // Remove dynamically generated memories.
     document
         .querySelectorAll(
             ".saved-memory"
         )
         .forEach(
             card => {
-
                 card.remove();
-
             }
         );
 
@@ -787,20 +883,17 @@ function loadMemories() {
                 </div>
 
                 <div class="memory-text">
-                    ${escapeMemoryText(
-                        memory.text
-                    )}
+                    ${escapeMemoryText(memory.text)}
                 </div>
 
                 <div class="memory-date">
-                    ${escapeMemoryText(
-                        memory.date
-                    )}
+                    ${escapeMemoryText(memory.date || "")}
                 </div>
 
                 <div class="memory-actions">
 
                     <button
+                        type="button"
                         class="memory-edit"
                         data-index="${index}"
                     >
@@ -808,6 +901,7 @@ function loadMemories() {
                     </button>
 
                     <button
+                        type="button"
                         class="memory-delete"
                         data-index="${index}"
                     >
@@ -819,10 +913,20 @@ function loadMemories() {
             `;
 
 
-            memoryContent.insertBefore(
-                card,
-                createButton
-            );
+            if (createButton) {
+
+                memoryContent.insertBefore(
+                    card,
+                    createButton
+                );
+
+            } else {
+
+                memoryContent.appendChild(
+                    card
+                );
+
+            }
 
         }
     );
@@ -834,11 +938,10 @@ function loadMemories() {
 
 
 // ==========================================
-// MEMORY EDIT / DELETE
+// MEMORY ACTIONS
 // ==========================================
 
 function attachMemoryActions() {
-
 
     // --------------------------------------
     // EDIT
@@ -865,8 +968,12 @@ function attachMemoryActions() {
                             getMemories();
 
 
-                        if (!memories[index]) {
+                        if (
+                            !memories[index]
+                        ) {
+
                             return;
+
                         }
 
 
@@ -874,24 +981,49 @@ function attachMemoryActions() {
                             index;
 
 
-                        memoryModalTitle.textContent =
-                            "EDIT MEMORY";
+                        if (memoryModalTitle) {
+
+                            memoryModalTitle.textContent =
+                                "EDIT MEMORY";
+
+                        }
 
 
-                        saveMemory.textContent =
-                            "SAVE CHANGES";
+                        if (saveMemory) {
+
+                            saveMemory.textContent =
+                                "SAVE CHANGES";
+
+                        }
 
 
-                        memoryInput.value =
-                            memories[index].text;
+                        if (memoryInput) {
+
+                            memoryInput.value =
+                                memories[index].text;
+
+                        }
 
 
-                        memoryModal.classList.add(
-                            "show"
-                        );
+                        if (memoryModal) {
+
+                            memoryModal.classList.add(
+                                "show"
+                            );
+
+                        }
 
 
-                        memoryInput.focus();
+                        if (memoryInput) {
+
+                            setTimeout(
+                                () => {
+                                    memoryInput.focus();
+                                },
+                                50
+                            );
+
+                        }
 
                     }
                 );
@@ -925,8 +1057,12 @@ function attachMemoryActions() {
                             getMemories();
 
 
-                        if (!memories[index]) {
+                        if (
+                            !memories[index]
+                        ) {
+
                             return;
+
                         }
 
 
@@ -943,166 +1079,4 @@ function attachMemoryActions() {
 
                         memories.splice(
                             index,
-                            1
-                        );
-
-
-                        saveMemoryArray(
-                            memories
-                        );
-
-
-                        loadMemories();
-
-
-                        response.textContent =
-                            "Memory deleted.";
-
-
-                        status.textContent =
-                            "JARVIS ACTIVE";
-
-
-                        jarvisSpeak(
-                            "Memory deleted."
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-}
-
-
-// ==========================================
-// CLEAR ALL MEMORIES
-// ==========================================
-
-if (clearMemoriesButton) {
-
-    clearMemoriesButton.addEventListener(
-        "click",
-        () => {
-
-            const memories =
-                getMemories();
-
-
-            if (
-                memories.length === 0
-            ) {
-
-                response.textContent =
-                    "There are no saved memories.";
-
-
-                jarvisSpeak(
-                    "There are no saved memories to clear."
-                );
-
-                return;
-
-            }
-
-
-            const confirmed =
-                confirm(
-                    "Are you sure you want to delete all saved memories?"
-                );
-
-
-            if (!confirmed) {
-                return;
-            }
-
-
-            localStorage.removeItem(
-                "jarvisMemories"
-            );
-
-
-            loadMemories();
-
-
-            response.textContent =
-                "All memories cleared.";
-
-
-            status.textContent =
-                "JARVIS ACTIVE";
-
-
-            jarvisSpeak(
-                "All saved memories have been cleared."
-            );
-
-        }
-    );
-
-}
-
-
-// ==========================================
-// ESCAPE MEMORY TEXT
-// ==========================================
-
-function escapeMemoryText(text) {
-
-    const div =
-        document.createElement(
-            "div"
-        );
-
-
-    div.textContent =
-        text;
-
-
-    return div.innerHTML;
-
-}
-
-
-// ==========================================
-// TOOLS
-// ==========================================
-
-const toolCards =
-    document.querySelectorAll(
-        ".tool-card"
-    );
-
-
-const timePanel =
-    document.getElementById(
-        "timePanel"
-    );
-
-
-const closeTimeTool =
-    document.getElementById(
-        "closeTimeTool"
-    );
-
-
-const currentTime =
-    document.getElementById(
-        "currentTime"
-    );
-
-
-const currentDate =
-    document.getElementById(
-        "currentDate"
-    );
-
-
-const speakTimeButton =
-    document.getElementById(
-        "speakTimeButton"
-    );
-
-
-// ==========================
+     
