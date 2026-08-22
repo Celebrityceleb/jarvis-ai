@@ -1,1064 +1,872 @@
-/* =========================================
-   JARVIS — MAIN STYLES
-========================================= */
+/* ==========================================
+JARVIS — MAIN STYLES
+========================================== */
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+{
+box-sizing: border-box;
+margin: 0;
+padding: 0;
 }
 
 
 html,
 body {
-    width: 100%;
-    min-height: 100%;
+width: 100%;
+min-height: 100%;
 }
-
 
 body {
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background:
-        #071b33;
-
-    color:
-        #ffffff;
-
-    overflow-x: hidden;
+background: #080B12;
+color: #FFFFFF;
+font-family: Arial, Helvetica, sans-serif;
+overflow-x: hidden;
 }
-
-
-button {
-    font-family: inherit;
-    cursor: pointer;
-    border: none;
-}
-
 
 .jarvis {
-    position: relative;
+position: relative;
 
-    width: 100%;
-    max-width: 480px;
+width: 100%;  
+max-width: 430px;  
+min-height: 100vh;  
 
-    min-height: 100vh;
+margin: 0 auto;  
 
-    margin: 0 auto;
+background: #080B12;  
 
-    background:
-        linear-gradient(
-            180deg,
-            #081f3a 0%,
-            #0b2949 55%,
-            #06182d 100%
-        );
+overflow: hidden;
 
-    overflow: hidden;
 }
 
-
-/* =========================================
-   SCREENS
-========================================= */
+/* ==========================================
+SCREENS
+========================================== */
 
 .screen {
-    display: none;
+display: none;
 
-    min-height: 100vh;
+width: 100%;  
+min-height: 100vh;  
 
-    padding:
-        34px
-        22px
-        105px;
+padding: 30px 24px 105px;
 
-    animation:
-        screenAppear
-        0.2s
-        ease;
 }
-
 
 .active-screen {
-    display: block;
+display: block;
 }
 
-
-@keyframes screenAppear {
-
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-}
-
-
-/* =========================================
-   HOME HEADER
-========================================= */
+/* ==========================================
+HEADERS
+========================================== */
 
 .header {
-    text-align: center;
-
-    padding-top: 20px;
+text-align: center;
+padding-top: 12px;
 }
-
 
 .header h1 {
-    font-size: 32px;
-
-    letter-spacing:
-        6px;
-
-    font-weight: 700;
-
-    color:
-        #ffffff;
+font-size: 28px;
+letter-spacing: 6px;
+font-weight: 700;
+color: #FFFFFF;
 }
-
 
 .header p {
-    margin-top: 7px;
-
-    font-size: 10px;
-
-    letter-spacing:
-        2.5px;
-
-    color:
-        #9bcff5;
+margin-top: 6px;
+font-size: 9px;
+letter-spacing: 2.5px;
+color: #8FA3BD;
 }
-
-
-/* =========================================
-   ORB
-========================================= */
-
-.orb {
-    position: relative;
-
-    width: 210px;
-    height: 210px;
-
-    margin:
-        60px auto
-        25px;
-
-    border-radius: 50%;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(105, 201, 255, 0.22),
-            rgba(9, 47, 78, 0.05) 58%,
-            transparent 70%
-        );
-}
-
-
-.orb-core {
-    width: 88px;
-    height: 88px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle at 40% 35%,
-            #ffffff,
-            #9ee3ff 28%,
-            #35aee9 55%,
-            #0a6091 75%,
-            #062d4c 100%
-        );
-
-    box-shadow:
-        0 0 20px rgba(75, 197, 255, 0.9),
-        0 0 55px rgba(45, 168, 230, 0.55),
-        0 0 100px rgba(34, 145, 208, 0.3);
-
-    animation:
-        orbPulse
-        3s
-        ease-in-out
-        infinite;
-}
-
-
-.orb-ring {
-    position: absolute;
-
-    border:
-        1px solid
-        rgba(123, 211, 255, 0.5);
-
-    border-radius: 50%;
-
-    transform:
-        rotate(-25deg);
-}
-
-
-.ring-one {
-    width: 185px;
-    height: 72px;
-}
-
-
-.ring-two {
-    width: 155px;
-    height: 200px;
-
-    transform:
-        rotate(55deg);
-}
-
-
-@keyframes orbPulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.06);
-    }
-
-}
-
-
-/* =========================================
-   STATUS
-========================================= */
-
-.status {
-    text-align: center;
-
-    margin-bottom: 18px;
-}
-
-
-#status {
-    font-size: 10px;
-
-    letter-spacing:
-        2px;
-
-    color:
-        #8dd8ff;
-}
-
-
-/* =========================================
-   CONVERSATION
-========================================= */
-
-.conversation {
-    min-height: 72px;
-
-    margin:
-        0 auto
-        24px;
-
-    padding:
-        18px;
-
-    border:
-        1px solid
-        rgba(117, 205, 255, 0.25);
-
-    border-radius: 14px;
-
-    background:
-        rgba(4, 27, 48, 0.45);
-
-    text-align: center;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-}
-
-
-#response {
-    color:
-        #d9f3ff;
-
-    font-size: 14px;
-
-    line-height: 1.5;
-}
-
-
-/* =========================================
-   BUTTONS
-========================================= */
-
-.primary-button {
-    width: 100%;
-
-    padding:
-        15px
-        18px;
-
-    border-radius: 12px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #168dd0,
-            #2eb7ec
-        );
-
-    color:
-        #ffffff;
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    letter-spacing:
-        1px;
-
-    box-shadow:
-        0 8px 25px
-        rgba(28, 153, 215, 0.25);
-}
-
-
-.primary-button:active {
-    transform:
-        scale(0.98);
-}
-
-
-.secondary-button {
-    padding:
-        13px 16px;
-
-    border-radius: 10px;
-
-    background:
-        #173957;
-
-    color:
-        #b9e5ff;
-
-    font-size: 11px;
-
-    font-weight: 700;
-}
-
-
-/* =========================================
-   PAGE HEADERS
-========================================= */
 
 .page-header {
-    margin-bottom: 28px;
-
-    padding-top: 20px;
+text-align: center;
+padding-top: 12px;
+margin-bottom: 32px;
 }
-
 
 .page-header h1 {
-    font-size: 26px;
-
-    letter-spacing:
-        3px;
+font-size: 24px;
+letter-spacing: 4px;
+color: #FFFFFF;
 }
 
+/* ==========================================
+ORB
+========================================== */
 
-.page-header p {
-    margin-top: 7px;
+.orb {
+position: relative;
 
-    color:
-        #8fc6e7;
+width: 170px;  
+height: 170px;  
 
-    font-size: 10px;
+margin: 55px auto 35px;  
 
-    letter-spacing:
-        1.5px;
+border-radius: 50%;  
+
+background:  
+    radial-gradient(  
+        circle,  
+        #15283D 0%,  
+        #0D1626 45%,  
+        #080B12 72%  
+    );  
+
+border: 1px solid #8FD3FF;  
+
+box-shadow:  
+    0 0 18px rgba(143,211,255,0.25),  
+    inset 0 0 25px rgba(143,211,255,0.12);
+
 }
 
+.orb::before,
+.orb::after {
+content: "";
 
-/* =========================================
-   MEMORY
-========================================= */
+position: absolute;  
+
+border-radius: 50%;
+
+}
+
+.orb::before {
+inset: 12px;
+
+border: 1px solid rgba(  
+    143,  
+    211,  
+    255,  
+    0.35  
+);
+
+}
+
+.orb::after {
+inset: 27px;
+
+border: 1px solid rgba(  
+    143,  
+    211,  
+    255,  
+    0.18  
+);
+
+}
+
+.orb-core {
+position: absolute;
+
+width: 54px;  
+height: 54px;  
+
+left: 50%;  
+top: 50%;  
+
+transform: translate(-50%, -50%);  
+
+border-radius: 50%;  
+
+background:  
+    radial-gradient(  
+        circle,  
+        #DDF4FF 0%,  
+        #8FD3FF 30%,  
+        #294E70 65%,  
+        #0D1626 100%  
+    );  
+
+box-shadow:  
+    0 0 20px rgba(143,211,255,0.65),  
+    0 0 45px rgba(143,211,255,0.2);
+
+}
+
+/* ==========================================
+STATUS
+========================================== */
+
+.status {
+text-align: center;
+margin-bottom: 20px;
+}
+
+.status span {
+font-size: 11px;
+letter-spacing: 2px;
+color: #8FD3FF;
+}
+
+/* ==========================================
+CONVERSATION
+========================================== */
+
+.conversation {
+width: 100%;
+min-height: 80px;
+
+display: flex;  
+align-items: center;  
+justify-content: center;  
+
+padding: 18px;  
+margin-bottom: 25px;  
+
+background: #0D1626;  
+
+border: 1px solid #263244;  
+
+border-radius: 16px;
+
+}
+
+#response {
+text-align: center;
+
+color: #DCE9F5;  
+
+font-size: 14px;  
+
+line-height: 1.5;
+
+}
+
+/* ==========================================
+TALK BUTTON
+========================================== */
+
+#talkButton {
+display: block;
+
+width: 100%;  
+height: 52px;  
+
+border: 1px solid #8FD3FF;  
+
+border-radius: 28px;  
+
+background: #0D1626;  
+
+color: #8FD3FF;  
+
+font-size: 14px;  
+font-weight: 700;  
+letter-spacing: 1px;  
+
+cursor: pointer;
+
+}
+
+#talkButton:active {
+transform: scale(0.98);
+}
+
+/* ==========================================
+MEMORY
+========================================== */
 
 .memory-content {
-    display: flex;
+display: flex;
 
-    flex-direction: column;
+flex-direction: column;  
 
-    gap: 14px;
+gap: 15px;
+
 }
-
 
 .memory-card {
-    padding:
-        18px;
+width: 100%;
 
-    border:
-        1px solid
-        rgba(113, 203, 255, 0.22);
+min-height: 70px;  
 
-    border-radius: 14px;
+padding: 13px 16px;  
 
-    background:
-        rgba(10, 45, 72, 0.65);
+background: #0D1626;  
+
+border: 1px solid #8FD3FF;  
+
+border-radius: 12px;
+
 }
-
 
 .memory-title {
-    color:
-        #8edaff;
+font-size: 14px;
 
-    font-size: 10px;
+font-weight: 700;  
 
-    font-weight: 700;
+color: #8FD3FF;
 
-    letter-spacing:
-        2px;
-
-    margin-bottom: 8px;
 }
-
 
 .memory-text {
-    color:
-        #e4f6ff;
+margin-top: 7px;
 
-    font-size: 13px;
+font-size: 10px;  
 
-    line-height: 1.5;
+line-height: 1.4;  
+
+color: #8FA3BD;
+
 }
-
 
 .memory-date {
-    margin-top: 9px;
+margin-top: 8px;
 
-    color:
-        #6f9fbb;
+font-size: 9px;  
 
-    font-size: 10px;
+color: #4E657D;
+
 }
-
 
 .memory-actions {
-    display: flex;
+display: flex;
 
-    gap: 8px;
+gap: 8px;  
 
-    margin-top: 14px;
+margin-top: 12px;
+
 }
 
+.memory-actions button {
+flex: 1;
 
-.memory-edit,
-.memory-delete {
-    padding:
-        8px 12px;
+height: 32px;  
 
-    border-radius: 8px;
+border-radius: 8px;  
 
-    font-size: 9px;
+font-family: inherit;  
 
-    font-weight: 700;
+font-size: 9px;  
 
-    letter-spacing:
-        1px;
+font-weight: 700;  
+
+letter-spacing: 1px;  
+
+cursor: pointer;
+
 }
-
 
 .memory-edit {
-    background:
-        #164d70;
+border: 1px solid #8FD3FF;
 
-    color:
-        #9cddff;
+background: #122238;  
+
+color: #8FD3FF;
+
 }
-
 
 .memory-delete {
-    background:
-        #482d3b;
+border: 1px solid #4E657D;
 
-    color:
-        #ffafc4;
+background: #080B12;  
+
+color: #8FA3BD;
+
 }
-
 
 .create-memory {
-    width: 100%;
+width: 100%;
 
-    padding:
-        15px;
+height: 45px;  
 
-    border:
-        1px dashed
-        rgba(113, 205, 255, 0.5);
+border: 1px solid #8FD3FF;  
 
-    border-radius: 13px;
+border-radius: 12px;  
 
-    background:
-        rgba(20, 78, 112, 0.35);
+background: #0D1626;  
 
-    color:
-        #9fe0ff;
+color: #8FD3FF;  
 
-    font-size: 11px;
+font-size: 13px;  
 
-    font-weight: 700;
+font-weight: 700;  
 
-    letter-spacing:
-        1px;
+cursor: pointer;
+
 }
 
-
-/* =========================================
-   TOOLS
-========================================= */
+/* ==========================================
+TOOLS
+========================================== */
 
 .tools-grid {
-    display: grid;
+display: grid;
 
-    grid-template-columns:
-        repeat(2, 1fr);
+grid-template-columns: repeat(2, 1fr);  
 
-    gap: 12px;
+gap: 10px;
+
 }
-
 
 .tool-card {
-    min-height: 125px;
+width: 100%;
 
-    padding:
-        18px;
+height: 95px;  
 
-    border:
-        1px solid
-        rgba(116, 205, 255, 0.23);
+display: flex;  
 
-    border-radius: 15px;
+flex-direction: column;  
 
-    background:
-        rgba(11, 53, 82, 0.7);
+align-items: center;  
 
-    text-align: left;
+justify-content: center;  
 
-    color:
-        #ffffff;
+background: #0D1626;  
 
-    transition:
-        transform 0.15s,
-        background 0.15s;
+border: 1px solid #8FD3FF;  
+
+border-radius: 12px;  
+
+cursor: pointer;
+
 }
-
 
 .tool-card:active {
-    transform:
-        scale(0.97);
+transform: scale(0.97);
 }
-
-
-.tool-icon {
-    display: block;
-
-    font-size: 23px;
-
-    margin-bottom: 13px;
-}
-
 
 .tool-title {
-    display: block;
+font-size: 14px;
 
-    color:
-        #ffffff;
+font-weight: 700;  
 
-    font-size: 11px;
+color: #8FD3FF;
 
-    font-weight: 700;
-
-    letter-spacing:
-        1.5px;
 }
-
 
 .tool-description {
-    display: block;
+margin-top: 7px;
 
-    margin-top: 6px;
+font-size: 10px;  
 
-    color:
-        #82afd0;
+color: #8FA3BD;  
 
-    font-size: 10px;
+text-align: center;
+
 }
 
+/* ==========================================
+TIME TOOL
+========================================== */
 
-/* =========================================
-   SETTINGS
-========================================= */
+.tool-panel {
+display: none;
+
+margin-top: 20px;  
+
+padding: 20px;  
+
+background: #0D1626;  
+
+border: 1px solid #8FD3FF;  
+
+border-radius: 16px;
+
+}
+
+.tool-panel.show {
+display: block;
+}
+
+.tool-panel-header {
+display: flex;
+
+align-items: center;  
+
+justify-content: space-between;  
+
+margin-bottom: 25px;
+
+}
+
+.tool-panel-header h2 {
+font-size: 16px;
+
+letter-spacing: 3px;  
+
+color: #FFFFFF;
+
+}
+
+.close-tool {
+width: 32px;
+height: 32px;
+
+border: 1px solid #263244;  
+
+border-radius: 50%;  
+
+background: #080B12;  
+
+color: #8FA3BD;  
+
+font-size: 22px;  
+
+cursor: pointer;
+
+}
+
+.time-display {
+text-align: center;
+
+padding: 15px 0 25px;
+
+}
+
+.current-time {
+font-size: 38px;
+
+font-weight: 700;  
+
+letter-spacing: 2px;  
+
+color: #8FD3FF;
+
+}
+
+.current-date {
+margin-top: 10px;
+
+font-size: 11px;  
+
+color: #8FA3BD;
+
+}
+
+.speak-tool-button {
+width: 100%;
+
+height: 48px;  
+
+border: 1px solid #8FD3FF;  
+
+border-radius: 24px;  
+
+background: #122238;  
+
+color: #8FD3FF;  
+
+font-size: 12px;  
+
+font-weight: 700;  
+
+letter-spacing: 1px;  
+
+cursor: pointer;
+
+}
+
+/* ==========================================
+SETTINGS
+========================================== */
 
 .settings-content {
-    display: flex;
+display: flex;
 
-    flex-direction: column;
+flex-direction: column;  
 
-    gap: 12px;
+gap: 15px;
+
 }
-
 
 .setting-card {
-    width: 100%;
+position: relative;
 
-    min-height: 65px;
+width: 100%;  
 
-    padding:
-        15px 17px;
+min-height: 55px;  
 
-    border:
-        1px solid
-        rgba(116, 205, 255, 0.22);
+display: flex;  
 
-    border-radius: 13px;
+align-items: center;  
 
-    background:
-        rgba(10, 49, 77, 0.7);
+padding: 0 16px;  
 
-    color:
-        #ffffff;
+background: #0D1626;  
 
-    text-align: left;
+border: 1px solid #8FD3FF;  
 
-    display: flex;
+border-radius: 12px;  
 
-    align-items: center;
+color: #FFFFFF;
 
-    justify-content: space-between;
 }
-
 
 .setting-title {
-    display: block;
+font-size: 14px;
 
-    color:
-        #e4f7ff;
+font-weight: 700;  
 
-    font-size: 11px;
+color: #8FD3FF;
 
-    font-weight: 700;
-
-    letter-spacing:
-        1px;
 }
-
-
-.setting-description {
-    display: block;
-
-    margin-top: 5px;
-
-    color:
-        #7faec9;
-
-    font-size: 10px;
-}
-
 
 .setting-value {
-    color:
-        #8ddaff;
+margin-left: auto;
 
-    font-size: 10px;
+font-size: 12px;  
 
-    font-weight: 700;
+color: #8FD3FF;
 
-    letter-spacing:
-        1px;
 }
 
-
-.danger-button {
-    color:
-        #ffb6c8;
+.personality-card {
+min-height: 65px;
 }
 
+.personality-card > div {
+display: flex;
 
-/* =========================================
-   BOTTOM NAVIGATION
-========================================= */
+flex-direction: column;
+
+}
+
+.setting-description {
+margin-top: 5px;
+
+font-size: 10px;  
+
+color: #8FA3BD;
+
+}
+
+.clear-memory,
+.about-jarvis {
+justify-content: flex-start;
+
+font-family: inherit;  
+
+font-size: 14px;  
+
+font-weight: 700;  
+
+cursor: pointer;
+
+}
+
+/* ==========================================
+BOTTOM NAV
+========================================== */
 
 .bottom-nav {
-    position: fixed;
+position: fixed;
 
-    bottom: 0;
-    left: 50%;
+left: 50%;  
+bottom: 0;  
 
-    transform:
-        translateX(-50%);
+transform: translateX(-50%);  
 
-    width: 100%;
-    max-width: 480px;
+width: 100%;  
+max-width: 430px;  
 
-    height: 78px;
+height: 72px;  
 
-    padding:
-        9px 8px
-        calc(9px + env(safe-area-inset-bottom));
+display: flex;  
 
-    background:
-        rgba(4, 22, 40, 0.96);
+align-items: center;  
 
-    border-top:
-        1px solid
-        rgba(110, 198, 245, 0.2);
+justify-content: space-around;  
 
-    backdrop-filter:
-        blur(12px);
+padding: 0 10px;  
 
-    display: grid;
+background: rgba(8,11,18,0.96);  
 
-    grid-template-columns:
-        repeat(4, 1fr);
+border-top: 1px solid #1C2A3A;  
 
-    z-index: 100;
+z-index: 100;
+
 }
-
 
 .nav-button {
-    background:
-        transparent;
+flex: 1;
 
-    color:
-        #547c96;
+height: 45px;  
 
-    font-size: 8px;
+border: none;  
 
-    font-weight: 700;
+background: transparent;  
 
-    letter-spacing:
-        0.7px;
+color: #3C526A;  
 
-    display: flex;
+font-family: inherit;  
 
-    flex-direction: column;
+font-size: 10px;  
 
-    align-items: center;
+font-weight: 700;  
 
-    justify-content: center;
+letter-spacing: 1px;  
 
-    gap: 5px;
+cursor: pointer;
+
 }
-
-
-.nav-button span {
-    font-size: 19px;
-
-    line-height: 1;
-}
-
 
 .nav-button.active {
-    color:
-        #ffffff;
+color: #FFFFFF;
 }
 
+/* ==========================================
+MEMORY MODAL
+========================================== */
 
-.nav-button:active {
-    transform:
-        scale(0.95);
+.memory-modal {
+position: fixed;
+
+inset: 0;  
+
+display: none;  
+
+align-items: center;  
+
+justify-content: center;  
+
+padding: 20px;  
+
+background: rgba(0,0,0,0.75);  
+
+z-index: 500;
+
 }
 
-
-/* =========================================
-   MEMORY MODAL
-========================================= */
-
-.modal {
-    position: fixed;
-
-    inset: 0;
-
-    display: none;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px;
-
-    background:
-        rgba(2, 14, 26, 0.82);
-
-    z-index: 300;
+.memory-modal.show {
+display: flex;
 }
 
+.memory-modal-box {
+width: 100%;
+max-width: 360px;
 
-.modal.show {
-    display: flex;
+padding: 22px;  
+
+background: #0D1626;  
+
+border: 1px solid #8FD3FF;  
+
+border-radius: 18px;
+
 }
 
+.memory-modal-box h2 {
+margin-bottom: 18px;
 
-.modal-box {
-    width: 100%;
-    max-width: 400px;
+text-align: center;  
 
-    padding:
-        22px;
+font-size: 17px;  
 
-    border:
-        1px solid
-        rgba(113, 207, 255, 0.35);
+letter-spacing: 2px;
 
-    border-radius: 18px;
-
-    background:
-        #0a2944;
-
-    box-shadow:
-        0 20px 60px
-        rgba(0, 0, 0, 0.5);
 }
-
-
-.modal-title {
-    color:
-        #ffffff;
-
-    font-size: 16px;
-
-    font-weight: 700;
-
-    letter-spacing:
-        2px;
-
-    margin-bottom: 17px;
-}
-
 
 #memoryInput {
-    width: 100%;
+width: 100%;
 
-    min-height: 125px;
+min-height: 120px;  
 
-    resize: none;
+padding: 14px;  
 
-    padding:
-        14px;
+resize: none;  
 
-    border:
-        1px solid
-        rgba(111, 202, 255, 0.25);
+border: 1px solid #263244;  
 
-    border-radius: 11px;
+border-radius: 12px;  
 
-    outline: none;
+outline: none;  
 
-    background:
-        #061d31;
+background: #080B12;  
 
-    color:
-        #ffffff;
+color: #FFFFFF;  
 
-    font-family: inherit;
+font-family: inherit;  
 
-    font-size: 13px;
+font-size: 13px;  
 
-    line-height: 1.5;
+line-height: 1.5;
+
 }
 
-
-#memoryInput::placeholder {
-    color:
-        #62849b;
+#memoryInput:focus {
+border-color: #8FD3FF;
 }
 
+.memory-modal-buttons {
+display: flex;
 
-.modal-actions {
-    display: flex;
+gap: 10px;  
 
-    gap: 10px;
+margin-top: 15px;
 
-    margin-top: 14px;
 }
 
+.memory-modal-buttons button {
+flex: 1;
 
-.modal-actions button {
-    flex: 1;
+height: 44px;  
+
+border-radius: 10px;  
+
+font-family: inherit;  
+
+font-size: 11px;  
+
+font-weight: 700;  
+
+cursor: pointer;
+
 }
 
+#cancelMemory {
+border: 1px solid #263244;
 
-/* =========================================
-   TIME TOOL
-========================================= */
+background: #080B12;  
 
-.tool-overlay {
-    position: fixed;
+color: #8FA3BD;
 
-    inset: 0;
-
-    display: none;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 22px;
-
-    background:
-        rgba(2, 14, 26, 0.84);
-
-    z-index: 200;
 }
 
+#saveMemory {
+border: 1px solid #8FD3FF;
 
-.tool-overlay.show {
-    display: flex;
+background: #122238;  
+
+color: #8FD3FF;
+
 }
 
+/* ==========================================
+MOBILE
+========================================== */
 
-.tool-window {
-    position: relative;
+@media (max-width: 360px) {
 
-    width: 100%;
-    max-width: 390px;
+.screen {  
+    padding-left: 18px;  
+    padding-right: 18px;  
+}  
 
-    padding:
-        30px 22px;
 
-    border:
-        1px solid
-        rgba(110, 205, 255, 0.3);
+.orb {  
+    width: 145px;  
+    height: 145px;  
+}  
 
-    border-radius: 20px;
 
-    background:
-        linear-gradient(
-            180deg,
-            #0d3658,
-            #071e35
-        );
+.tool-card {  
+    height: 88px;  
+}  
 
-    text-align: center;
 
-    box-shadow:
-        0 25px 70px
-        rgba(0, 0, 0, 0.5);
+.nav-button {  
+    font-size: 9px;  
 }
 
-
-.close-button {
-    position: absolute;
-
-    top: 12px;
-    right: 14px;
-
-    width: 34px;
-    height: 34px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255, 255, 255, 0.06);
-
-    color:
-        #9cc8df;
-
-    font-size: 22px;
 }
 
-
-.tool-window-label {
-    color:
-        #8edaff;
-
-    font-size: 10px;
-
-    font-weight: 700;
-
-    letter-spacing:
-        2px;
-
-    margin-bottom: 20px;
+button {
+-webkit-tap-highlight-color: transparent;
 }
 
+button:focus-visible {
+outline: 1px solid #8FD3FF;
 
-.big-time {
-    color:
-        #ffffff;
+outline-offset: 2px;
 
-    font-size: 42px;
-
-    font-weight: 700;
-
-    letter-spacing:
-        2px;
-
-    text-shadow:
-        0 0 25px
-        rgba(78, 194, 255, 0.35);
-}
-
-
-.big-date {
-    margin:
-        9px 0
-        25px;
-
-    color:
-        #91bdd5;
-
-    font-size: 12px;
-}
-
-
-/* =========================================
-   SMALL PHONES
-========================================= */
-
-@media (max-width: 350px) {
-
-    .screen {
-        padding-left: 16px;
-        padding-right: 16px;
-    }
-
-
-    .orb {
-        width: 180px;
-        height: 180px;
-    }
-
-
-    .orb-core {
-        width: 75px;
-        height: 75px;
-    }
-
-
-    .tools-grid {
-        gap: 8px;
-    }
-
-
-    .tool-card {
-        min-height: 115px;
-    }
-
-       }
+   }
