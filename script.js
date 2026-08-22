@@ -467,3 +467,719 @@ if (speakTimeButton) {
 // ==========================================
 // END PART 1
 // ==========================================
+
+// ==========================================
+// JARVIS — RECOVERY SCRIPT
+// PART 2 / 3
+// ==========================================
+
+
+// ==========================================
+// MEMORY SYSTEM
+// ==========================================
+
+const createMemoryButton =
+    document.getElementById(
+        "createMemoryButton"
+    );
+
+const memoryModal =
+    document.getElementById(
+        "memoryModal"
+    );
+
+const memoryModalTitle =
+    document.getElementById(
+        "memoryModalTitle"
+    );
+
+const memoryInput =
+    document.getElementById(
+        "memoryInput"
+    );
+
+const cancelMemory =
+    document.getElementById(
+        "cancelMemory"
+    );
+
+const saveMemory =
+    document.getElementById(
+        "saveMemory"
+    );
+
+const clearMemoriesButton =
+    document.getElementById(
+        "clearMemoriesButton"
+    );
+
+
+let editingMemoryIndex = null;
+
+
+// ==========================================
+// GET MEMORIES
+// ==========================================
+
+function getMemories() {
+
+    try {
+
+        const stored =
+            localStorage.getItem(
+                "jarvisMemories"
+            );
+
+        if (!stored) {
+            return [];
+        }
+
+        const memories =
+            JSON.parse(stored);
+
+        return Array.isArray(memories)
+            ? memories
+            : [];
+
+    } catch (error) {
+
+        console.error(
+            "JARVIS MEMORY READ ERROR:",
+            error
+        );
+
+        return [];
+
+    }
+
+}
+
+
+// ==========================================
+// SAVE MEMORIES
+// ==========================================
+
+function saveMemoryArray(memories) {
+
+    try {
+
+        localStorage.setItem(
+            "jarvisMemories",
+            JSON.stringify(memories)
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "JARVIS MEMORY SAVE ERROR:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+// ==========================================
+// ESCAPE MEMORY TEXT
+// ==========================================
+
+function escapeMemoryText(text) {
+
+    if (
+        text === null ||
+        text === undefined
+    ) {
+
+        return "";
+
+    }
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+// ==========================================
+// OPEN NEW MEMORY
+// ==========================================
+
+if (createMemoryButton) {
+
+    createMemoryButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            editingMemoryIndex =
+                null;
+
+            if (memoryModalTitle) {
+
+                memoryModalTitle.textContent =
+                    "NEW MEMORY";
+
+            }
+
+            if (saveMemory) {
+
+                saveMemory.textContent =
+                    "SAVE MEMORY";
+
+            }
+
+            if (memoryInput) {
+
+                memoryInput.value =
+                    "";
+
+            }
+
+            if (memoryModal) {
+
+                memoryModal.classList.add(
+                    "show"
+                );
+
+            }
+
+            if (memoryInput) {
+
+                setTimeout(
+                    function() {
+
+                        memoryInput.focus();
+
+                    },
+                    50
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// CANCEL MEMORY
+// ==========================================
+
+if (cancelMemory) {
+
+    cancelMemory.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            closeMemoryModal();
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// CLOSE MEMORY MODAL
+// ==========================================
+
+function closeMemoryModal() {
+
+    if (memoryModal) {
+
+        memoryModal.classList.remove(
+            "show"
+        );
+
+    }
+
+    editingMemoryIndex =
+        null;
+
+}
+
+
+// ==========================================
+// SAVE MEMORY
+// ==========================================
+
+if (saveMemory) {
+
+    saveMemory.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            if (!memoryInput) {
+                return;
+            }
+
+            const text =
+                memoryInput.value.trim();
+
+            if (!text) {
+
+                alert(
+                    "Please enter something for JARVIS to remember."
+                );
+
+                return;
+
+            }
+
+            const memories =
+                getMemories();
+
+
+            // ----------------------------------
+            // EDIT EXISTING MEMORY
+            // ----------------------------------
+
+            if (
+                editingMemoryIndex !== null &&
+                memories[editingMemoryIndex]
+            ) {
+
+                memories[
+                    editingMemoryIndex
+                ].text =
+                    text;
+
+                memories[
+                    editingMemoryIndex
+                ].date =
+                    new Date()
+                        .toLocaleDateString(
+                            "en-NG"
+                        );
+
+                saveMemoryArray(
+                    memories
+                );
+
+                closeMemoryModal();
+
+                loadMemories();
+
+                setResponse(
+                    "Memory updated."
+                );
+
+                setStatus(
+                    "JARVIS ACTIVE"
+                );
+
+                jarvisSpeak(
+                    "Memory updated."
+                );
+
+                return;
+
+            }
+
+
+            // ----------------------------------
+            // CREATE NEW MEMORY
+            // ----------------------------------
+
+            memories.push({
+
+                text:
+                    text,
+
+                date:
+                    new Date()
+                        .toLocaleDateString(
+                            "en-NG"
+                        )
+
+            });
+
+            saveMemoryArray(
+                memories
+            );
+
+            closeMemoryModal();
+
+            loadMemories();
+
+            setResponse(
+                "Memory saved."
+            );
+
+            setStatus(
+                "JARVIS ACTIVE"
+            );
+
+            jarvisSpeak(
+                "Memory saved."
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// LOAD MEMORIES
+// ==========================================
+
+function loadMemories() {
+
+    const memoryContent =
+        document.querySelector(
+            ".memory-content"
+        );
+
+    if (!memoryContent) {
+        return;
+    }
+
+    const createButton =
+        document.getElementById(
+            "createMemoryButton"
+        );
+
+
+    document
+        .querySelectorAll(
+            ".saved-memory"
+        )
+        .forEach(
+            function(card) {
+
+                card.remove();
+
+            }
+        );
+
+
+    const memories =
+        getMemories();
+
+
+    memories.forEach(
+        function(memory, index) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "memory-card saved-memory";
+
+
+            card.innerHTML = `
+
+                <div class="memory-title">
+                    SAVED
+                </div>
+
+                <div class="memory-text">
+                    ${escapeMemoryText(
+                        memory.text
+                    )}
+                </div>
+
+                <div class="memory-date">
+                    ${escapeMemoryText(
+                        memory.date || ""
+                    )}
+                </div>
+
+                <div class="memory-actions">
+
+                    <button
+                        type="button"
+                        class="memory-edit"
+                        data-index="${index}"
+                    >
+                        EDIT
+                    </button>
+
+                    <button
+                        type="button"
+                        class="memory-delete"
+                        data-index="${index}"
+                    >
+                        DELETE
+                    </button>
+
+                </div>
+
+            `;
+
+
+            if (createButton) {
+
+                memoryContent.insertBefore(
+                    card,
+                    createButton
+                );
+
+            } else {
+
+                memoryContent.appendChild(
+                    card
+                );
+
+            }
+
+        }
+    );
+
+
+    attachMemoryActions();
+
+}
+
+
+// ==========================================
+// MEMORY ACTIONS
+// ==========================================
+
+function attachMemoryActions() {
+
+
+    // --------------------------------------
+    // EDIT MEMORY
+    // --------------------------------------
+
+    document
+        .querySelectorAll(
+            ".memory-edit"
+        )
+        .forEach(
+            function(button) {
+
+                button.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.preventDefault();
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+                        const memories =
+                            getMemories();
+
+                        if (!memories[index]) {
+                            return;
+                        }
+
+                        editingMemoryIndex =
+                            index;
+
+
+                        if (memoryModalTitle) {
+
+                            memoryModalTitle.textContent =
+                                "EDIT MEMORY";
+
+                        }
+
+
+                        if (saveMemory) {
+
+                            saveMemory.textContent =
+                                "SAVE CHANGES";
+
+                        }
+
+
+                        if (memoryInput) {
+
+                            memoryInput.value =
+                                memories[index].text;
+
+                        }
+
+
+                        if (memoryModal) {
+
+                            memoryModal.classList.add(
+                                "show"
+                            );
+
+                        }
+
+
+                        if (memoryInput) {
+
+                            setTimeout(
+                                function() {
+
+                                    memoryInput.focus();
+
+                                },
+                                50
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+    // --------------------------------------
+    // DELETE MEMORY
+    // --------------------------------------
+
+    document
+        .querySelectorAll(
+            ".memory-delete"
+        )
+        .forEach(
+            function(button) {
+
+                button.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.preventDefault();
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+                        const memories =
+                            getMemories();
+
+                        if (!memories[index]) {
+                            return;
+                        }
+
+
+                        const confirmed =
+                            confirm(
+                                "Delete this memory?"
+                            );
+
+                        if (!confirmed) {
+                            return;
+                        }
+
+
+                        memories.splice(
+                            index,
+                            1
+                        );
+
+
+                        saveMemoryArray(
+                            memories
+                        );
+
+
+                        loadMemories();
+
+
+                        setResponse(
+                            "Memory deleted."
+                        );
+
+                        setStatus(
+                            "JARVIS ACTIVE"
+                        );
+
+                        jarvisSpeak(
+                            "Memory deleted."
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+}
+
+
+// ==========================================
+// CLEAR ALL MEMORIES
+// ==========================================
+
+if (clearMemoriesButton) {
+
+    clearMemoriesButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            const memories =
+                getMemories();
+
+            if (!memories.length) {
+
+                setResponse(
+                    "There are no memories to clear."
+                );
+
+                return;
+
+            }
+
+
+            const confirmed =
+                confirm(
+                    "Clear all JARVIS memories?"
+                );
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            localStorage.removeItem(
+                "jarvisMemories"
+            );
+
+
+            loadMemories();
+
+
+            setResponse(
+                "All memories cleared."
+            );
+
+            setStatus(
+                "JARVIS ACTIVE"
+            );
+
+            jarvisSpeak(
+                "All memories have been cleared."
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// END PART 2
+// ==========================================
