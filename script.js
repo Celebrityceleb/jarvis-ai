@@ -13,9 +13,7 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
     "sb_publishable_Pf0mP9qTvCdWCUjZTt-xrA_G4gch1w8";
 
-
 let supabaseClient = null;
-
 
 if (window.supabase) {
 
@@ -24,6 +22,8 @@ if (window.supabase) {
             SUPABASE_URL,
             SUPABASE_ANON_KEY
         );
+
+    console.log("SUPABASE CONNECTED");
 
 }
 
@@ -57,27 +57,17 @@ function jarvisSpeak(text) {
         return;
     }
 
-
     window.speechSynthesis.cancel();
-
 
     const speech =
         new SpeechSynthesisUtterance(text);
 
-
     speech.lang = "en-US";
-
     speech.rate = 0.95;
-
     speech.pitch = 0.9;
-
     speech.volume = 1;
 
-
-    window.speechSynthesis.speak(
-        speech
-    );
-
+    window.speechSynthesis.speak(speech);
 
     console.log(
         "JARVIS SPEAKING:",
@@ -87,13 +77,14 @@ function jarvisSpeak(text) {
 
 
 // ==========================================
-// SPEECH WARMUP
+// PAGE LOAD
 // ==========================================
 
 window.addEventListener(
     "load",
     () => {
 
+        // Warm up speech engine
         if ("speechSynthesis" in window) {
 
             const warmup =
@@ -104,16 +95,113 @@ window.addEventListener(
             window.speechSynthesis.speak(
                 warmup
             );
-
         }
 
+        // Load saved memories
         loadMemories();
 
+        // Start clock
         updateTime();
 
         setInterval(
             updateTime,
             1000
+        );
+
+    }
+);
+
+
+// ==========================================
+// NAVIGATION
+// ==========================================
+
+const navigationButtons =
+    document.querySelectorAll(
+        ".nav-button"
+    );
+
+const screens =
+    document.querySelectorAll(
+        ".screen"
+    );
+
+
+navigationButtons.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            function(event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                const targetScreen =
+                    this.getAttribute(
+                        "data-screen"
+                    );
+
+                console.log(
+                    "NAVIGATION:",
+                    targetScreen
+                );
+
+
+                // Hide all screens
+                screens.forEach(
+                    screen => {
+
+                        screen.classList.remove(
+                            "active-screen"
+                        );
+
+                    }
+                );
+
+
+                // Find selected screen
+                const selectedScreen =
+                    document.getElementById(
+                        targetScreen
+                    );
+
+
+                // Show selected screen
+                if (selectedScreen) {
+
+                    selectedScreen.classList.add(
+                        "active-screen"
+                    );
+
+                } else {
+
+                    console.error(
+                        "SCREEN NOT FOUND:",
+                        targetScreen
+                    );
+
+                }
+
+
+                // Remove active state
+                navigationButtons.forEach(
+                    nav => {
+
+                        nav.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                // Activate selected button
+                this.classList.add(
+                    "active"
+                );
+
+            }
         );
 
     }
@@ -202,6 +290,12 @@ if (talkButton) {
                     await backendResponse.json();
 
 
+                console.log(
+                    "BACKEND RESPONSE:",
+                    data
+                );
+
+
                 if (
                     backendResponse.ok &&
                     data.reply
@@ -233,83 +327,6 @@ if (talkButton) {
 
 
 // ==========================================
-// NAVIGATION
-// ==========================================
-
-const navigationButtons =
-    document.querySelectorAll(
-        ".nav-button"
-    );
-
-
-const screens =
-    document.querySelectorAll(
-        ".screen"
-    );
-
-
-navigationButtons.forEach(
-    button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                const targetScreen =
-                    button.getAttribute(
-                        "data-screen"
-                    );
-
-
-                screens.forEach(
-                    screen => {
-
-                        screen.classList.remove(
-                            "active-screen"
-                        );
-
-                    }
-                );
-
-
-                const selectedScreen =
-                    document.getElementById(
-                        targetScreen
-                    );
-
-
-                if (selectedScreen) {
-
-                    selectedScreen.classList.add(
-                        "active-screen"
-                    );
-
-                }
-
-
-                navigationButtons.forEach(
-                    nav => {
-
-                        nav.classList.remove(
-                            "active"
-                        );
-
-                    }
-                );
-
-
-                button.classList.add(
-                    "active"
-                );
-
-            }
-        );
-
-    }
-);
-
-
-// ==========================================
 // MEMORY SYSTEM
 // ==========================================
 
@@ -318,42 +335,35 @@ const createMemoryButton =
         "createMemoryButton"
     );
 
-
 const memoryModal =
     document.getElementById(
         "memoryModal"
     );
-
 
 const memoryModalTitle =
     document.getElementById(
         "memoryModalTitle"
     );
 
-
 const memoryInput =
     document.getElementById(
         "memoryInput"
     );
-
 
 const cancelMemory =
     document.getElementById(
         "cancelMemory"
     );
 
-
 const saveMemory =
     document.getElementById(
         "saveMemory"
     );
 
-
 const clearMemoriesButton =
     document.getElementById(
         "clearMemoriesButton"
     );
-
 
 let editingMemoryIndex = null;
 
@@ -364,11 +374,24 @@ let editingMemoryIndex = null;
 
 function getMemories() {
 
-    return JSON.parse(
-        localStorage.getItem(
-            "jarvisMemories"
-        )
-    ) || [];
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "jarvisMemories"
+            )
+        ) || [];
+
+    } catch (error) {
+
+        console.error(
+            "MEMORY READ ERROR:",
+            error
+        );
+
+        return [];
+
+    }
 
 }
 
@@ -388,7 +411,7 @@ function saveMemoryArray(memories) {
 
 
 // ==========================================
-// CREATE MEMORY
+// CREATE MEMORY BUTTON
 // ==========================================
 
 if (createMemoryButton) {
@@ -469,7 +492,7 @@ if (saveMemory) {
                 getMemories();
 
 
-            // EDIT EXISTING MEMORY
+            // EDIT
             if (
                 editingMemoryIndex !== null
             ) {
@@ -477,7 +500,6 @@ if (saveMemory) {
                 memories[
                     editingMemoryIndex
                 ].text = text;
-
 
                 memories[
                     editingMemoryIndex
@@ -505,7 +527,6 @@ if (saveMemory) {
                 response.textContent =
                     "Memory updated.";
 
-
                 status.textContent =
                     "JARVIS ACTIVE";
 
@@ -519,7 +540,7 @@ if (saveMemory) {
             }
 
 
-            // CREATE NEW MEMORY
+            // CREATE
             memories.push({
 
                 text: text,
@@ -546,7 +567,6 @@ if (saveMemory) {
 
             response.textContent =
                 "Memory saved.";
-
 
             status.textContent =
                 "JARVIS ACTIVE";
@@ -585,6 +605,7 @@ function loadMemories() {
         );
 
 
+    // Remove generated memories
     document
         .querySelectorAll(
             ".saved-memory"
@@ -648,13 +669,24 @@ function loadMemories() {
                     </button>
 
                 </div>
+
             `;
 
 
-            memoryContent.insertBefore(
-                card,
-                createButton
-            );
+            if (createButton) {
+
+                memoryContent.insertBefore(
+                    card,
+                    createButton
+                );
+
+            } else {
+
+                memoryContent.appendChild(
+                    card
+                );
+
+            }
 
         }
     );
@@ -666,7 +698,7 @@ function loadMemories() {
 
 
 // ==========================================
-// EDIT / DELETE MEMORY
+// MEMORY EDIT / DELETE ACTIONS
 // ==========================================
 
 function attachMemoryActions() {
@@ -761,7 +793,9 @@ function attachMemoryActions() {
                                 "Delete this memory?"
                             )
                         ) {
+
                             return;
+
                         }
 
 
@@ -781,7 +815,6 @@ function attachMemoryActions() {
 
                         response.textContent =
                             "Memory deleted.";
-
 
                         status.textContent =
                             "JARVIS ACTIVE";
@@ -818,6 +851,9 @@ if (clearMemoriesButton) {
                 memories.length === 0
             ) {
 
+                response.textContent =
+                    "There are no saved memories.";
+
                 jarvisSpeak(
                     "There are no saved memories to clear."
                 );
@@ -831,7 +867,9 @@ if (clearMemoriesButton) {
                     "Are you sure you want to delete all saved memories?"
                 )
             ) {
+
                 return;
+
             }
 
 
@@ -845,7 +883,6 @@ if (clearMemoriesButton) {
 
             response.textContent =
                 "All memories cleared.";
-
 
             status.textContent =
                 "JARVIS ACTIVE";
@@ -872,10 +909,8 @@ function escapeMemoryText(text) {
             "div"
         );
 
-
     div.textContent =
         text;
-
 
     return div.innerHTML;
 
@@ -891,24 +926,20 @@ const timeTool =
         "timeTool"
     );
 
-
 const closeTimeTool =
     document.getElementById(
         "closeTimeTool"
     );
-
 
 const currentTime =
     document.getElementById(
         "currentTime"
     );
 
-
 const currentDate =
     document.getElementById(
         "currentDate"
     );
-
 
 const speakTimeButton =
     document.getElementById(
@@ -916,15 +947,15 @@ const speakTimeButton =
     );
 
 
+// ==========================================
+// TOOL CARDS
+// ==========================================
+
 const toolCards =
     document.querySelectorAll(
         ".tool-card"
     );
 
-
-// ==========================================
-// TOOL CARD CLICK
-// ==========================================
 
 toolCards.forEach(
     card => {
@@ -939,19 +970,19 @@ toolCards.forEach(
                     );
 
 
-                // TIME TOOL
+                // TIME
                 if (tool === "time") {
 
                     openTimeTool();
 
                     return;
+
                 }
 
 
                 // OTHER TOOLS
                 response.textContent =
                     `${tool.toUpperCase()} tool is coming online.`;
-
 
                 status.textContent =
                     "JARVIS ACTIVE";
@@ -1010,13 +1041,18 @@ if (closeTimeTool) {
 
 
 // ==========================================
-// UPDATE DISPLAY TIME
+// UPDATE TIME DISPLAY
 // ==========================================
 
 function updateTime() {
 
-    if (!currentTime || !currentDate) {
+    if (
+        !currentTime ||
+        !currentDate
+    ) {
+
         return;
+
     }
 
 
@@ -1041,70 +1077,4 @@ function updateTime() {
             "en-NG",
             {
                 weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric"
-            }
-        );
-
-}
-
-
-// ==========================================
-// SPEAK TIME
-// ==========================================
-
-if (speakTimeButton) {
-
-    speakTimeButton.addEventListener(
-        "click",
-        () => {
-
-            const now =
-                new Date();
-
-
-            // ----------------------------------
-            // MANUAL 12-HOUR CONVERSION
-            // ----------------------------------
-
-            let hour =
-                now.getHours();
-
-
-            const minute =
-                now.getMinutes();
-
-
-            const period =
-                hour >= 12
-                    ? "PM"
-                    : "AM";
-
-
-            // Convert 24-hour hour to 12-hour hour
-            hour =
-                hour % 12;
-
-
-            // Midnight and noon handling
-            if (hour === 0) {
-
-                hour = 12;
-
-            }
-
-
-            const minuteText =
-                minute
-                    .toString()
-                    .padStart(
-                        2,
-                        "0"
-                    );
-
-
-            const date =
-                now.toLocaleDateString(
-                    "en-NG",
-    
+                year: "nume
