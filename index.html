@@ -45,10 +45,6 @@
 
         <div class="orb">
 
-            <div class="orb-ring ring-one"></div>
-
-            <div class="orb-ring ring-two"></div>
-
             <div class="orb-core"></div>
 
         </div>
@@ -74,7 +70,6 @@
 
         <button
             id="talkButton"
-            class="primary-button"
         >
             🎙️ TALK TO JARVIS
         </button>
@@ -96,12 +91,13 @@
 
             <h1>MEMORY</h1>
 
-            <p>WHAT JARVIS REMEMBERS</p>
-
         </header>
 
 
         <div class="memory-content">
+
+
+            <!-- DEFAULT MEMORY 1 -->
 
             <div class="memory-card default-memory">
 
@@ -116,6 +112,9 @@
             </div>
 
 
+
+            <!-- DEFAULT MEMORY 2 -->
+
             <div class="memory-card default-memory">
 
                 <div class="memory-title">
@@ -129,12 +128,32 @@
             </div>
 
 
+
+            <!-- DEFAULT MEMORY 3 -->
+
+            <div class="memory-card default-memory">
+
+                <div class="memory-title">
+                    SYSTEM
+                </div>
+
+                <div class="memory-text">
+                    Voice response and memory systems are operational.
+                </div>
+
+            </div>
+
+
+
+            <!-- CREATE MEMORY -->
+
             <button
                 id="createMemoryButton"
                 class="create-memory"
             >
                 + CREATE MEMORY
             </button>
+
 
         </div>
 
@@ -155,8 +174,6 @@
 
             <h1>TOOLS</h1>
 
-            <p>JARVIS SYSTEM TOOLS</p>
-
         </header>
 
 
@@ -167,10 +184,6 @@
                 class="tool-card"
                 data-tool="search"
             >
-
-                <span class="tool-icon">
-                    🔎
-                </span>
 
                 <span class="tool-title">
                     SEARCH
@@ -189,10 +202,6 @@
                 data-tool="web"
             >
 
-                <span class="tool-icon">
-                    🌐
-                </span>
-
                 <span class="tool-title">
                     WEB
                 </span>
@@ -209,10 +218,6 @@
                 class="tool-card"
                 data-tool="time"
             >
-
-                <span class="tool-icon">
-                    🕐
-                </span>
 
                 <span class="tool-title">
                     TIME
@@ -231,10 +236,6 @@
                 data-tool="remind"
             >
 
-                <span class="tool-icon">
-                    ⏰
-                </span>
-
                 <span class="tool-title">
                     REMIND
                 </span>
@@ -251,10 +252,6 @@
                 class="tool-card"
                 data-tool="notes"
             >
-
-                <span class="tool-icon">
-                    📝
-                </span>
 
                 <span class="tool-title">
                     NOTES
@@ -273,10 +270,6 @@
                 data-tool="system"
             >
 
-                <span class="tool-icon">
-                    ⚙️
-                </span>
-
                 <span class="tool-title">
                     SYSTEM
                 </span>
@@ -287,6 +280,58 @@
 
             </button>
 
+
+        </div>
+
+
+
+        <!-- TIME PANEL -->
+
+        <div
+            id="timePanel"
+            class="tool-panel"
+        >
+
+            <div class="tool-panel-header">
+
+                <h2>JARVIS TIME</h2>
+
+                <button
+                    id="closeTimeTool"
+                    class="close-tool"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="time-display">
+
+                <div
+                    id="currentTime"
+                    class="current-time"
+                >
+                    12:00 PM
+                </div>
+
+
+                <div
+                    id="currentDate"
+                    class="current-date"
+                >
+                    Loading date...
+                </div>
+
+            </div>
+
+
+            <button
+                id="speakTimeButton"
+                class="speak-tool-button"
+            >
+                🔊 ASK JARVIS
+            </button>
 
         </div>
 
@@ -307,8 +352,6 @@
 
             <h1>SETTINGS</h1>
 
-            <p>JARVIS CONFIGURATION</p>
-
         </header>
 
 
@@ -317,17 +360,9 @@
 
             <div class="setting-card">
 
-                <div>
-
-                    <span class="setting-title">
-                        VOICE RESPONSE
-                    </span>
-
-                    <span class="setting-description">
-                        JARVIS speaks responses
-                    </span>
-
-                </div>
+                <span class="setting-title">
+                    VOICE RESPONSE
+                </span>
 
                 <span class="setting-value">
                     ON
@@ -339,17 +374,9 @@
 
             <div class="setting-card">
 
-                <div>
-
-                    <span class="setting-title">
-                        WAKE WORD
-                    </span>
-
-                    <span class="setting-description">
-                        Voice activation
-                    </span>
-
-                </div>
+                <span class="setting-title">
+                    WAKE WORD
+                </span>
 
                 <span class="setting-value">
                     ON
@@ -359,7 +386,7 @@
 
 
 
-            <div class="setting-card">
+            <div class="setting-card personality-card">
 
                 <div>
 
@@ -379,7 +406,7 @@
 
             <button
                 id="clearMemoriesButton"
-                class="setting-card danger-button"
+                class="setting-card clear-memory"
             >
                 CLEAR MEMORIES
             </button>
@@ -388,7 +415,7 @@
 
             <button
                 id="aboutJarvisButton"
-                class="setting-card"
+                class="setting-card about-jarvis"
             >
                 ABOUT JARVIS
             </button>
@@ -401,75 +428,19 @@
 
 
     <!-- ======================================
-         TIME TOOL
-    ======================================= -->
-
-    <div
-        id="timeTool"
-        class="tool-overlay"
-    >
-
-        <div class="tool-window">
-
-            <button
-                id="closeTimeTool"
-                class="close-button"
-            >
-                ×
-            </button>
-
-
-            <div class="tool-window-label">
-                JARVIS TIME
-            </div>
-
-
-            <div
-                id="currentTime"
-                class="big-time"
-            >
-                12:00 PM
-            </div>
-
-
-            <div
-                id="currentDate"
-                class="big-date"
-            >
-                Loading date...
-            </div>
-
-
-            <button
-                id="speakTimeButton"
-                class="primary-button"
-            >
-                🔊 ASK JARVIS
-            </button>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- ======================================
          MEMORY MODAL
     ======================================= -->
 
     <div
         id="memoryModal"
-        class="modal"
+        class="memory-modal"
     >
 
-        <div class="modal-box">
+        <div class="memory-modal-box">
 
-            <div
-                id="memoryModalTitle"
-                class="modal-title"
-            >
+            <h2 id="memoryModalTitle">
                 NEW MEMORY
-            </div>
+            </h2>
 
 
             <textarea
@@ -478,11 +449,10 @@
             ></textarea>
 
 
-            <div class="modal-actions">
+            <div class="memory-modal-buttons">
 
                 <button
                     id="cancelMemory"
-                    class="secondary-button"
                 >
                     CANCEL
                 </button>
@@ -490,7 +460,6 @@
 
                 <button
                     id="saveMemory"
-                    class="primary-button"
                 >
                     SAVE MEMORY
                 </button>
@@ -514,7 +483,6 @@
             class="nav-button active"
             data-screen="homeScreen"
         >
-            <span>⌂</span>
             HOME
         </button>
 
@@ -524,7 +492,6 @@
             class="nav-button"
             data-screen="memoryScreen"
         >
-            <span>◈</span>
             MEMORY
         </button>
 
@@ -534,7 +501,6 @@
             class="nav-button"
             data-screen="toolsScreen"
         >
-            <span>◇</span>
             TOOLS
         </button>
 
@@ -544,7 +510,6 @@
             class="nav-button"
             data-screen="settingsScreen"
         >
-            <span>⚙</span>
             SETTINGS
         </button>
 
@@ -558,18 +523,18 @@
 
 <!-- ======================================
      SUPABASE
-======================================= -->
+====================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <!-- ======================================
      JARVIS SCRIPT
-======================================= -->
+====================================== -->
 
 <script src="script.js"></script>
 
 
 </body>
 
-                </html>
+                    </html>
