@@ -1,6 +1,6 @@
-/* ==========================================
+/* =========================================
    JARVIS — MAIN STYLES
-========================================== */
+========================================= */
 
 * {
     box-sizing: border-box;
@@ -17,10 +17,25 @@ body {
 
 
 body {
-    background: #080B12;
-    color: #FFFFFF;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        #071b33;
+
+    color:
+        #ffffff;
+
     overflow-x: hidden;
+}
+
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
 }
 
 
@@ -28,28 +43,42 @@ body {
     position: relative;
 
     width: 100%;
-    max-width: 430px;
+    max-width: 480px;
+
     min-height: 100vh;
 
     margin: 0 auto;
 
-    background: #080B12;
+    background:
+        linear-gradient(
+            180deg,
+            #081f3a 0%,
+            #0b2949 55%,
+            #06182d 100%
+        );
 
     overflow: hidden;
 }
 
 
-/* ==========================================
+/* =========================================
    SCREENS
-========================================== */
+========================================= */
 
 .screen {
     display: none;
 
-    width: 100%;
     min-height: 100vh;
 
-    padding: 30px 24px 105px;
+    padding:
+        34px
+        22px
+        105px;
+
+    animation:
+        screenAppear
+        0.2s
+        ease;
 }
 
 
@@ -58,182 +87,218 @@ body {
 }
 
 
-/* ==========================================
-   HEADERS
-========================================== */
+@keyframes screenAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================
+   HOME HEADER
+========================================= */
 
 .header {
     text-align: center;
-    padding-top: 12px;
+
+    padding-top: 20px;
 }
 
 
 .header h1 {
-    font-size: 28px;
-    letter-spacing: 6px;
+    font-size: 32px;
+
+    letter-spacing:
+        6px;
+
     font-weight: 700;
-    color: #FFFFFF;
+
+    color:
+        #ffffff;
 }
 
 
 .header p {
-    margin-top: 6px;
-    font-size: 9px;
-    letter-spacing: 2.5px;
-    color: #8FA3BD;
+    margin-top: 7px;
+
+    font-size: 10px;
+
+    letter-spacing:
+        2.5px;
+
+    color:
+        #9bcff5;
 }
 
 
-.page-header {
-    text-align: center;
-    padding-top: 12px;
-    margin-bottom: 32px;
-}
-
-
-.page-header h1 {
-    font-size: 24px;
-    letter-spacing: 4px;
-    color: #FFFFFF;
-}
-
-
-/* ==========================================
+/* =========================================
    ORB
-========================================== */
+========================================= */
 
 .orb {
     position: relative;
 
-    width: 170px;
-    height: 170px;
+    width: 210px;
+    height: 210px;
 
-    margin: 55px auto 35px;
+    margin:
+        60px auto
+        25px;
 
     border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
 
     background:
         radial-gradient(
             circle,
-            #15283D 0%,
-            #0D1626 45%,
-            #080B12 72%
+            rgba(105, 201, 255, 0.22),
+            rgba(9, 47, 78, 0.05) 58%,
+            transparent 70%
         );
-
-    border: 1px solid #8FD3FF;
-
-    box-shadow:
-        0 0 18px rgba(143,211,255,0.25),
-        inset 0 0 25px rgba(143,211,255,0.12);
-}
-
-
-.orb::before,
-.orb::after {
-    content: "";
-
-    position: absolute;
-
-    border-radius: 50%;
-}
-
-
-.orb::before {
-    inset: 12px;
-
-    border: 1px solid rgba(
-        143,
-        211,
-        255,
-        0.35
-    );
-}
-
-
-.orb::after {
-    inset: 27px;
-
-    border: 1px solid rgba(
-        143,
-        211,
-        255,
-        0.18
-    );
 }
 
 
 .orb-core {
-    position: absolute;
-
-    width: 54px;
-    height: 54px;
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
+    width: 88px;
+    height: 88px;
 
     border-radius: 50%;
 
     background:
         radial-gradient(
-            circle,
-            #DDF4FF 0%,
-            #8FD3FF 30%,
-            #294E70 65%,
-            #0D1626 100%
+            circle at 40% 35%,
+            #ffffff,
+            #9ee3ff 28%,
+            #35aee9 55%,
+            #0a6091 75%,
+            #062d4c 100%
         );
 
     box-shadow:
-        0 0 20px rgba(143,211,255,0.65),
-        0 0 45px rgba(143,211,255,0.2);
+        0 0 20px rgba(75, 197, 255, 0.9),
+        0 0 55px rgba(45, 168, 230, 0.55),
+        0 0 100px rgba(34, 145, 208, 0.3);
+
+    animation:
+        orbPulse
+        3s
+        ease-in-out
+        infinite;
 }
 
 
-/* ==========================================
+.orb-ring {
+    position: absolute;
+
+    border:
+        1px solid
+        rgba(123, 211, 255, 0.5);
+
+    border-radius: 50%;
+
+    transform:
+        rotate(-25deg);
+}
+
+
+.ring-one {
+    width: 185px;
+    height: 72px;
+}
+
+
+.ring-two {
+    width: 155px;
+    height: 200px;
+
+    transform:
+        rotate(55deg);
+}
+
+
+@keyframes orbPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.06);
+    }
+
+}
+
+
+/* =========================================
    STATUS
-========================================== */
+========================================= */
 
 .status {
     text-align: center;
-    margin-bottom: 20px;
+
+    margin-bottom: 18px;
 }
 
 
-.status span {
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: #8FD3FF;
+#status {
+    font-size: 10px;
+
+    letter-spacing:
+        2px;
+
+    color:
+        #8dd8ff;
 }
 
 
-/* ==========================================
+/* =========================================
    CONVERSATION
-========================================== */
+========================================= */
 
 .conversation {
-    width: 100%;
-    min-height: 80px;
+    min-height: 72px;
+
+    margin:
+        0 auto
+        24px;
+
+    padding:
+        18px;
+
+    border:
+        1px solid
+        rgba(117, 205, 255, 0.25);
+
+    border-radius: 14px;
+
+    background:
+        rgba(4, 27, 48, 0.45);
+
+    text-align: center;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
-
-    padding: 18px;
-    margin-bottom: 25px;
-
-    background: #0D1626;
-
-    border: 1px solid #263244;
-
-    border-radius: 16px;
 }
 
 
 #response {
-    text-align: center;
-
-    color: #DCE9F5;
+    color:
+        #d9f3ff;
 
     font-size: 14px;
 
@@ -241,91 +306,158 @@ body {
 }
 
 
-/* ==========================================
-   TALK BUTTON
-========================================== */
+/* =========================================
+   BUTTONS
+========================================= */
 
-#talkButton {
-    display: block;
-
+.primary-button {
     width: 100%;
-    height: 52px;
 
-    border: 1px solid #8FD3FF;
+    padding:
+        15px
+        18px;
 
-    border-radius: 28px;
+    border-radius: 12px;
 
-    background: #0D1626;
+    background:
+        linear-gradient(
+            135deg,
+            #168dd0,
+            #2eb7ec
+        );
 
-    color: #8FD3FF;
+    color:
+        #ffffff;
 
-    font-size: 14px;
+    font-size: 12px;
+
     font-weight: 700;
-    letter-spacing: 1px;
 
-    cursor: pointer;
+    letter-spacing:
+        1px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(28, 153, 215, 0.25);
 }
 
 
-#talkButton:active {
-    transform: scale(0.98);
+.primary-button:active {
+    transform:
+        scale(0.98);
 }
 
 
-/* ==========================================
+.secondary-button {
+    padding:
+        13px 16px;
+
+    border-radius: 10px;
+
+    background:
+        #173957;
+
+    color:
+        #b9e5ff;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   PAGE HEADERS
+========================================= */
+
+.page-header {
+    margin-bottom: 28px;
+
+    padding-top: 20px;
+}
+
+
+.page-header h1 {
+    font-size: 26px;
+
+    letter-spacing:
+        3px;
+}
+
+
+.page-header p {
+    margin-top: 7px;
+
+    color:
+        #8fc6e7;
+
+    font-size: 10px;
+
+    letter-spacing:
+        1.5px;
+}
+
+
+/* =========================================
    MEMORY
-========================================== */
+========================================= */
 
 .memory-content {
     display: flex;
 
     flex-direction: column;
 
-    gap: 15px;
+    gap: 14px;
 }
 
 
 .memory-card {
-    width: 100%;
+    padding:
+        18px;
 
-    min-height: 70px;
+    border:
+        1px solid
+        rgba(113, 203, 255, 0.22);
 
-    padding: 13px 16px;
+    border-radius: 14px;
 
-    background: #0D1626;
-
-    border: 1px solid #8FD3FF;
-
-    border-radius: 12px;
+    background:
+        rgba(10, 45, 72, 0.65);
 }
 
 
 .memory-title {
-    font-size: 14px;
+    color:
+        #8edaff;
+
+    font-size: 10px;
 
     font-weight: 700;
 
-    color: #8FD3FF;
+    letter-spacing:
+        2px;
+
+    margin-bottom: 8px;
 }
 
 
 .memory-text {
-    margin-top: 7px;
+    color:
+        #e4f6ff;
 
-    font-size: 10px;
+    font-size: 13px;
 
-    line-height: 1.4;
-
-    color: #8FA3BD;
+    line-height: 1.5;
 }
 
 
 .memory-date {
-    margin-top: 8px;
+    margin-top: 9px;
 
-    font-size: 9px;
+    color:
+        #6f9fbb;
 
-    color: #4E657D;
+    font-size: 10px;
 }
 
 
@@ -334,85 +466,296 @@ body {
 
     gap: 8px;
 
-    margin-top: 12px;
+    margin-top: 14px;
 }
 
 
-.memory-actions button {
-    flex: 1;
-
-    height: 32px;
+.memory-edit,
+.memory-delete {
+    padding:
+        8px 12px;
 
     border-radius: 8px;
-
-    font-family: inherit;
 
     font-size: 9px;
 
     font-weight: 700;
 
-    letter-spacing: 1px;
-
-    cursor: pointer;
+    letter-spacing:
+        1px;
 }
 
 
 .memory-edit {
-    border: 1px solid #8FD3FF;
+    background:
+        #164d70;
 
-    background: #122238;
-
-    color: #8FD3FF;
+    color:
+        #9cddff;
 }
 
 
 .memory-delete {
-    border: 1px solid #4E657D;
+    background:
+        #482d3b;
 
-    background: #080B12;
-
-    color: #8FA3BD;
+    color:
+        #ffafc4;
 }
 
 
 .create-memory {
     width: 100%;
 
-    height: 45px;
+    padding:
+        15px;
 
-    border: 1px solid #8FD3FF;
+    border:
+        1px dashed
+        rgba(113, 205, 255, 0.5);
 
-    border-radius: 12px;
+    border-radius: 13px;
 
-    background: #0D1626;
+    background:
+        rgba(20, 78, 112, 0.35);
 
-    color: #8FD3FF;
+    color:
+        #9fe0ff;
 
-    font-size: 13px;
+    font-size: 11px;
 
     font-weight: 700;
 
-    cursor: pointer;
+    letter-spacing:
+        1px;
 }
 
 
-/* ==========================================
+/* =========================================
    TOOLS
-========================================== */
+========================================= */
 
 .tools-grid {
     display: grid;
 
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+        repeat(2, 1fr);
 
-    gap: 10px;
+    gap: 12px;
 }
 
 
 .tool-card {
+    min-height: 125px;
+
+    padding:
+        18px;
+
+    border:
+        1px solid
+        rgba(116, 205, 255, 0.23);
+
+    border-radius: 15px;
+
+    background:
+        rgba(11, 53, 82, 0.7);
+
+    text-align: left;
+
+    color:
+        #ffffff;
+
+    transition:
+        transform 0.15s,
+        background 0.15s;
+}
+
+
+.tool-card:active {
+    transform:
+        scale(0.97);
+}
+
+
+.tool-icon {
+    display: block;
+
+    font-size: 23px;
+
+    margin-bottom: 13px;
+}
+
+
+.tool-title {
+    display: block;
+
+    color:
+        #ffffff;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing:
+        1.5px;
+}
+
+
+.tool-description {
+    display: block;
+
+    margin-top: 6px;
+
+    color:
+        #82afd0;
+
+    font-size: 10px;
+}
+
+
+/* =========================================
+   SETTINGS
+========================================= */
+
+.settings-content {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+.setting-card {
     width: 100%;
 
-    height: 95px;
+    min-height: 65px;
+
+    padding:
+        15px 17px;
+
+    border:
+        1px solid
+        rgba(116, 205, 255, 0.22);
+
+    border-radius: 13px;
+
+    background:
+        rgba(10, 49, 77, 0.7);
+
+    color:
+        #ffffff;
+
+    text-align: left;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+
+.setting-title {
+    display: block;
+
+    color:
+        #e4f7ff;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing:
+        1px;
+}
+
+
+.setting-description {
+    display: block;
+
+    margin-top: 5px;
+
+    color:
+        #7faec9;
+
+    font-size: 10px;
+}
+
+
+.setting-value {
+    color:
+        #8ddaff;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing:
+        1px;
+}
+
+
+.danger-button {
+    color:
+        #ffb6c8;
+}
+
+
+/* =========================================
+   BOTTOM NAVIGATION
+========================================= */
+
+.bottom-nav {
+    position: fixed;
+
+    bottom: 0;
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    width: 100%;
+    max-width: 480px;
+
+    height: 78px;
+
+    padding:
+        9px 8px
+        calc(9px + env(safe-area-inset-bottom));
+
+    background:
+        rgba(4, 22, 40, 0.96);
+
+    border-top:
+        1px solid
+        rgba(110, 198, 245, 0.2);
+
+    backdrop-filter:
+        blur(12px);
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    z-index: 100;
+}
+
+
+.nav-button {
+    background:
+        transparent;
+
+    color:
+        #547c96;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing:
+        0.7px;
 
     display: flex;
 
@@ -422,308 +765,34 @@ body {
 
     justify-content: center;
 
-    background: #0D1626;
-
-    border: 1px solid #8FD3FF;
-
-    border-radius: 12px;
-
-    cursor: pointer;
+    gap: 5px;
 }
 
 
-.tool-card:active {
-    transform: scale(0.97);
-}
+.nav-button span {
+    font-size: 19px;
 
-
-.tool-title {
-    font-size: 14px;
-
-    font-weight: 700;
-
-    color: #8FD3FF;
-}
-
-
-.tool-description {
-    margin-top: 7px;
-
-    font-size: 10px;
-
-    color: #8FA3BD;
-
-    text-align: center;
-}
-
-
-/* ==========================================
-   TIME TOOL
-========================================== */
-
-.tool-panel {
-    display: none;
-
-    margin-top: 20px;
-
-    padding: 20px;
-
-    background: #0D1626;
-
-    border: 1px solid #8FD3FF;
-
-    border-radius: 16px;
-}
-
-
-.tool-panel.show {
-    display: block;
-}
-
-
-.tool-panel-header {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 25px;
-}
-
-
-.tool-panel-header h2 {
-    font-size: 16px;
-
-    letter-spacing: 3px;
-
-    color: #FFFFFF;
-}
-
-
-.close-tool {
-    width: 32px;
-    height: 32px;
-
-    border: 1px solid #263244;
-
-    border-radius: 50%;
-
-    background: #080B12;
-
-    color: #8FA3BD;
-
-    font-size: 22px;
-
-    cursor: pointer;
-}
-
-
-.time-display {
-    text-align: center;
-
-    padding: 15px 0 25px;
-}
-
-
-.current-time {
-    font-size: 38px;
-
-    font-weight: 700;
-
-    letter-spacing: 2px;
-
-    color: #8FD3FF;
-}
-
-
-.current-date {
-    margin-top: 10px;
-
-    font-size: 11px;
-
-    color: #8FA3BD;
-}
-
-
-.speak-tool-button {
-    width: 100%;
-
-    height: 48px;
-
-    border: 1px solid #8FD3FF;
-
-    border-radius: 24px;
-
-    background: #122238;
-
-    color: #8FD3FF;
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    letter-spacing: 1px;
-
-    cursor: pointer;
-}
-
-
-/* ==========================================
-   SETTINGS
-========================================== */
-
-.settings-content {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 15px;
-}
-
-
-.setting-card {
-    position: relative;
-
-    width: 100%;
-
-    min-height: 55px;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 0 16px;
-
-    background: #0D1626;
-
-    border: 1px solid #8FD3FF;
-
-    border-radius: 12px;
-
-    color: #FFFFFF;
-}
-
-
-.setting-title {
-    font-size: 14px;
-
-    font-weight: 700;
-
-    color: #8FD3FF;
-}
-
-
-.setting-value {
-    margin-left: auto;
-
-    font-size: 12px;
-
-    color: #8FD3FF;
-}
-
-
-.personality-card {
-    min-height: 65px;
-}
-
-
-.personality-card > div {
-    display: flex;
-
-    flex-direction: column;
-}
-
-
-.setting-description {
-    margin-top: 5px;
-
-    font-size: 10px;
-
-    color: #8FA3BD;
-}
-
-
-.clear-memory,
-.about-jarvis {
-    justify-content: flex-start;
-
-    font-family: inherit;
-
-    font-size: 14px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-
-/* ==========================================
-   BOTTOM NAV
-========================================== */
-
-.bottom-nav {
-    position: fixed;
-
-    left: 50%;
-    bottom: 0;
-
-    transform: translateX(-50%);
-
-    width: 100%;
-    max-width: 430px;
-
-    height: 72px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-around;
-
-    padding: 0 10px;
-
-    background: rgba(8,11,18,0.96);
-
-    border-top: 1px solid #1C2A3A;
-
-    z-index: 100;
-}
-
-
-.nav-button {
-    flex: 1;
-
-    height: 45px;
-
-    border: none;
-
-    background: transparent;
-
-    color: #3C526A;
-
-    font-family: inherit;
-
-    font-size: 10px;
-
-    font-weight: 700;
-
-    letter-spacing: 1px;
-
-    cursor: pointer;
+    line-height: 1;
 }
 
 
 .nav-button.active {
-    color: #FFFFFF;
+    color:
+        #ffffff;
 }
 
 
-/* ==========================================
-   MEMORY MODAL
-========================================== */
+.nav-button:active {
+    transform:
+        scale(0.95);
+}
 
-.memory-modal {
+
+/* =========================================
+   MEMORY MODAL
+========================================= */
+
+.modal {
     position: fixed;
 
     inset: 0;
@@ -731,65 +800,82 @@ body {
     display: none;
 
     align-items: center;
-
     justify-content: center;
 
     padding: 20px;
 
-    background: rgba(0,0,0,0.75);
+    background:
+        rgba(2, 14, 26, 0.82);
 
-    z-index: 500;
+    z-index: 300;
 }
 
 
-.memory-modal.show {
+.modal.show {
     display: flex;
 }
 
 
-.memory-modal-box {
+.modal-box {
     width: 100%;
-    max-width: 360px;
+    max-width: 400px;
 
-    padding: 22px;
+    padding:
+        22px;
 
-    background: #0D1626;
-
-    border: 1px solid #8FD3FF;
+    border:
+        1px solid
+        rgba(113, 207, 255, 0.35);
 
     border-radius: 18px;
+
+    background:
+        #0a2944;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0, 0, 0, 0.5);
 }
 
 
-.memory-modal-box h2 {
-    margin-bottom: 18px;
+.modal-title {
+    color:
+        #ffffff;
 
-    text-align: center;
+    font-size: 16px;
 
-    font-size: 17px;
+    font-weight: 700;
 
-    letter-spacing: 2px;
+    letter-spacing:
+        2px;
+
+    margin-bottom: 17px;
 }
 
 
 #memoryInput {
     width: 100%;
 
-    min-height: 120px;
-
-    padding: 14px;
+    min-height: 125px;
 
     resize: none;
 
-    border: 1px solid #263244;
+    padding:
+        14px;
 
-    border-radius: 12px;
+    border:
+        1px solid
+        rgba(111, 202, 255, 0.25);
+
+    border-radius: 11px;
 
     outline: none;
 
-    background: #080B12;
+    background:
+        #061d31;
 
-    color: #FFFFFF;
+    color:
+        #ffffff;
 
     font-family: inherit;
 
@@ -799,92 +885,180 @@ body {
 }
 
 
-#memoryInput:focus {
-    border-color: #8FD3FF;
+#memoryInput::placeholder {
+    color:
+        #62849b;
 }
 
 
-.memory-modal-buttons {
+.modal-actions {
     display: flex;
 
     gap: 10px;
 
-    margin-top: 15px;
+    margin-top: 14px;
 }
 
 
-.memory-modal-buttons button {
+.modal-actions button {
     flex: 1;
+}
 
-    height: 44px;
 
-    border-radius: 10px;
+/* =========================================
+   TIME TOOL
+========================================= */
 
-    font-family: inherit;
+.tool-overlay {
+    position: fixed;
 
-    font-size: 11px;
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 22px;
+
+    background:
+        rgba(2, 14, 26, 0.84);
+
+    z-index: 200;
+}
+
+
+.tool-overlay.show {
+    display: flex;
+}
+
+
+.tool-window {
+    position: relative;
+
+    width: 100%;
+    max-width: 390px;
+
+    padding:
+        30px 22px;
+
+    border:
+        1px solid
+        rgba(110, 205, 255, 0.3);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0d3658,
+            #071e35
+        );
+
+    text-align: center;
+
+    box-shadow:
+        0 25px 70px
+        rgba(0, 0, 0, 0.5);
+}
+
+
+.close-button {
+    position: absolute;
+
+    top: 12px;
+    right: 14px;
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    color:
+        #9cc8df;
+
+    font-size: 22px;
+}
+
+
+.tool-window-label {
+    color:
+        #8edaff;
+
+    font-size: 10px;
 
     font-weight: 700;
 
-    cursor: pointer;
+    letter-spacing:
+        2px;
+
+    margin-bottom: 20px;
 }
 
 
-#cancelMemory {
-    border: 1px solid #263244;
+.big-time {
+    color:
+        #ffffff;
 
-    background: #080B12;
+    font-size: 42px;
 
-    color: #8FA3BD;
+    font-weight: 700;
+
+    letter-spacing:
+        2px;
+
+    text-shadow:
+        0 0 25px
+        rgba(78, 194, 255, 0.35);
 }
 
 
-#saveMemory {
-    border: 1px solid #8FD3FF;
+.big-date {
+    margin:
+        9px 0
+        25px;
 
-    background: #122238;
+    color:
+        #91bdd5;
 
-    color: #8FD3FF;
+    font-size: 12px;
 }
 
 
-/* ==========================================
-   MOBILE
-========================================== */
+/* =========================================
+   SMALL PHONES
+========================================= */
 
-@media (max-width: 360px) {
+@media (max-width: 350px) {
 
     .screen {
-        padding-left: 18px;
-        padding-right: 18px;
+        padding-left: 16px;
+        padding-right: 16px;
     }
 
 
     .orb {
-        width: 145px;
-        height: 145px;
+        width: 180px;
+        height: 180px;
+    }
+
+
+    .orb-core {
+        width: 75px;
+        height: 75px;
+    }
+
+
+    .tools-grid {
+        gap: 8px;
     }
 
 
     .tool-card {
-        height: 88px;
+        min-height: 115px;
     }
 
-
-    .nav-button {
-        font-size: 9px;
-    }
-
-}
-
-
-button {
-    -webkit-tap-highlight-color: transparent;
-}
-
-
-button:focus-visible {
-    outline: 1px solid #8FD3FF;
-
-    outline-offset: 2px;
-   }
+       }
