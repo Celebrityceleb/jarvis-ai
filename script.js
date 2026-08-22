@@ -15,6 +15,7 @@ const SUPABASE_ANON_KEY =
 
 let supabaseClient = null;
 
+
 if (window.supabase) {
 
     supabaseClient =
@@ -23,7 +24,9 @@ if (window.supabase) {
             SUPABASE_ANON_KEY
         );
 
-    console.log("SUPABASE CONNECTED");
+    console.log(
+        "JARVIS: Supabase connected."
+    );
 
 }
 
@@ -33,75 +36,87 @@ if (window.supabase) {
 // ==========================================
 
 const talkButton =
-    document.getElementById("talkButton");
+    document.getElementById(
+        "talkButton"
+    );
 
 const response =
-    document.getElementById("response");
+    document.getElementById(
+        "response"
+    );
 
 const status =
-    document.getElementById("status");
+    document.getElementById(
+        "status"
+    );
 
 
 // ==========================================
-// JARVIS VOICE
+// VOICE
 // ==========================================
 
 function jarvisSpeak(text) {
 
-    if (!("speechSynthesis" in window)) {
+    if (
+        !("speechSynthesis" in window)
+    ) {
 
         console.error(
-            "Speech synthesis is not supported."
+            "Speech synthesis unavailable."
         );
 
         return;
+
     }
+
 
     window.speechSynthesis.cancel();
 
+
     const speech =
-        new SpeechSynthesisUtterance(text);
+        new SpeechSynthesisUtterance(
+            text
+        );
 
-    speech.lang = "en-US";
-    speech.rate = 0.95;
-    speech.pitch = 0.9;
-    speech.volume = 1;
 
-    window.speechSynthesis.speak(speech);
+    speech.lang =
+        "en-US";
 
-    console.log(
-        "JARVIS SPEAKING:",
-        text
+    speech.rate =
+        0.95;
+
+    speech.pitch =
+        0.9;
+
+    speech.volume =
+        1;
+
+
+    window.speechSynthesis.speak(
+        speech
     );
+
 }
 
 
 // ==========================================
-// PAGE LOAD
+// PAGE INITIALIZATION
 // ==========================================
 
 window.addEventListener(
     "load",
     () => {
 
-        // Warm up speech engine
-        if ("speechSynthesis" in window) {
+        console.log(
+            "JARVIS: System loaded."
+        );
 
-            const warmup =
-                new SpeechSynthesisUtterance("");
 
-            warmup.volume = 0;
-
-            window.speechSynthesis.speak(
-                warmup
-            );
-        }
-
-        // Load saved memories
         loadMemories();
 
-        // Start clock
+
         updateTime();
+
 
         setInterval(
             updateTime,
@@ -135,16 +150,17 @@ navigationButtons.forEach(
             function(event) {
 
                 event.preventDefault();
-                event.stopPropagation();
 
-                const targetScreen =
+
+                const target =
                     this.getAttribute(
                         "data-screen"
                     );
 
+
                 console.log(
-                    "NAVIGATION:",
-                    targetScreen
+                    "JARVIS NAVIGATION:",
+                    target
                 );
 
 
@@ -160,14 +176,13 @@ navigationButtons.forEach(
                 );
 
 
-                // Find selected screen
+                // Find requested screen
                 const selectedScreen =
                     document.getElementById(
-                        targetScreen
+                        target
                     );
 
 
-                // Show selected screen
                 if (selectedScreen) {
 
                     selectedScreen.classList.add(
@@ -177,14 +192,14 @@ navigationButtons.forEach(
                 } else {
 
                     console.error(
-                        "SCREEN NOT FOUND:",
-                        targetScreen
+                        "JARVIS: Screen not found:",
+                        target
                     );
 
                 }
 
 
-                // Remove active state
+                // Update navigation
                 navigationButtons.forEach(
                     nav => {
 
@@ -196,7 +211,6 @@ navigationButtons.forEach(
                 );
 
 
-                // Activate selected button
                 this.classList.add(
                     "active"
                 );
@@ -222,16 +236,16 @@ if (talkButton) {
                 "JARVIS LISTENING...";
 
 
-            const localMessage =
+            const greeting =
                 "Hello James. I am JARVIS.";
 
 
             response.textContent =
-                localMessage;
+                greeting;
 
 
             jarvisSpeak(
-                localMessage
+                greeting
             );
 
 
@@ -247,7 +261,9 @@ if (talkButton) {
             try {
 
                 const {
-                    data: { session }
+                    data: {
+                        session
+                    }
                 } =
                     await supabaseClient
                         .auth
@@ -255,7 +271,13 @@ if (talkButton) {
 
 
                 if (!session) {
+
+                    console.log(
+                        "JARVIS: No login session."
+                    );
+
                     return;
+
                 }
 
 
@@ -266,21 +288,25 @@ if (talkButton) {
                             method: "POST",
 
                             headers: {
+
                                 "Content-Type":
                                     "application/json",
 
                                 "Authorization":
                                     `Bearer ${session.access_token}`
+
                             },
 
-                            body: JSON.stringify({
+                            body:
+                                JSON.stringify({
 
-                                action: "chat",
+                                    action:
+                                        "chat",
 
-                                message:
-                                    "Hello Jarvis"
+                                    message:
+                                        "Hello Jarvis"
 
-                            })
+                                })
 
                         }
                     );
@@ -290,12 +316,6 @@ if (talkButton) {
                     await backendResponse.json();
 
 
-                console.log(
-                    "BACKEND RESPONSE:",
-                    data
-                );
-
-
                 if (
                     backendResponse.ok &&
                     data.reply
@@ -303,6 +323,7 @@ if (talkButton) {
 
                     response.textContent =
                         data.reply;
+
 
                     jarvisSpeak(
                         data.reply
@@ -365,7 +386,9 @@ const clearMemoriesButton =
         "clearMemoriesButton"
     );
 
-let editingMemoryIndex = null;
+
+let editingMemoryIndex =
+    null;
 
 
 // ==========================================
@@ -385,7 +408,7 @@ function getMemories() {
     } catch (error) {
 
         console.error(
-            "MEMORY READ ERROR:",
+            "JARVIS MEMORY ERROR:",
             error
         );
 
@@ -397,21 +420,25 @@ function getMemories() {
 
 
 // ==========================================
-// SAVE MEMORIES
+// SAVE MEMORY ARRAY
 // ==========================================
 
-function saveMemoryArray(memories) {
+function saveMemoryArray(
+    memories
+) {
 
     localStorage.setItem(
         "jarvisMemories",
-        JSON.stringify(memories)
+        JSON.stringify(
+            memories
+        )
     );
 
 }
 
 
 // ==========================================
-// CREATE MEMORY BUTTON
+// CREATE MEMORY
 // ==========================================
 
 if (createMemoryButton) {
@@ -420,19 +447,26 @@ if (createMemoryButton) {
         "click",
         () => {
 
-            editingMemoryIndex = null;
+            editingMemoryIndex =
+                null;
+
 
             memoryModalTitle.textContent =
                 "NEW MEMORY";
 
+
             saveMemory.textContent =
                 "SAVE MEMORY";
 
-            memoryInput.value = "";
+
+            memoryInput.value =
+                "";
+
 
             memoryModal.classList.add(
                 "show"
             );
+
 
             memoryInput.focus();
 
@@ -456,7 +490,9 @@ if (cancelMemory) {
                 "show"
             );
 
-            editingMemoryIndex = null;
+
+            editingMemoryIndex =
+                null;
 
         }
     );
@@ -485,6 +521,7 @@ if (saveMemory) {
                 );
 
                 return;
+
             }
 
 
@@ -492,20 +529,27 @@ if (saveMemory) {
                 getMemories();
 
 
-            // EDIT
+            // ------------------------------
+            // UPDATE EXISTING
+            // ------------------------------
+
             if (
                 editingMemoryIndex !== null
             ) {
 
                 memories[
                     editingMemoryIndex
-                ].text = text;
+                ].text =
+                    text;
+
 
                 memories[
                     editingMemoryIndex
                 ].date =
                     new Date()
-                        .toLocaleDateString();
+                        .toLocaleDateString(
+                            "en-NG"
+                        );
 
 
                 saveMemoryArray(
@@ -518,7 +562,8 @@ if (saveMemory) {
                 );
 
 
-                editingMemoryIndex = null;
+                editingMemoryIndex =
+                    null;
 
 
                 loadMemories();
@@ -526,6 +571,7 @@ if (saveMemory) {
 
                 response.textContent =
                     "Memory updated.";
+
 
                 status.textContent =
                     "JARVIS ACTIVE";
@@ -537,17 +583,24 @@ if (saveMemory) {
 
 
                 return;
+
             }
 
 
-            // CREATE
+            // ------------------------------
+            // CREATE NEW
+            // ------------------------------
+
             memories.push({
 
-                text: text,
+                text:
+                    text,
 
                 date:
                     new Date()
-                        .toLocaleDateString()
+                        .toLocaleDateString(
+                            "en-NG"
+                        )
 
             });
 
@@ -567,6 +620,7 @@ if (saveMemory) {
 
             response.textContent =
                 "Memory saved.";
+
 
             status.textContent =
                 "JARVIS ACTIVE";
@@ -605,14 +659,16 @@ function loadMemories() {
         );
 
 
-    // Remove generated memories
+    // Remove previously generated cards
     document
         .querySelectorAll(
             ".saved-memory"
         )
         .forEach(
             card => {
+
                 card.remove();
+
             }
         );
 
@@ -622,7 +678,10 @@ function loadMemories() {
 
 
     memories.forEach(
-        (memory, index) => {
+        (
+            memory,
+            index
+        ) => {
 
             const card =
                 document.createElement(
@@ -698,13 +757,16 @@ function loadMemories() {
 
 
 // ==========================================
-// MEMORY EDIT / DELETE ACTIONS
+// MEMORY ACTIONS
 // ==========================================
 
 function attachMemoryActions() {
 
 
+    // --------------------------------------
     // EDIT
+    // --------------------------------------
+
     document
         .querySelectorAll(
             ".memory-edit"
@@ -726,8 +788,12 @@ function attachMemoryActions() {
                             getMemories();
 
 
-                        if (!memories[index]) {
+                        if (
+                            !memories[index]
+                        ) {
+
                             return;
+
                         }
 
 
@@ -761,7 +827,10 @@ function attachMemoryActions() {
         );
 
 
+    // --------------------------------------
     // DELETE
+    // --------------------------------------
+
     document
         .querySelectorAll(
             ".memory-delete"
@@ -783,16 +852,22 @@ function attachMemoryActions() {
                             getMemories();
 
 
-                        if (!memories[index]) {
+                        if (
+                            !memories[index]
+                        ) {
+
                             return;
+
                         }
 
 
-                        if (
-                            !confirm(
+                        const confirmed =
+                            confirm(
                                 "Delete this memory?"
-                            )
-                        ) {
+                            );
+
+
+                        if (!confirmed) {
 
                             return;
 
@@ -815,6 +890,7 @@ function attachMemoryActions() {
 
                         response.textContent =
                             "Memory deleted.";
+
 
                         status.textContent =
                             "JARVIS ACTIVE";
@@ -854,22 +930,25 @@ if (clearMemoriesButton) {
                 response.textContent =
                     "There are no saved memories.";
 
+
                 jarvisSpeak(
                     "There are no saved memories to clear."
                 );
 
+
                 return;
+
             }
 
 
-            if (
-                !confirm(
+            const confirmed =
+                confirm(
                     "Are you sure you want to delete all saved memories?"
-                )
-            ) {
+                );
 
+
+            if (!confirmed) {
                 return;
-
             }
 
 
@@ -883,6 +962,7 @@ if (clearMemoriesButton) {
 
             response.textContent =
                 "All memories cleared.";
+
 
             status.textContent =
                 "JARVIS ACTIVE";
@@ -902,15 +982,19 @@ if (clearMemoriesButton) {
 // ESCAPE MEMORY TEXT
 // ==========================================
 
-function escapeMemoryText(text) {
+function escapeMemoryText(
+    text
+) {
 
     const div =
         document.createElement(
             "div"
         );
 
+
     div.textContent =
         text;
+
 
     return div.innerHTML;
 
@@ -970,8 +1054,9 @@ toolCards.forEach(
                     );
 
 
-                // TIME
-                if (tool === "time") {
+                if (
+                    tool === "time"
+                ) {
 
                     openTimeTool();
 
@@ -980,9 +1065,9 @@ toolCards.forEach(
                 }
 
 
-                // OTHER TOOLS
                 response.textContent =
                     `${tool.toUpperCase()} tool is coming online.`;
+
 
                 status.textContent =
                     "JARVIS ACTIVE";
@@ -1040,41 +1125,4 @@ if (closeTimeTool) {
 }
 
 
-// ==========================================
-// UPDATE TIME DISPLAY
-// ==========================================
-
-function updateTime() {
-
-    if (
-        !currentTime ||
-        !currentDate
-    ) {
-
-        return;
-
-    }
-
-
-    const now =
-        new Date();
-
-
-    currentTime.textContent =
-        now.toLocaleTimeString(
-            "en-NG",
-            {
-                hour: "numeric",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: true
-            }
-        );
-
-
-    currentDate.textContent =
-        now.toLocaleDateString(
-            "en-NG",
-            {
-                weekday: "long",
-                year: "nume
+// =======
