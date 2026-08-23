@@ -469,7 +469,8 @@ if (talkButton) {
         "JARVIS: talkButton was not found."
     );
 
-        }
+}
+
 
 // ==========================================
 // TIME ELEMENTS
