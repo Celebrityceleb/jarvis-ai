@@ -206,8 +206,120 @@ navigationButtons.forEach(button => {
 
 
 // ==========================================
-// TALK TO JARVIS
+// TALK TO JARVIS — VOICE INPUT
 // ==========================================
+
+let recognition = null;
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+if (SpeechRecognition) {
+
+    recognition =
+        new SpeechRecognition();
+
+    recognition.lang =
+        "en-US";
+
+    recognition.continuous =
+        false;
+
+    recognition.interimResults =
+        false;
+
+    recognition.maxAlternatives =
+        1;
+
+
+    recognition.onstart =
+        function() {
+
+            console.log(
+                "JARVIS: Listening..."
+            );
+
+            setStatus(
+                "LISTENING..."
+            );
+
+            setResponse(
+                "I'm listening."
+            );
+
+        };
+
+
+    recognition.onresult =
+        function(event) {
+
+            const transcript =
+                event.results[0][0].transcript
+                    .trim();
+
+            console.log(
+                "JARVIS HEARD:",
+                transcript
+            );
+
+            setStatus(
+                "JARVIS ACTIVE"
+            );
+
+            setResponse(
+                `You said: "${transcript}"`
+            );
+
+            jarvisSpeak(
+                `I heard you say ${transcript}`
+            );
+
+        };
+
+
+    recognition.onerror =
+        function(event) {
+
+            console.error(
+                "JARVIS SPEECH ERROR:",
+                event.error
+            );
+
+            setStatus(
+                "JARVIS ACTIVE"
+            );
+
+            setResponse(
+                "I couldn't hear you. Please try again."
+            );
+
+        };
+
+
+    recognition.onend =
+        function() {
+
+            console.log(
+                "JARVIS: Listening ended."
+            );
+
+            setStatus(
+                "JARVIS ACTIVE"
+            );
+
+        };
+
+
+} else {
+
+    console.warn(
+        "JARVIS: Speech recognition is not supported."
+    );
+
+}
+
 
 if (talkButton) {
 
@@ -221,20 +333,36 @@ if (talkButton) {
                 "JARVIS: Talk button pressed."
             );
 
-            const greeting =
-                "Hello James. I am JARVIS.";
 
-            setStatus(
-                "JARVIS ACTIVE"
-            );
+            if (!recognition) {
 
-            setResponse(
-                greeting
-            );
+                setResponse(
+                    "Voice recognition is not supported on this browser."
+                );
 
-            jarvisSpeak(
-                greeting
-            );
+                jarvisSpeak(
+                    "Voice recognition is not supported on this browser."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                window.speechSynthesis.cancel();
+
+                recognition.start();
+
+            } catch (error) {
+
+                console.error(
+                    "JARVIS: Could not start recognition.",
+                    error
+                );
+
+            }
 
         }
     );
