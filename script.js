@@ -428,11 +428,73 @@ toolCards.forEach(card => {
 
             if (tool === "remind") {
 
+    setResponse(
+        "What should I remind you about?"
+    );
+
+    jarvisSpeak(
+        "What should I remind you about?"
+    );
+
+    setTimeout(
+        function() {
+
+            const reminder =
+                prompt(
+                    "JARVIS REMINDER\n\nWhat should I remind you about?"
+                );
+
+            if (!reminder || !reminder.trim()) {
+
                 setResponse(
-                    "Reminder tool is coming online."
+                    "Reminder cancelled."
                 );
 
                 return;
+            }
+
+            const reminderText =
+                reminder.trim();
+
+            const reminders =
+                JSON.parse(
+                    localStorage.getItem(
+                        "jarvisReminders"
+                    ) || "[]"
+                );
+
+            reminders.push({
+
+                text:
+                    reminderText,
+
+                created:
+                    new Date().toLocaleString(
+                        "en-NG"
+                    )
+
+            });
+
+            localStorage.setItem(
+                "jarvisReminders",
+                JSON.stringify(
+                    reminders
+                )
+            );
+
+            setResponse(
+                `Reminder saved: "${reminderText}"`
+            );
+
+            jarvisSpeak(
+                `Reminder saved. ${reminderText}`
+            );
+
+        },
+        300
+    );
+
+    return;
             }
 
             if (tool === "notes") {
