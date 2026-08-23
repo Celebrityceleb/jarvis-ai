@@ -587,10 +587,12 @@ toolCards.forEach(card => {
     const screenHeight =
         window.screen.height;
 
+
     const message =
         `System online. Network ${online}. ` +
         `Language ${language}. ` +
         `Screen ${screenWidth} by ${screenHeight}.`;
+
 
     setResponse(
         message
@@ -599,6 +601,7 @@ toolCards.forEach(card => {
     jarvisSpeak(
         message
     );
+
 
     console.log(
         "JARVIS SYSTEM STATUS"
@@ -624,8 +627,9 @@ toolCards.forEach(card => {
         `${screenWidth} x ${screenHeight}`
     );
 
+
     return;
-            }
+}
 
         }
     );
