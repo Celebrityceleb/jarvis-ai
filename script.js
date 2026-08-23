@@ -403,11 +403,27 @@ toolCards.forEach(card => {
 
             if (tool === "web") {
 
-                setResponse(
-                    "Web tool is ready."
-                );
+    setResponse(
+        "Opening the web."
+    );
 
-                return;
+    jarvisSpeak(
+        "Opening the web."
+    );
+
+    setTimeout(
+        function() {
+
+            window.open(
+                "https://www.google.com",
+                "_blank"
+            );
+
+        },
+        300
+    );
+
+    return;
             }
 
             if (tool === "remind") {
