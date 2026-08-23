@@ -206,262 +206,238 @@ navigationButtons.forEach(button => {
 
 
 // ==========================================
-// TALK TO JARVIS — VOICE INPUT
+// JARVIS — MICROPHONE INPUT
 // ==========================================
 
-let recognition = null;
-
-const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
+let jarvisMicrophoneStream = null;
+let jarvisAudioRecorder = null;
+let jarvisAudioChunks = [];
 
 
 // ==========================================
-// SPEECH RECOGNITION SETUP
+// START MICROPHONE
 // ==========================================
 
-if (SpeechRecognition) {
+async function startJarvisMicrophone() {
 
-    recognition =
-        new SpeechRecognition();
+    try {
 
-    recognition.lang =
-        "en-US";
+        setStatus(
+            "MICROPHONE STARTING..."
+        );
 
-    recognition.continuous =
-        false;
+        setResponse(
+            "Activating microphone..."
+        );
 
-    recognition.interimResults =
-        false;
-
-    recognition.maxAlternatives =
-        1;
-
-
-    // ======================================
-    // LISTENING STARTED
-    // ======================================
-
-    recognition.onstart =
-        function() {
-
-            console.log(
-                "JARVIS: Listening..."
-            );
-
-            setStatus(
-                "LISTENING..."
-            );
-
-            setResponse(
-                "I'm listening."
-            );
-
-        };
+        console.log(
+            "JARVIS: Requesting microphone access..."
+        );
 
 
-    // ======================================
-    // JARVIS HEARS COMMAND
-    // ======================================
+        jarvisMicrophoneStream =
+            await navigator.mediaDevices.getUserMedia({
+                audio: true
+            });
 
-    recognition.onresult =
-        function(event) {
 
-            const transcript =
-                event.results[0][0].transcript
-                    .trim()
-                    .toLowerCase();
+        console.log(
+            "JARVIS: Microphone access granted."
+        );
 
-            console.log(
-                "JARVIS HEARD:",
-                transcript
+        setStatus(
+            "LISTENING..."
+        );
+
+        setResponse(
+            "I'm listening."
+        );
+
+        jarvisSpeak(
+            "I'm listening."
+        );
+
+
+        // ======================================
+        // CREATE AUDIO RECORDER
+        // ======================================
+
+        jarvisAudioChunks = [];
+
+        jarvisAudioRecorder =
+            new MediaRecorder(
+                jarvisMicrophoneStream
             );
 
 
-            // ==================================
-            // TIME COMMAND
-            // ==================================
+        jarvisAudioRecorder.ondataavailable =
+            function(event) {
 
-            if (
-                transcript.includes("what time") ||
-                transcript.includes("current time") ||
-                transcript === "time"
-            ) {
+                if (
+                    event.data &&
+                    event.data.size > 0
+                ) {
 
-                const now =
-                    new Date();
+                    jarvisAudioChunks.push(
+                        event.data
+                    );
 
-                const time =
-                    now.toLocaleTimeString(
-                        "en-NG",
+                }
+
+            };
+
+
+        jarvisAudioRecorder.onstop =
+            function() {
+
+                console.log(
+                    "JARVIS: Audio recording stopped."
+                );
+
+                const audioBlob =
+                    new Blob(
+                        jarvisAudioChunks,
                         {
-                            hour: "numeric",
-                            minute: "2-digit",
-                            hour12: true
+                            type:
+                                jarvisAudioRecorder.mimeType ||
+                                "audio/webm"
                         }
                     );
 
-                const message =
-                    `The current time is ${time}.`;
+
+                console.log(
+                    "JARVIS AUDIO SIZE:",
+                    audioBlob.size
+                );
+
+
+                stopJarvisMicrophone();
+
 
                 setStatus(
                     "JARVIS ACTIVE"
                 );
 
                 setResponse(
-                    message
+                    "Audio captured. Speech processing is next."
                 );
 
-                jarvisSpeak(
-                    message
+            };
+
+
+        jarvisAudioRecorder.onerror =
+            function(error) {
+
+                console.error(
+                    "JARVIS AUDIO RECORDER ERROR:",
+                    error
                 );
 
-                return;
-
-            }
-
-
-            // ==================================
-            // GREETING
-            // ==================================
-
-            if (
-                transcript.includes("hello jarvis") ||
-                transcript.includes("hi jarvis") ||
-                transcript === "hello" ||
-                transcript === "hi"
-            ) {
-
-                const message =
-                    "Hello James. How can I help you?";
+                stopJarvisMicrophone();
 
                 setStatus(
                     "JARVIS ACTIVE"
                 );
 
                 setResponse(
-                    message
+                    "I couldn't access the microphone."
                 );
 
-                jarvisSpeak(
-                    message
-                );
-
-                return;
-
-            }
+            };
 
 
-            // ==================================
-            // OPEN WEB
-            // ==================================
-
-            if (
-                transcript.includes("open the web") ||
-                transcript.includes("open web") ||
-                transcript.includes("open google")
-            ) {
-
-                const message =
-                    "Opening the web.";
-
-                setStatus(
-                    "JARVIS ACTIVE"
-                );
-
-                setResponse(
-                    message
-                );
-
-                jarvisSpeak(
-                    message
-                );
-
-                setTimeout(
-                    function() {
-
-                        window.open(
-                            "https://www.google.com",
-                            "_blank"
-                        );
-
-                    },
-                    500
-                );
-
-                return;
-
-            }
+        jarvisAudioRecorder.start();
 
 
-            // ==================================
-            // UNKNOWN COMMAND
-            // ==================================
+        console.log(
+            "JARVIS: Recording started."
+        );
 
-            const message =
-                `I heard you say "${transcript}", but I don't know that command yet.`;
 
-            setStatus(
-                "JARVIS ACTIVE"
-            );
+        // Record for 5 seconds for this first test.
+        setTimeout(
+            function() {
+
+                if (
+                    jarvisAudioRecorder &&
+                    jarvisAudioRecorder.state ===
+                        "recording"
+                ) {
+
+                    jarvisAudioRecorder.stop();
+
+                }
+
+            },
+            5000
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "JARVIS MICROPHONE ERROR:",
+            error
+        );
+
+
+        setStatus(
+            "JARVIS ACTIVE"
+        );
+
+
+        if (
+            error.name ===
+            "NotAllowedError"
+        ) {
 
             setResponse(
-                message
+                "Microphone permission was denied."
             );
 
             jarvisSpeak(
-                message
+                "Microphone permission was denied."
             );
 
-        };
-
-
-    // ======================================
-    // SPEECH ERROR
-    // ======================================
-
-    recognition.onerror =
-        function(event) {
-
-            console.error(
-                "JARVIS SPEECH ERROR:",
-                event.error
-            );
-
-            setStatus(
-                "JARVIS ACTIVE"
-            );
+        } else {
 
             setResponse(
-                "I couldn't hear you. Please try again."
+                "I could not access the microphone."
             );
 
-        };
-
-
-    // ======================================
-    // LISTENING ENDED
-    // ======================================
-
-    recognition.onend =
-        function() {
-
-            console.log(
-                "JARVIS: Listening ended."
+            jarvisSpeak(
+                "I could not access the microphone."
             );
 
-            setStatus(
-                "JARVIS ACTIVE"
+        }
+
+    }
+
+}
+
+
+// ==========================================
+// STOP MICROPHONE
+// ==========================================
+
+function stopJarvisMicrophone() {
+
+    if (jarvisMicrophoneStream) {
+
+        jarvisMicrophoneStream
+            .getTracks()
+            .forEach(
+                function(track) {
+
+                    track.stop();
+
+                }
             );
 
-        };
+        jarvisMicrophoneStream =
+            null;
 
-
-} else {
-
-    console.warn(
-        "JARVIS: Speech recognition is not supported."
-    );
+    }
 
 }
 
@@ -482,36 +458,7 @@ if (talkButton) {
                 "JARVIS: Talk button pressed."
             );
 
-
-            if (!recognition) {
-
-                setResponse(
-                    "Voice recognition is not supported on this browser."
-                );
-
-                jarvisSpeak(
-                    "Voice recognition is not supported on this browser."
-                );
-
-                return;
-
-            }
-
-
-            try {
-
-                window.speechSynthesis.cancel();
-
-                recognition.start();
-
-            } catch (error) {
-
-                console.error(
-                    "JARVIS: Could not start recognition.",
-                    error
-                );
-
-            }
+            startJarvisMicrophone();
 
         }
     );
@@ -522,13 +469,7 @@ if (talkButton) {
         "JARVIS: talkButton was not found."
     );
 
-}
-
-
-// ==========================================
-// END TALK TO JARVIS — VOICE INPUT
-// ==========================================
-
+        }
 
 // ==========================================
 // TIME ELEMENTS
