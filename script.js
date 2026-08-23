@@ -570,11 +570,61 @@ toolCards.forEach(card => {
 
             if (tool === "system") {
 
-                setResponse(
-                    "System controls are ready."
-                );
+    const browser =
+        navigator.userAgent;
 
-                return;
+    const language =
+        navigator.language;
+
+    const online =
+        navigator.onLine
+            ? "ONLINE"
+            : "OFFLINE";
+
+    const screenWidth =
+        window.screen.width;
+
+    const screenHeight =
+        window.screen.height;
+
+    const message =
+        `System online. Network ${online}. ` +
+        `Language ${language}. ` +
+        `Screen ${screenWidth} by ${screenHeight}.`;
+
+    setResponse(
+        message
+    );
+
+    jarvisSpeak(
+        message
+    );
+
+    console.log(
+        "JARVIS SYSTEM STATUS"
+    );
+
+    console.log(
+        "Browser:",
+        browser
+    );
+
+    console.log(
+        "Language:",
+        language
+    );
+
+    console.log(
+        "Network:",
+        online
+    );
+
+    console.log(
+        "Screen:",
+        `${screenWidth} x ${screenHeight}`
+    );
+
+    return;
             }
 
         }
