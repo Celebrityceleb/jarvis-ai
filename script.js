@@ -499,11 +499,73 @@ toolCards.forEach(card => {
 
             if (tool === "notes") {
 
+    setResponse(
+        "What would you like me to save?"
+    );
+
+    jarvisSpeak(
+        "What would you like me to save?"
+    );
+
+    setTimeout(
+        function() {
+
+            const note =
+                prompt(
+                    "JARVIS NOTES\n\nWhat would you like me to save?"
+                );
+
+            if (!note || !note.trim()) {
+
                 setResponse(
-                    "Notes tool is ready."
+                    "Note cancelled."
                 );
 
                 return;
+            }
+
+            const noteText =
+                note.trim();
+
+            const notes =
+                JSON.parse(
+                    localStorage.getItem(
+                        "jarvisNotes"
+                    ) || "[]"
+                );
+
+            notes.push({
+
+                text:
+                    noteText,
+
+                created:
+                    new Date().toLocaleString(
+                        "en-NG"
+                    )
+
+            });
+
+            localStorage.setItem(
+                "jarvisNotes",
+                JSON.stringify(
+                    notes
+                )
+            );
+
+            setResponse(
+                `Note saved: "${noteText}"`
+            );
+
+            jarvisSpeak(
+                `Note saved. ${noteText}`
+            );
+
+        },
+        300
+    );
+
+    return;
             }
 
             if (tool === "system") {
