@@ -216,6 +216,10 @@ const SpeechRecognition =
     window.webkitSpeechRecognition;
 
 
+// ==========================================
+// SPEECH RECOGNITION SETUP
+// ==========================================
+
 if (SpeechRecognition) {
 
     recognition =
@@ -233,6 +237,10 @@ if (SpeechRecognition) {
     recognition.maxAlternatives =
         1;
 
+
+    // ======================================
+    // LISTENING STARTED
+    // ======================================
 
     recognition.onstart =
         function() {
@@ -252,32 +260,165 @@ if (SpeechRecognition) {
         };
 
 
+    // ======================================
+    // JARVIS HEARS COMMAND
+    // ======================================
+
     recognition.onresult =
         function(event) {
 
             const transcript =
                 event.results[0][0].transcript
-                    .trim();
+                    .trim()
+                    .toLowerCase();
 
             console.log(
                 "JARVIS HEARD:",
                 transcript
             );
 
+
+            // ==================================
+            // TIME COMMAND
+            // ==================================
+
+            if (
+                transcript.includes("what time") ||
+                transcript.includes("current time") ||
+                transcript === "time"
+            ) {
+
+                const now =
+                    new Date();
+
+                const time =
+                    now.toLocaleTimeString(
+                        "en-NG",
+                        {
+                            hour: "numeric",
+                            minute: "2-digit",
+                            hour12: true
+                        }
+                    );
+
+                const message =
+                    `The current time is ${time}.`;
+
+                setStatus(
+                    "JARVIS ACTIVE"
+                );
+
+                setResponse(
+                    message
+                );
+
+                jarvisSpeak(
+                    message
+                );
+
+                return;
+
+            }
+
+
+            // ==================================
+            // GREETING
+            // ==================================
+
+            if (
+                transcript.includes("hello jarvis") ||
+                transcript.includes("hi jarvis") ||
+                transcript === "hello" ||
+                transcript === "hi"
+            ) {
+
+                const message =
+                    "Hello James. How can I help you?";
+
+                setStatus(
+                    "JARVIS ACTIVE"
+                );
+
+                setResponse(
+                    message
+                );
+
+                jarvisSpeak(
+                    message
+                );
+
+                return;
+
+            }
+
+
+            // ==================================
+            // OPEN WEB
+            // ==================================
+
+            if (
+                transcript.includes("open the web") ||
+                transcript.includes("open web") ||
+                transcript.includes("open google")
+            ) {
+
+                const message =
+                    "Opening the web.";
+
+                setStatus(
+                    "JARVIS ACTIVE"
+                );
+
+                setResponse(
+                    message
+                );
+
+                jarvisSpeak(
+                    message
+                );
+
+                setTimeout(
+                    function() {
+
+                        window.open(
+                            "https://www.google.com",
+                            "_blank"
+                        );
+
+                    },
+                    500
+                );
+
+                return;
+
+            }
+
+
+            // ==================================
+            // UNKNOWN COMMAND
+            // ==================================
+
+            const message =
+                `I heard you say "${transcript}", but I don't know that command yet.`;
+
             setStatus(
                 "JARVIS ACTIVE"
             );
 
             setResponse(
-                `You said: "${transcript}"`
+                message
             );
 
             jarvisSpeak(
-                `I heard you say ${transcript}`
+                message
             );
 
         };
 
+
+    // ======================================
+    // SPEECH ERROR
+    // ======================================
 
     recognition.onerror =
         function(event) {
@@ -297,6 +438,10 @@ if (SpeechRecognition) {
 
         };
 
+
+    // ======================================
+    // LISTENING ENDED
+    // ======================================
 
     recognition.onend =
         function() {
@@ -320,6 +465,10 @@ if (SpeechRecognition) {
 
 }
 
+
+// ==========================================
+// TALK BUTTON
+// ==========================================
 
 if (talkButton) {
 
@@ -374,6 +523,11 @@ if (talkButton) {
     );
 
 }
+
+
+// ==========================================
+// END TALK TO JARVIS — VOICE INPUT
+// ==========================================
 
 
 // ==========================================
