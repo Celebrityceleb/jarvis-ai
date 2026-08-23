@@ -347,11 +347,58 @@ toolCards.forEach(card => {
 
             if (tool === "search") {
 
+    setResponse(
+        "What would you like me to search for?"
+    );
+
+    jarvisSpeak(
+        "What would you like me to search for?"
+    );
+
+    setTimeout(
+        function() {
+
+            const query =
+                prompt(
+                    "JARVIS SEARCH\n\nWhat would you like to search for?"
+                );
+
+            if (!query || !query.trim()) {
+
                 setResponse(
-                    "Search tool is ready."
+                    "Search cancelled."
                 );
 
                 return;
+            }
+
+            const searchQuery =
+                query.trim();
+
+            setResponse(
+                `Searching for "${searchQuery}"...`
+            );
+
+            jarvisSpeak(
+                `Searching for ${searchQuery}.`
+            );
+
+            const searchURL =
+                "https://www.google.com/search?q=" +
+                encodeURIComponent(
+                    searchQuery
+                );
+
+            window.open(
+                searchURL,
+                "_blank"
+            );
+
+        },
+        300
+    );
+
+    return;
             }
 
             if (tool === "web") {
