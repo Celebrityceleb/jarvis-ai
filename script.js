@@ -495,7 +495,7 @@ toolCards.forEach(card => {
     );
 
     return;
-            }
+                }
 
             if (tool === "notes") {
 
