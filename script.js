@@ -288,41 +288,163 @@ async function startJarvisMicrophone() {
 
 
         jarvisAudioRecorder.onstop =
-            function() {
+    async function() {
 
-                console.log(
-                    "JARVIS: Audio recording stopped."
+        console.log(
+            "JARVIS: Audio recording stopped."
+        );
+
+
+        const audioBlob =
+            new Blob(
+                jarvisAudioChunks,
+                {
+                    type:
+                        jarvisAudioRecorder.mimeType ||
+                        "audio/webm"
+                }
+            );
+
+
+        console.log(
+            "JARVIS AUDIO SIZE:",
+            audioBlob.size
+        );
+
+
+        stopJarvisMicrophone();
+
+
+        setStatus(
+            "PROCESSING..."
+        );
+
+        setResponse(
+            "Audio captured. Processing speech..."
+        );
+
+
+        try {
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "audio",
+                audioBlob,
+                "jarvis-recording.webm"
+            );
+
+
+            console.log(
+                "JARVIS: Sending audio to speech endpoint..."
+            );
+
+
+            const result =
+                await fetch(
+                    "https://oechiufoqtnuofoiatgw.supabase.co/functions/v1/jarvis-speech",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "apikey":
+                                SUPABASE_ANON_KEY
+                        },
+
+                        body:
+                            formData
+                    }
                 );
 
-                const audioBlob =
-                    new Blob(
-                        jarvisAudioChunks,
-                        {
-                            type:
-                                jarvisAudioRecorder.mimeType ||
-                                "audio/webm"
-                        }
-                    );
+
+            console.log(
+                "JARVIS SPEECH STATUS:",
+                result.status
+            );
 
 
-                console.log(
-                    "JARVIS AUDIO SIZE:",
-                    audioBlob.size
+            const responseText =
+                await result.text();
+
+
+            console.log(
+                "JARVIS SPEECH RESPONSE:",
+                responseText
+            );
+
+
+            if (!result.ok) {
+
+                throw new Error(
+                    responseText
+                );
+
+            }
+
+
+            let data =
+                JSON.parse(
+                    responseText
                 );
 
 
-                stopJarvisMicrophone();
+            const transcript =
+                data.transcript ||
+                data.text;
 
+
+            if (transcript) {
 
                 setStatus(
                     "JARVIS ACTIVE"
                 );
 
                 setResponse(
-    "Audio captured. Processing speech..."
-);
+                    `You said: "${transcript}"`
+                );
 
-            };
+                jarvisSpeak(
+                    `I heard you say ${transcript}`
+                );
+
+            } else {
+
+                setStatus(
+                    "JARVIS ACTIVE"
+                );
+
+                setResponse(
+                    "Audio received, but no speech text was returned."
+                );
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "JARVIS SPEECH PROCESSING ERROR:",
+                error
+            );
+
+
+            setStatus(
+                "JARVIS ACTIVE"
+            );
+
+            setResponse(
+                "I couldn't process the audio."
+            );
+
+            jarvisSpeak(
+                "I couldn't process the audio."
+            );
+
+        }
+
+    };
 
 
         jarvisAudioRecorder.onerror =
