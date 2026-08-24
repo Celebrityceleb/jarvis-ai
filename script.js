@@ -391,35 +391,168 @@ async function startJarvisMicrophone() {
 
 
             const transcript =
-                data.transcript ||
-                data.text;
+    data.transcript ||
+    data.text;
 
 
-            if (transcript) {
+if (transcript) {
 
-                setStatus(
-                    "JARVIS ACTIVE"
+    const command =
+        transcript.trim().toLowerCase();
+
+
+    console.log(
+        "JARVIS COMMAND:",
+        command
+    );
+
+
+    // ======================================
+    // TIME COMMAND
+    // ======================================
+
+    if (
+        command.includes("what time") ||
+        command.includes("current time") ||
+        command === "time" ||
+        command.includes("tell me the time")
+    ) {
+
+        const now =
+            new Date();
+
+        const time =
+            now.toLocaleTimeString(
+                "en-NG",
+                {
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true
+                }
+            );
+
+        const message =
+            `The current time is ${time}.`;
+
+        setStatus(
+            "JARVIS ACTIVE"
+        );
+
+        setResponse(
+            message
+        );
+
+        jarvisSpeak(
+            message
+        );
+
+        return;
+    }
+
+
+    // ======================================
+    // GREETING
+    // ======================================
+
+    if (
+        command.includes("hello jarvis") ||
+        command.includes("hi jarvis") ||
+        command === "hello" ||
+        command === "hi"
+    ) {
+
+        const message =
+            "Hello James. How can I help you?";
+
+        setStatus(
+            "JARVIS ACTIVE"
+        );
+
+        setResponse(
+            message
+        );
+
+        jarvisSpeak(
+            message
+        );
+
+        return;
+    }
+
+
+    // ======================================
+    // OPEN WEB
+    // ======================================
+
+    if (
+        command.includes("open google") ||
+        command.includes("open the web") ||
+        command.includes("open web")
+    ) {
+
+        const message =
+            "Opening the web.";
+
+        setStatus(
+            "JARVIS ACTIVE"
+        );
+
+        setResponse(
+            message
+        );
+
+        jarvisSpeak(
+            message
+        );
+
+
+        setTimeout(
+            function() {
+
+                window.open(
+                    "https://www.google.com",
+                    "_blank"
                 );
 
-                setResponse(
-                    `You said: "${transcript}"`
-                );
+            },
+            500
+        );
 
-                jarvisSpeak(
-                    `I heard you say ${transcript}`
-                );
+        return;
+    }
 
-            } else {
 
-                setStatus(
-                    "JARVIS ACTIVE"
-                );
+    // ======================================
+    // UNKNOWN COMMAND
+    // ======================================
 
-                setResponse(
-                    "Audio received, but no speech text was returned."
-                );
+    const message =
+        `I heard you say "${transcript}". I don't know that command yet.`;
 
-            }
+    setStatus(
+        "JARVIS ACTIVE"
+    );
+
+    setResponse(
+        message
+    );
+
+    jarvisSpeak(
+        message
+    );
+
+
+} else {
+
+    setStatus(
+        "JARVIS ACTIVE"
+    );
+
+    setResponse(
+        "Audio received, but no speech text was returned."
+    );
+
+}
 
 
         } catch (error) {
