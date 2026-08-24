@@ -455,11 +455,16 @@ if (transcript) {
     // ======================================
 
     if (
-        command.includes("hello jarvis") ||
-        command.includes("hi jarvis") ||
-        command === "hello" ||
-        command === "hi"
-    ) {
+    command.includes("hello jarvis") ||
+    command.includes("hello javis") ||
+    command.includes("hi jarvis") ||
+    command.includes("hi javis") ||
+    command.includes("hey jarvis") ||
+    command.includes("hey javis") ||
+    command === "hello" ||
+    command === "hi" ||
+    command === "hey"
+) {
 
         const message =
             "Hello James. How can I help you?";
