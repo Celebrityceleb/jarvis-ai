@@ -319,8 +319,8 @@ async function startJarvisMicrophone() {
                 );
 
                 setResponse(
-                    "Audio captured. Speech processing is next."
-                );
+    "Audio captured. Processing speech..."
+);
 
             };
 
