@@ -395,27 +395,133 @@ async function startJarvisMicrophone() {
     data.text;
 
 
-if (transcript) {
+if (!transcript) {
 
-    const command =
-        transcript.trim().toLowerCase();
+    setStatus(
+        "JARVIS ACTIVE"
+    );
+
+    setResponse(
+        "Audio received, but no speech text was returned."
+    );
+
+    return;
+
+}
+
+
+console.log(
+    "JARVIS TRANSCRIPT:",
+    transcript
+);
+
+
+// ==========================================
+// SEND TRANSCRIPT TO JARVIS BRAIN
+// ==========================================
+
+try {
+
+    setStatus(
+        "JARVIS THINKING..."
+    );
+
+    setResponse(
+        "Let me think..."
+    );
+
+
+    const brainResponse =
+        await fetch(
+            "https://oechiufoqtnuofoiatgw.supabase.co/functions/v1/jarvis-brain",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json",
+
+                    "apikey":
+                        "sb_publishable_Pf0mP9qTvCdWCUjZTt-xrA_G4gch1w8"
+                },
+
+                body:
+                    JSON.stringify({
+                        command:
+                            transcript
+                    })
+            }
+        );
+
+
+    const brainData =
+        await brainResponse.json();
 
 
     console.log(
-        "JARVIS COMMAND:",
-        command
+        "JARVIS BRAIN:",
+        brainData
+    );
+
+
+    if (
+        !brainData.success
+    ) {
+
+        throw new Error(
+            brainData.error ||
+            "JARVIS Brain failed."
+        );
+
+    }
+
+
+    const intent =
+        brainData.intent;
+
+
+    console.log(
+        "JARVIS INTENT:",
+        intent
     );
 
 
     // ======================================
-    // TIME COMMAND
+    // GREETING
     // ======================================
 
     if (
-        command.includes("what time") ||
-        command.includes("current time") ||
-        command === "time" ||
-        command.includes("tell me the time")
+        intent ===
+        "GREETING"
+    ) {
+
+        const message =
+            "Hello James. How can I help you?";
+
+        setStatus(
+            "JARVIS ACTIVE"
+        );
+
+        setResponse(
+            message
+        );
+
+        jarvisSpeak(
+            message
+        );
+
+        return;
+
+    }
+
+
+    // ======================================
+    // TIME
+    // ======================================
+
+    if (
+        intent ===
+        "GET_TIME"
     ) {
 
         const now =
@@ -425,9 +531,14 @@ if (transcript) {
             now.toLocaleTimeString(
                 "en-NG",
                 {
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true
+                    hour:
+                        "numeric",
+
+                    minute:
+                        "2-digit",
+
+                    hour12:
+                        true
                 }
             );
 
@@ -447,41 +558,7 @@ if (transcript) {
         );
 
         return;
-    }
 
-
-    // ======================================
-    // GREETING
-    // ======================================
-
-    if (
-    command.includes("hello jarvis") ||
-    command.includes("hello javis") ||
-    command.includes("hi jarvis") ||
-    command.includes("hi javis") ||
-    command.includes("hey jarvis") ||
-    command.includes("hey javis") ||
-    command === "hello" ||
-    command === "hi" ||
-    command === "hey"
-) {
-
-        const message =
-            "Hello James. How can I help you?";
-
-        setStatus(
-            "JARVIS ACTIVE"
-        );
-
-        setResponse(
-            message
-        );
-
-        jarvisSpeak(
-            message
-        );
-
-        return;
     }
 
 
@@ -490,9 +567,8 @@ if (transcript) {
     // ======================================
 
     if (
-        command.includes("open google") ||
-        command.includes("open the web") ||
-        command.includes("open web")
+        intent ===
+        "OPEN_WEB"
     ) {
 
         const message =
@@ -524,37 +600,210 @@ if (transcript) {
         );
 
         return;
+
     }
 
 
     // ======================================
-    // UNKNOWN COMMAND
+    // CREATE REMINDER
     // ======================================
 
-    const message =
-        `I heard you say "${transcript}". I don't know that command yet.`;
+    if (
+        intent ===
+        "CREATE_REMINDER"
+    ) {
+
+        const reminder =
+            prompt(
+                "JARVIS REMINDER\n\nWhat should I remind you about?"
+            );
+
+
+        if (
+            !reminder ||
+            !reminder.trim()
+        ) {
+
+            setResponse(
+                "Reminder cancelled."
+            );
+
+            return;
+
+        }
+
+
+        const reminderText =
+            reminder.trim();
+
+
+        const reminders =
+            JSON.parse(
+                localStorage.getItem(
+                    "jarvisReminders"
+                ) ||
+                "[]"
+            );
+
+
+        reminders.push({
+
+            text:
+                reminderText,
+
+            created:
+                new Date()
+                    .toLocaleString(
+                        "en-NG"
+                    )
+
+        });
+
+
+        localStorage.setItem(
+            "jarvisReminders",
+            JSON.stringify(
+                reminders
+            )
+        );
+
+
+        const message =
+            `Reminder saved: "${reminderText}"`;
+
+
+        setStatus(
+            "JARVIS ACTIVE"
+        );
+
+        setResponse(
+            message
+        );
+
+        jarvisSpeak(
+            `Reminder saved. ${reminderText}`
+        );
+
+        return;
+
+    }
+
+
+    // ======================================
+    // SYSTEM STATUS
+    // ======================================
+
+    if (
+        intent ===
+        "SYSTEM_STATUS"
+    ) {
+
+        const browser =
+            navigator.userAgent;
+
+        const language =
+            navigator.language;
+
+        const online =
+            navigator.onLine
+                ? "ONLINE"
+                : "OFFLINE";
+
+        const screenWidth =
+            window.screen.width;
+
+        const screenHeight =
+            window.screen.height;
+
+
+        const message =
+            `System online. Network ${online}. ` +
+            `Language ${language}. ` +
+            `Screen ${screenWidth} by ${screenHeight}.`;
+
+
+        setStatus(
+            "JARVIS ACTIVE"
+        );
+
+        setResponse(
+            message
+        );
+
+        jarvisSpeak(
+            message
+        );
+
+        console.log(
+            "JARVIS SYSTEM STATUS"
+        );
+
+        console.log(
+            "Browser:",
+            browser
+        );
+
+        console.log(
+            "Language:",
+            language
+        );
+
+        console.log(
+            "Network:",
+            online
+        );
+
+        console.log(
+            "Screen:",
+            `${screenWidth} x ${screenHeight}`
+        );
+
+        return;
+
+    }
+
+
+    // ======================================
+    // UNKNOWN
+    // ======================================
+
+    const unknownMessage =
+        `I heard you say "${transcript}", but I don't know how to handle that yet.`;
+
 
     setStatus(
         "JARVIS ACTIVE"
     );
 
     setResponse(
-        message
+        unknownMessage
     );
 
     jarvisSpeak(
-        message
+        unknownMessage
     );
 
 
-} else {
+} catch (error) {
+
+    console.error(
+        "JARVIS BRAIN CONNECTION ERROR:",
+        error
+    );
+
 
     setStatus(
         "JARVIS ACTIVE"
     );
 
+
     setResponse(
-        "Audio received, but no speech text was returned."
+        "I couldn't connect to my brain. Please try again."
+    );
+
+
+    jarvisSpeak(
+        "I couldn't connect to my brain. Please try again."
     );
 
 }
