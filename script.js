@@ -94,6 +94,7 @@ function jarvisSpeak(text) {
         return;
     }
 
+
     if (!("speechSynthesis" in window)) {
 
         console.warn(
@@ -101,24 +102,91 @@ function jarvisSpeak(text) {
         );
 
         return;
+
     }
 
+
     try {
-console.log(
-    "JARVIS VOICE START:",
-    new Date().toISOString()
-);
-        window.speechSynthesis.cancel();
+
+        const synth =
+            window.speechSynthesis;
+
+
+        console.log(
+            "JARVIS VOICE START:",
+            new Date().toISOString()
+        );
+
+
+        // ======================================
+        // CANCEL ONLY IF SOMETHING IS SPEAKING
+        // ======================================
+
+        if (
+            synth.speaking ||
+            synth.pending
+        ) {
+
+            synth.cancel();
+
+        }
+
 
         const speech =
-            new SpeechSynthesisUtterance(text);
+            new SpeechSynthesisUtterance(
+                text
+            );
 
-        speech.lang = "en-US";
-        speech.rate = 0.95;
-        speech.pitch = 0.9;
-        speech.volume = 1;
 
-        window.speechSynthesis.speak(speech);
+        speech.lang =
+            "en-US";
+
+        speech.rate =
+            0.95;
+
+        speech.pitch =
+            0.9;
+
+        speech.volume =
+            1;
+
+
+        speech.onstart =
+            function() {
+
+                console.log(
+                    "JARVIS VOICE ACTUALLY STARTED:",
+                    new Date().toISOString()
+                );
+
+            };
+
+
+        speech.onend =
+            function() {
+
+                console.log(
+                    "JARVIS VOICE FINISHED."
+                );
+
+            };
+
+
+        speech.onerror =
+            function(event) {
+
+                console.error(
+                    "JARVIS VOICE ERROR:",
+                    event.error
+                );
+
+            };
+
+
+        synth.speak(
+            speech
+        );
+
 
     } catch (error) {
 
