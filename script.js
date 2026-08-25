@@ -988,21 +988,118 @@ try {
 // UNKNOWN INTENT
 // ==========================================
 
-const unknownMessage =
-    `I heard you say "${transcript}", but I don't know how to handle that yet.`;
+// ==========================================
+// JARVIS CHAT FALLBACK
+// ==========================================
 
-
-setStatus(
-    "JARVIS ACTIVE"
+console.log(
+    "JARVIS: No matching command."
 );
 
-setResponse(
-    unknownMessage
+console.log(
+    "JARVIS: Sending transcript to chat."
 );
 
-jarvisSpeak(
-    unknownMessage
-);
+
+try {
+
+    setStatus(
+        "JARVIS THINKING..."
+    );
+
+    setResponse(
+        "Let me think..."
+    );
+
+
+    const chatResponse =
+        await fetch(
+            "https://oechiufoqtnuofoiatgw.supabase.co/functions/v1/jarvis-chat",
+            {
+                method:
+                    "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json",
+
+                    "apikey":
+                        "sb_publishable_YOUR_KEY_HERE"
+
+                },
+
+                body:
+                    JSON.stringify({
+
+                        message:
+                            transcript
+
+                    })
+
+            }
+        );
+
+
+    const chatData =
+        await chatResponse.json();
+
+
+    console.log(
+        "JARVIS CHAT:",
+        chatData
+    );
+
+
+    if (
+        !chatData.success
+    ) {
+
+        throw new Error(
+            chatData.error ||
+            "JARVIS Chat failed."
+        );
+
+    }
+
+
+    const response =
+        chatData.response ||
+        "I'm here, James.";
+
+
+    setStatus(
+        "JARVIS ACTIVE"
+    );
+
+    setResponse(
+        response
+    );
+
+    jarvisSpeak(
+        response
+    );
+
+
+} catch (error) {
+
+    console.error(
+        "JARVIS CHAT CONNECTION ERROR:",
+        error
+    );
+
+
+    setStatus(
+        "JARVIS ACTIVE"
+    );
+
+    setResponse(
+        "I couldn't connect to my conversational system."
+    );
+
+    jarvisSpeak(
+        "I couldn't connect to my conversational system."
+    );
 
 
 } catch (error) {
