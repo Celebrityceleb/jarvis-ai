@@ -475,313 +475,347 @@ try {
 
     }
 
+const intent =
+    brainData.intent;
 
-    const intent =
-        brainData.intent;
+
+console.log(
+    "JARVIS INTENT:",
+    intent
+);
 
 
-    console.log(
-        "JARVIS INTENT:",
-        intent
-    );
+// ==========================================
+// JARVIS TOOL ROUTER
+// ==========================================
 
+const jarvisTools = {
 
     // ======================================
     // GREETING
     // ======================================
 
-    if (
-        intent ===
-        "GREETING"
-    ) {
+    GREETING:
+        function() {
 
-        const message =
-            "Hello James. How can I help you?";
+            const message =
+                "Hello James. How can I help you?";
 
-        setStatus(
-            "JARVIS ACTIVE"
-        );
 
-        setResponse(
-            message
-        );
+            setStatus(
+                "JARVIS ACTIVE"
+            );
 
-        jarvisSpeak(
-            message
-        );
+            setResponse(
+                message
+            );
 
-        return;
+            jarvisSpeak(
+                message
+            );
 
-    }
+        },
 
 
     // ======================================
     // TIME
     // ======================================
 
-    if (
-        intent ===
-        "GET_TIME"
-    ) {
+    GET_TIME:
+        function() {
 
-        const now =
-            new Date();
+            const now =
+                new Date();
 
-        const time =
-            now.toLocaleTimeString(
-                "en-NG",
-                {
-                    hour:
-                        "numeric",
 
-                    minute:
-                        "2-digit",
+            const time =
+                now.toLocaleTimeString(
+                    "en-NG",
+                    {
+                        hour:
+                            "numeric",
 
-                    hour12:
-                        true
-                }
+                        minute:
+                            "2-digit",
+
+                        hour12:
+                            true
+                    }
+                );
+
+
+            const message =
+                `The current time is ${time}.`;
+
+
+            setStatus(
+                "JARVIS ACTIVE"
             );
 
-        const message =
-            `The current time is ${time}.`;
+            setResponse(
+                message
+            );
 
-        setStatus(
-            "JARVIS ACTIVE"
-        );
+            jarvisSpeak(
+                message
+            );
 
-        setResponse(
-            message
-        );
-
-        jarvisSpeak(
-            message
-        );
-
-        return;
-
-    }
+        },
 
 
     // ======================================
     // OPEN WEB
     // ======================================
 
-    if (
-        intent ===
-        "OPEN_WEB"
-    ) {
+    OPEN_WEB:
+        function() {
 
-        const message =
-            "Opening the web.";
-
-        setStatus(
-            "JARVIS ACTIVE"
-        );
-
-        setResponse(
-            message
-        );
-
-        jarvisSpeak(
-            message
-        );
+            const message =
+                "Opening the web.";
 
 
-        setTimeout(
-            function() {
+            setStatus(
+                "JARVIS ACTIVE"
+            );
 
-                window.open(
-                    "https://www.google.com",
-                    "_blank"
-                );
+            setResponse(
+                message
+            );
 
-            },
-            500
-        );
+            jarvisSpeak(
+                message
+            );
 
-        return;
 
-    }
+            setTimeout(
+                function() {
+
+                    window.open(
+                        "https://www.google.com",
+                        "_blank"
+                    );
+
+                },
+                500
+            );
+
+        },
 
 
     // ======================================
     // CREATE REMINDER
     // ======================================
 
-    if (
-        intent ===
-        "CREATE_REMINDER"
-    ) {
+    CREATE_REMINDER:
+        function() {
 
-        const reminder =
-            prompt(
-                "JARVIS REMINDER\n\nWhat should I remind you about?"
+            const reminder =
+                prompt(
+                    "JARVIS REMINDER\n\nWhat should I remind you about?"
+                );
+
+
+            if (
+                !reminder ||
+                !reminder.trim()
+            ) {
+
+                setStatus(
+                    "JARVIS ACTIVE"
+                );
+
+                setResponse(
+                    "Reminder cancelled."
+                );
+
+                return;
+
+            }
+
+
+            const reminderText =
+                reminder.trim();
+
+
+            let reminders;
+
+
+            try {
+
+                reminders =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "jarvisReminders"
+                        ) ||
+                        "[]"
+                    );
+
+            } catch {
+
+                reminders =
+                    [];
+
+            }
+
+
+            reminders.push({
+
+                text:
+                    reminderText,
+
+                created:
+                    new Date()
+                        .toLocaleString(
+                            "en-NG"
+                        )
+
+            });
+
+
+            localStorage.setItem(
+                "jarvisReminders",
+                JSON.stringify(
+                    reminders
+                )
             );
 
 
-        if (
-            !reminder ||
-            !reminder.trim()
-        ) {
+            const message =
+                `Reminder saved: "${reminderText}"`;
+
+
+            setStatus(
+                "JARVIS ACTIVE"
+            );
 
             setResponse(
-                "Reminder cancelled."
+                message
             );
 
-            return;
-
-        }
-
-
-        const reminderText =
-            reminder.trim();
-
-
-        const reminders =
-            JSON.parse(
-                localStorage.getItem(
-                    "jarvisReminders"
-                ) ||
-                "[]"
+            jarvisSpeak(
+                `Reminder saved. ${reminderText}`
             );
 
-
-        reminders.push({
-
-            text:
-                reminderText,
-
-            created:
-                new Date()
-                    .toLocaleString(
-                        "en-NG"
-                    )
-
-        });
-
-
-        localStorage.setItem(
-            "jarvisReminders",
-            JSON.stringify(
-                reminders
-            )
-        );
-
-
-        const message =
-            `Reminder saved: "${reminderText}"`;
-
-
-        setStatus(
-            "JARVIS ACTIVE"
-        );
-
-        setResponse(
-            message
-        );
-
-        jarvisSpeak(
-            `Reminder saved. ${reminderText}`
-        );
-
-        return;
-
-    }
+        },
 
 
     // ======================================
     // SYSTEM STATUS
     // ======================================
 
-    if (
-        intent ===
-        "SYSTEM_STATUS"
-    ) {
+    SYSTEM_STATUS:
+        function() {
 
-        const browser =
-            navigator.userAgent;
-
-        const language =
-            navigator.language;
-
-        const online =
-            navigator.onLine
-                ? "ONLINE"
-                : "OFFLINE";
-
-        const screenWidth =
-            window.screen.width;
-
-        const screenHeight =
-            window.screen.height;
+            const browser =
+                navigator.userAgent;
 
 
-        const message =
-            `System online. Network ${online}. ` +
-            `Language ${language}. ` +
-            `Screen ${screenWidth} by ${screenHeight}.`;
+            const language =
+                navigator.language;
 
 
-        setStatus(
-            "JARVIS ACTIVE"
-        );
-
-        setResponse(
-            message
-        );
-
-        jarvisSpeak(
-            message
-        );
-
-        console.log(
-            "JARVIS SYSTEM STATUS"
-        );
-
-        console.log(
-            "Browser:",
-            browser
-        );
-
-        console.log(
-            "Language:",
-            language
-        );
-
-        console.log(
-            "Network:",
-            online
-        );
-
-        console.log(
-            "Screen:",
-            `${screenWidth} x ${screenHeight}`
-        );
-
-        return;
-
-    }
+            const online =
+                navigator.onLine
+                    ? "ONLINE"
+                    : "OFFLINE";
 
 
-    // ======================================
-    // UNKNOWN
-    // ======================================
-
-    const unknownMessage =
-        `I heard you say "${transcript}", but I don't know how to handle that yet.`;
+            const screenWidth =
+                window.screen.width;
 
 
-    setStatus(
-        "JARVIS ACTIVE"
+            const screenHeight =
+                window.screen.height;
+
+
+            const message =
+                `System online. Network ${online}. ` +
+                `Language ${language}. ` +
+                `Screen ${screenWidth} by ${screenHeight}.`;
+
+
+            setStatus(
+                "JARVIS ACTIVE"
+            );
+
+            setResponse(
+                message
+            );
+
+            jarvisSpeak(
+                message
+            );
+
+
+            console.log(
+                "JARVIS SYSTEM STATUS"
+            );
+
+            console.log(
+                "Browser:",
+                browser
+            );
+
+            console.log(
+                "Language:",
+                language
+            );
+
+            console.log(
+                "Network:",
+                online
+            );
+
+            console.log(
+                "Screen:",
+                `${screenWidth} x ${screenHeight}`
+            );
+
+        }
+
+};
+
+
+// ==========================================
+// EXECUTE JARVIS TOOL
+// ==========================================
+
+if (
+    jarvisTools[intent]
+) {
+
+    console.log(
+        "JARVIS TOOL:",
+        intent
     );
 
-    setResponse(
-        unknownMessage
-    );
 
-    jarvisSpeak(
-        unknownMessage
-    );
+    jarvisTools[intent]();
+
+    return;
+
+}
+
+
+// ==========================================
+// UNKNOWN INTENT
+// ==========================================
+
+const unknownMessage =
+    `I heard you say "${transcript}", but I don't know how to handle that yet.`;
+
+
+setStatus(
+    "JARVIS ACTIVE"
+);
+
+setResponse(
+    unknownMessage
+);
+
+jarvisSpeak(
+    unknownMessage
+);
 
 
 } catch (error) {
