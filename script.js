@@ -104,7 +104,10 @@ function jarvisSpeak(text) {
     }
 
     try {
-
+console.log(
+    "JARVIS VOICE START:",
+    new Date().toISOString()
+);
         window.speechSynthesis.cancel();
 
         const speech =
