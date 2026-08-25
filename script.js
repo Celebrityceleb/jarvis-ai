@@ -869,6 +869,122 @@ if (
 
 
 // ==========================================
+// JARVIS CHAT FALLBACK
+// ==========================================
+
+console.log(
+    "JARVIS: No matching tool."
+);
+
+console.log(
+    "JARVIS: Sending transcript to chat."
+);
+
+
+try {
+
+    setStatus(
+        "JARVIS THINKING..."
+    );
+
+    setResponse(
+        "Let me think..."
+    );
+
+
+    const chatResponse =
+        await fetch(
+            "https://oechiufoqtnuofoiatgw.supabase.co/functions/v1/jarvis-chat",
+            {
+                method:
+                    "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json",
+
+                    "apikey":
+                        "sb_publishable_Pf0mP9qTvCdWCUjZTt-xrA_G4gch1w8"
+
+                },
+
+                body:
+                    JSON.stringify({
+
+                        message:
+                            transcript
+
+                    })
+
+            }
+        );
+
+
+    const chatData =
+        await chatResponse.json();
+
+
+    console.log(
+        "JARVIS CHAT:",
+        chatData
+    );
+
+
+    if (
+        !chatData.success
+    ) {
+
+        throw new Error(
+            chatData.error ||
+            "JARVIS Chat failed."
+        );
+
+    }
+
+
+    const response =
+        chatData.response ||
+        "I'm here, James.";
+
+
+    setStatus(
+        "JARVIS ACTIVE"
+    );
+
+    setResponse(
+        response
+    );
+
+    jarvisSpeak(
+        response
+    );
+
+
+} catch (error) {
+
+    console.error(
+        "JARVIS CHAT CONNECTION ERROR:",
+        error
+    );
+
+
+    setStatus(
+        "JARVIS ACTIVE"
+    );
+
+    setResponse(
+        "I couldn't connect to my conversational system."
+    );
+
+    jarvisSpeak(
+        "I couldn't connect to my conversational system."
+    );
+
+}
+
+
+// ==========================================
 // UNKNOWN INTENT
 // ==========================================
 
